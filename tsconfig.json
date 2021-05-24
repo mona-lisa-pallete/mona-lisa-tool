@@ -1,6 +1,16 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+    },
+    "baseUrl": "./",
     "outDir": "./.bundles",
     "downlevelIteration": true,
     "skipLibCheck": true,
@@ -8,16 +18,24 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
     "noImplicitAny": false,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "resolveJsonModule": true,
     "sourceMap": true,
-    "module": "ES2015",
+    "module": "ESNext",
     "moduleResolution": "node",
     "jsx": "react"
   },
-  "include": ["./src"],
-  "exclude": ["**/test/*", "**/demo/*", ".bundles"]
+  "include": [
+    "./src/**/*",
+    "./typings.d.ts"
+  ],
+  "exclude": [
+    "**/test/*",
+    "**/demo/*",
+    ".bundles"
+  ]
 }

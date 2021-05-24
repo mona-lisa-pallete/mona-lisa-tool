@@ -89,6 +89,9 @@ module.exports = () => {
       "react-icons/ri": "HYCLICONS.ReactIconRI",
       "react-icons/bi": "HYCLICONS.ReactIconBI",
       "react-icons/fi": "HYCLICONS.ReactIconFI",
+      "@tarojs/components": "taroVendor.components",
+      "@tarojs/taro": "taroVendor.taro",
+      "@tarojs/runtime": "taroVendor.runtime"
     },
     module: {
       rules: [
@@ -108,6 +111,9 @@ module.exports = () => {
     resolve: {
       modules: [paths.nodeModulePath],
       extensions: [".ts", ".tsx", ".js", ".json", ".jsx", ".css"],
+      alias: {
+        "@": path.resolve("src"),
+      },
     },
     // performance: {
     //   hints: "warning",
