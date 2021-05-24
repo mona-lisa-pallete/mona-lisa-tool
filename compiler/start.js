@@ -27,7 +27,7 @@ makeWorkingDir();
 const startDevServer = () => {
   const compiler = webpack(webpackConfig());
 
-  compiler.run((err, stats) => {
+  compiler.watch({}, (err, stats) => {
     console.log(err);
     if (stats.hasErrors()) {
     }
@@ -66,6 +66,10 @@ const startDevServer = () => {
     console.log(`Running at http://localhost:${PORT}`);
   });
 
+  return () => {
+    server.close();
+  };
+
   // const serverConfig = createDevServerConfig();
 
   // const devServer = new WebpackDevServer(
@@ -88,9 +92,9 @@ const startDevServer = () => {
   //   });
   // });
 
-  return () => {
-    devServer.close();
-  };
+  // return () => {
+  //   devServer.close();
+  // };
 };
 
 let close = startDevServer();
