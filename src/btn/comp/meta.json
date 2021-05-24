@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "elementRef": "FormButton",
+  "logo": "FiFeather",
+  "label": "按钮组件",
+  "eventAttr": [{ "alias": "点击", "type": "onClick" }],
+  "propFormConfig": {
+    "useSystemForm": true,
+    "useCustomForm": true,
+    "customFormRef": "BtnForm"
+  }
+}

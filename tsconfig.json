@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "outDir": "./.bundles",
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "module": "ES2015",
+    "moduleResolution": "node",
+    "jsx": "react"
+  },
+  "include": ["./src"],
+  "exclude": ["**/test/*", "**/demo/*", ".bundles"]
+}
