@@ -3,10 +3,12 @@ const chokidar = require("chokidar");
 const path = require("path");
 const fse = require("fs-extra");
 const webpack = require("webpack");
+const express = require("express");
+const cors = require("cors");
 const WebpackDevServer = require("webpack-dev-server");
 
-const handler = require("serve-handler");
-const http = require("http");
+// const handler = require("serve-handler");
+// const http = require("http");
 
 const { devServerPort } = require("./config");
 const webpackConfig = require("./webpack.config");
@@ -35,32 +37,11 @@ const startDevServer = () => {
     // ...
   });
 
-  const server = http.createServer((request, response) => {
-    // You pass two more arguments for config and middleware
-    // More details here: https://github.com/vercel/serve-handler#options
-    return handler(request, response, {
-      public: ".bundles",
-      headers: [
-        {
-          source: "*",
-          headers: [
-            {
-              key: "Access-Control-Allow-Origin",
-              value: "*",
-            },
-            {
-              key: "Access-Control-Allow-Methods",
-              value: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-            },
-            {
-              key: "Access-Control-Allow-Headers",
-              value: "X-Requested-With, content-type, Authorization",
-            },
-          ],
-        },
-      ],
-    });
-  });
+  const server = express();
+
+  server.use(cors());
+
+  server.use(express.static(".bundles"));
 
   server.listen(PORT, () => {
     console.log(`Running at http://localhost:${PORT}`);
@@ -69,6 +50,41 @@ const startDevServer = () => {
   return () => {
     server.close();
   };
+
+  // const server = http.createServer((request, response) => {
+  //   // You pass two more arguments for config and middleware
+  //   // More details here: https://github.com/vercel/serve-handler#options
+  //   return handler(request, response, {
+  //     public: ".bundles",
+  //     headers: [
+  //       {
+  //         source: "*",
+  //         headers: [
+  //           {
+  //             key: "Access-Control-Allow-Origin",
+  //             value: "*",
+  //           },
+  //           {
+  //             key: "Access-Control-Allow-Methods",
+  //             value: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+  //           },
+  //           {
+  //             key: "Access-Control-Allow-Headers",
+  //             value: "X-Requested-With, content-type, Authorization",
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   });
+  // });
+
+  // server.listen(PORT, () => {
+  //   console.log(`Running at http://localhost:${PORT}`);
+  // });
+
+  // return () => {
+  //   server.close();
+  // };
 
   // const serverConfig = createDevServerConfig();
 
