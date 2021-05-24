@@ -1,3 +1,4 @@
+import { View } from "@tarojs/components";
 import React from "react";
 
 const FormButton = ({ onClick, children }) => {

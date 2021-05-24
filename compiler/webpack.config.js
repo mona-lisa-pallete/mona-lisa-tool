@@ -10,15 +10,15 @@ const { bundlesPath } = require("./config");
 const paths = {
   htmlTemplate: path.join(__dirname, "../.runtime/index.html"),
   sourcePath: path.resolve(__dirname, "../src"),
-  nodeModulePath: path.resolve(__dirname, "../node_modules"),
+  nodeModulePath: path.resolve(__dirname, "../node_modules")
 };
 
-const makeHtmlEntry = (filePath) => {
+const makeHtmlEntry = filePath => {
   return new HtmlWebpackPlugin({
     template: paths.htmlTemplate,
     chunks: [filePath],
     minify: false,
-    filename: `${filePath}/index.html`,
+    filename: `${filePath}/index.html`
   });
 };
 
@@ -55,8 +55,9 @@ module.exports = () => {
       path: bundlesPath,
       publicPath: "/",
       filename: "[name].js",
-      libraryTarget: "window",
       library: "[name]",
+      libraryTarget: "umd",
+      libraryExport: "default"
       // library: "DavinciUI",
     },
     mode: "development",
@@ -67,13 +68,15 @@ module.exports = () => {
       runtimeChunk: false,
       removeAvailableModules: false,
       removeEmptyChunks: false,
-      splitChunks: false,
+      splitChunks: false
     },
     externals: {
-      react: "React",
-      "react-dom": "ReactDOM",
+      // react: "React",
+      // "react-dom": "ReactDOM",
       antd: "antd",
       yup: "yup",
+      "react-dom": "reactVendor.ReactDOM",
+      react: "reactVendor.React",
       // lib
       "@deer-ui/core": "HYC_3_PARTY.DeerUI",
       "@hyc/platform-ui": "HYCPC",
@@ -102,18 +105,18 @@ module.exports = () => {
             loader: "ts-loader",
             options: {
               transpileOnly: true,
-              onlyCompileBundledFiles: true,
-            },
-          },
-        },
-      ],
+              onlyCompileBundledFiles: true
+            }
+          }
+        }
+      ]
     },
     resolve: {
       modules: [paths.nodeModulePath],
       extensions: [".ts", ".tsx", ".js", ".json", ".jsx", ".css"],
       alias: {
-        "@": path.resolve("src"),
-      },
+        "@": path.resolve("src")
+      }
     },
     // performance: {
     //   hints: "warning",
@@ -122,7 +125,7 @@ module.exports = () => {
     //     return assetFilename.endsWith(".css") || assetFilename.endsWith(".js");
     //   },
     // },
-    devtool: "cheap-source-map",
+    // devtool: "cheap-source-map",
     // context: paths.sourcePath,
     target: "web",
     stats: "errors-only",
@@ -134,10 +137,10 @@ module.exports = () => {
       http2: "empty",
       net: "empty",
       tls: "empty",
-      child_process: "empty",
+      child_process: "empty"
     },
     plugins: [
       // ...htmlEntriesPlugins,
-    ],
+    ]
   };
 };
