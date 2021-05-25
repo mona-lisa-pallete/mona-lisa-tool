@@ -37,13 +37,13 @@ const startDevServer = () => {
     // ...
   });
 
-  const server = express();
+  const app = express();
 
-  server.use(cors());
+  app.use(cors());
 
-  server.use(express.static(".bundles"));
+  app.use(express.static(".bundles"));
 
-  server.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`Running at http://localhost:${PORT}`);
   });
 
