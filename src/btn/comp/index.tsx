@@ -1,8 +1,11 @@
-import { View } from "@tarojs/components";
+import { Button, View } from "@tarojs/components";
 import React from "react";
+import './index.less'
 
-const FormButton = ({ onClick, children }) => {
-  return <button onClick={onClick}>{children}123</button>;
+const DvButton = ({ onClick, children }) => {
+  return <View onClick={onClick}>
+    
+  </View>;
 };
 
-export default FormButton;
+export default DvButton;
