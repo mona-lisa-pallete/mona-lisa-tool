@@ -1,7 +1,7 @@
 // import { DavinciFormComp } from "@/accessSpec/form.spec";
 import React from "react";
 
-const BtnForm = ({ onChange, children }) => {
+const DvButtonForm = ({ onChange, children }) => {
   return (
     <div>
       <div>标题</div>
@@ -14,4 +14,4 @@ const BtnForm = ({ onChange, children }) => {
   );
 };
 
-export default BtnForm;
+export default DvButtonForm;

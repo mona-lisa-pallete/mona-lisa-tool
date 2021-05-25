@@ -10,15 +10,15 @@ const { bundlesPath } = require("./config");
 const paths = {
   htmlTemplate: path.join(__dirname, "../.runtime/index.html"),
   sourcePath: path.resolve(__dirname, "../src"),
-  nodeModulePath: path.resolve(__dirname, "../node_modules"),
+  nodeModulePath: path.resolve(__dirname, "../node_modules")
 };
 
-const makeHtmlEntry = (filePath) => {
+const makeHtmlEntry = filePath => {
   return new HtmlWebpackPlugin({
     template: paths.htmlTemplate,
     chunks: [filePath],
     minify: false,
-    filename: `${filePath}/index.html`,
+    filename: `${filePath}/index.html`
   });
 };
 
@@ -27,25 +27,31 @@ module.exports = () => {
   const entries = glob.sync("./src/**/index.tsx").reduce((acc, _path) => {
     const pathArr = _path.split("/");
 
-    // 准备目录路径
-    const dirPath = path.dirname(_path);
-    const metaPath = path.resolve(dirPath, "meta.json");
+    if (!pathArr.includes("_components")) {
+      console.log(pathArr);
+      // 准备目录路径
+      const dirPath = path.dirname(_path);
+      const metaPath = path.resolve(dirPath, "meta.json");
 
-    // 读取 meta
-    const metadata = require(metaPath);
-    // console.log(metadata);
+      // 读取 meta
+      const metadata = require(metaPath);
+      // console.log(metadata);
 
-    // 这里取业务组件的 meta 的 elementRef 或者业务组件的表单的 formRef 作为编译的入口
-    const entryKey = metadata.elementRef || metadata.formRef;
+      // 这里取业务组件的 meta 的 elementRef 或者业务组件的表单的 formRef 作为编译的入口
+      const entryKey = metadata.elementRef || metadata.formRef;
 
-    // 将 meta 复制到 bundle 中
-    fse.copy(metaPath, path.join(bundlesPath, `${entryKey}.json`));
+      // 将 meta 复制到 bundle 中
+      fse.copy(metaPath, path.join(bundlesPath, `${entryKey}.json`));
 
-    // 设置 entryKey 的 key
-    acc[entryKey] = path.join(process.cwd(), _path);
+      console.log(acc, entryKey);
 
-    // 生成多个 html 入口
-    htmlEntriesPlugins.push(makeHtmlEntry(entryKey));
+      // 设置 entryKey 的 key
+      acc[entryKey] = path.join(process.cwd(), _path);
+
+      // 生成多个 html 入口
+      htmlEntriesPlugins.push(makeHtmlEntry(entryKey));
+    }
+
     return acc;
   }, {});
   return {
@@ -55,8 +61,9 @@ module.exports = () => {
       path: bundlesPath,
       publicPath: "/",
       filename: "[name].js",
-      libraryTarget: "window",
-      library: "[name]",
+      library: "[name]"
+      // libraryTarget: "umd"
+      // libraryExport: "default"
       // library: "DavinciUI",
     },
     mode: "development",
@@ -67,28 +74,15 @@ module.exports = () => {
       runtimeChunk: false,
       removeAvailableModules: false,
       removeEmptyChunks: false,
-      splitChunks: false,
+      splitChunks: false
     },
     externals: {
-      react: "React",
-      "react-dom": "ReactDOM",
+      react: "reactVendor.React",
+      "react-dom": "reactVendor.ReactDOM",
       antd: "antd",
-      yup: "yup",
-      // lib
-      "@deer-ui/core": "HYC_3_PARTY.DeerUI",
-      "@hyc/platform-ui": "HYCPC",
-      "@hyc/platform-exp": "HYCEXP",
-      "@hyc/platform-common-api": "HYCCAPI",
-      sortablejs: "HYC_3_PARTY.Sortablejs",
-      "@ant-design/pro-table": "HYC_3_PARTY.AntdProTable",
-      "@ant-design/pro-form": "HYC_3_PARTY.AntdProForm",
-      "formik-antd": "HYC_3_PARTY.FormikAntd",
-      formik: "HYC_3_PARTY.Formik",
-      // icons
-      "@ant-design/icons": "HYCLICONS.AntdIcons",
-      "react-icons/ri": "HYCLICONS.ReactIconRI",
-      "react-icons/bi": "HYCLICONS.ReactIconBI",
-      "react-icons/fi": "HYCLICONS.ReactIconFI",
+      "@tarojs/components": "taroVendor.components",
+      "@tarojs/taro": "taroVendor.taro",
+      "@tarojs/runtime": "taroVendor.runtime"
     },
     module: {
       rules: [
@@ -99,15 +93,32 @@ module.exports = () => {
             loader: "ts-loader",
             options: {
               transpileOnly: true,
-              onlyCompileBundledFiles: true,
-            },
-          },
+              onlyCompileBundledFiles: true
+            }
+          }
         },
-      ],
+        {
+          test: /\.less$/,
+          use: [
+            {
+              loader: "style-loader" // 把css添加到dom
+            },
+            {
+              loader: "css-loader" // 加载css
+            },
+            {
+              loader: "less-loader" // 加载less   less 转 css
+            }
+          ]
+        }
+      ]
     },
     resolve: {
       modules: [paths.nodeModulePath],
       extensions: [".ts", ".tsx", ".js", ".json", ".jsx", ".css"],
+      alias: {
+        "@": path.resolve("src")
+      }
     },
     // performance: {
     //   hints: "warning",
@@ -116,7 +127,7 @@ module.exports = () => {
     //     return assetFilename.endsWith(".css") || assetFilename.endsWith(".js");
     //   },
     // },
-    devtool: "cheap-source-map",
+    // devtool: "cheap-source-map",
     // context: paths.sourcePath,
     target: "web",
     stats: "errors-only",
@@ -128,10 +139,10 @@ module.exports = () => {
       http2: "empty",
       net: "empty",
       tls: "empty",
-      child_process: "empty",
+      child_process: "empty"
     },
     plugins: [
       // ...htmlEntriesPlugins,
-    ],
+    ]
   };
 };
