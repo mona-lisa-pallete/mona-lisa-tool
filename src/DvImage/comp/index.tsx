@@ -8,7 +8,7 @@ const DvImage: React.FC<DvImageProps> = (props) => {
 
   console.log(url, 222222222);
   // return(
-  //   <Button>22222</Button>
+  //     <span>2222</span>
   // )
   return <Image className="dv-image" src={url} mode="widthFix" />;
 };

@@ -61,8 +61,8 @@ module.exports = () => {
       path: bundlesPath,
       publicPath: "/",
       filename: "[name].js",
-      library: "[name]",
-      libraryTarget: "umd"
+      library: "[name]"
+      // libraryTarget: "umd"
       // libraryExport: "default"
       // library: "DavinciUI",
     },
@@ -77,8 +77,8 @@ module.exports = () => {
       splitChunks: false
     },
     externals: {
-      react: "React",
-      "react-dom": "ReactDOM",
+      react: "reactVendor.React",
+      "react-dom": "reactVendor.ReactDOM",
       antd: "antd",
       "@tarojs/components": "taroVendor.components",
       "@tarojs/taro": "taroVendor.taro",

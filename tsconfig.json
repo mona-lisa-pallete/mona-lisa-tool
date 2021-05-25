@@ -27,7 +27,8 @@
     "sourceMap": true,
     "module": "ESNext",
     "moduleResolution": "node",
-    "jsx": "react"
+    "jsx": "react",
+    "allowUmdGlobalAccess": true
   },
   "include": [
     "./src/**/*",

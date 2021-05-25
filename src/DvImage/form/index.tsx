@@ -11,25 +11,24 @@ interface DvImageFormProps {
 }
 
 const DvImageForm: React.FC<DvImageFormProps> = (props) => {
-  // const { onChange, data, actionRender } = props;
-  // const [form] = useForm();
+  const { onChange, data, actionRender } = props;
+  const [form] = useForm();
 
-  // useEffect(() => {
-  //   form.setFieldsValue(data);
-  // }, [data, form]);
+  useEffect(() => {
+    form.setFieldsValue(data);
+  }, [data, form]);
 
   return (
-    // <Form onValuesChange={onChange} form={form} layout="vertical" className="dv-image-form">
-    //   <div className="dv-image-form__sub-title">基础配置</div>
-    //   <Form.Item name="title" label="组件名称">
-    //     <Input />
-    //   </Form.Item>
-    //   <Form.Item name="url" label="图片素材">
-    //     <UploadTool />
-    //   </Form.Item>
-    //   {actionRender}
-    // </Form>
-    <div>2222</div>
+    <Form  className="dv-image-form">
+      <div className="dv-image-form__sub-title">基础配置</div>
+      <Form.Item name="title" label="组件名称">
+        <Input />
+      </Form.Item>
+      <Form.Item name="url" label="图片素材">
+        <UploadTool />
+      </Form.Item>
+      {actionRender}
+    </Form>
   );
 };
 

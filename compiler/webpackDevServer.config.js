@@ -2,7 +2,7 @@ const { runtimePath, bundlesPath } = require("./config");
 
 const paths = {
   appPublic: runtimePath,
-  publicUrlOrPath: runtimePath,
+  publicUrlOrPath: runtimePath
 };
 
 const host = process.env.HOST || "0.0.0.0";
@@ -24,14 +24,14 @@ module.exports = () => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
       "Access-Control-Allow-Headers":
-        "X-Requested-With, content-type, Authorization",
+        "X-Requested-With, content-type, Authorization"
     },
     // publicPath: paths.publicUrlOrPath.slice(0, -1),
     quiet: true,
     // watchOptions: {
     //   ignored: ignoredFiles(paths.appSrc),
     // },
-    host,
+    host
     // overlay: false,
     // historyApiFallback: false,
     // hot: false,
