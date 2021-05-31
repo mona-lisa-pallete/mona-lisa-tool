@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "elementRef": "DavinciDiv",
+  "logo": "FiFeather",
+  "label": "Div组件",
+  "eventAttr": [{ "alias": "点击", "type": "onClick" }],
+  "propFormConfig": {
+    "useSystemForm": true,
+    "useCustomForm": true,
+    "customFormRef": "DvImageForm"
+  }
+}

@@ -1,7 +1,6 @@
 import { Form, Input } from "antd";
 import React, { ReactNode, useEffect } from "react";
 import "./form.less";
-import UploadTool from "@/_components/UploadTool/";
 
 interface DvImageFormProps {
   data: any;
@@ -10,7 +9,7 @@ interface DvImageFormProps {
 }
 
 const DvImageForm: React.FC<DvImageFormProps> = (props) => {
-  const { onChange, data, actionRender } = props;
+  const { onChange, platformCtx, data, actionRender } = props;
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -24,7 +23,11 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
         <Input />
       </Form.Item>
       <Form.Item name="url" label="图片素材">
-        <UploadTool />
+        <platformCtx.ui.UploadTool
+          onSelected={(selectResult) => {
+            console.log(selectResult);
+          }}
+        />
       </Form.Item>
       {actionRender}
     </Form>
