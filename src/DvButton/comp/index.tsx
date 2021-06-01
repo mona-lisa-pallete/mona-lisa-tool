@@ -3,7 +3,7 @@ import React from "react";
 import "./index.less";
 
 const DvButton = ({ onClick, children }) => {
-  return <Button onClick={onClick}>qwe</Button>;
+  return <View onClick={onClick}>qwe</View>;
 };
 
 export default DvButton;

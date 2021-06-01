@@ -3,18 +3,19 @@ import React, { ReactNode, useEffect } from "react";
 import "./form.less";
 
 interface DvImageFormProps {
-  data: any;
-  onChange: (changedValues: any, allValues: any) => void;
+  initialValues: any;
+  onChange: (changedValues: any) => void;
   actionRender: React.Component | ReactNode;
+  platformCtx: any;
 }
 
 const DvImageForm: React.FC<DvImageFormProps> = (props) => {
-  const { onChange, platformCtx, data, actionRender } = props;
+  const { onChange, platformCtx, initialValues, actionRender } = props;
   const [form] = Form.useForm();
 
   useEffect(() => {
-    form.setFieldsValue(data);
-  }, [data, form]);
+    form.setFieldsValue(initialValues);
+  }, [initialValues, form]);
 
   return (
     <Form layout="vertical" className="dv-image-form" onValuesChange={onChange}>
@@ -25,7 +26,12 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
       <Form.Item name="url" label="图片素材">
         <platformCtx.ui.UploadTool
           onSelected={(selectResult) => {
-            console.log(selectResult);
+            form.setFieldsValue({
+              url: selectResult.url
+            })
+            onChange({
+              url: selectResult.url
+            })
           }}
         />
       </Form.Item>

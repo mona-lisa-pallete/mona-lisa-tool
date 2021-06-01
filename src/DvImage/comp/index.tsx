@@ -6,9 +6,6 @@ import { Button, Image, View } from "@tarojs/components";
 const DvImage: React.FC<DvImageProps> = (props) => {
   const { url } = props;
   const ref = React.createRef();
-  console.log(ref);
-
-  console.log(url, 222222222);
   // return(
   //     <span>2222</span>
   // )
