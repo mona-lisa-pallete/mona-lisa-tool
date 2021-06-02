@@ -23,6 +23,9 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
       <Form.Item name="title" label="组件名称">
         <Input />
       </Form.Item>
+      <Form.Item name="text" label="按钮文字">
+        <Input />
+      </Form.Item>
       <Form.Item name="url" label="图片素材">
         <platformCtx.ui.UploadTool
           onSelected={(selectResult) => {
