@@ -4,7 +4,7 @@ import "./index.less";
 import { Button, Image, View } from "@tarojs/components";
 
 const DvImage: React.FC<DvImageProps> = (props) => {
-  const { url, onClick, edit } = props;
+  const { url, onClick, edit, style } = props;
   const ref = React.createRef();
 
   if (edit && !url) {
@@ -13,7 +13,6 @@ const DvImage: React.FC<DvImageProps> = (props) => {
       <View>请上传图片</View>
     </View>)
   }
-  console.log(Image);
   return <Image className="dv-image" onClick={onClick} ref={ref} src={url} mode="widthFix" />;
 };
 

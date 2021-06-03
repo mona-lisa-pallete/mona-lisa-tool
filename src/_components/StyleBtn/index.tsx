@@ -9,23 +9,27 @@ interface StyleBtnProps {
     fontStyleVal: boolean
     textDecorationVal: boolean
     onChangeStyle: (css: CSSProperties) => void
+    value: any
+    onChange: (data: any) => void
 }
 
 const StyleBtn: React.FC<StyleBtnProps> = (props) => {
-    const { letterSpacing, lineHeight, textDecorationVal, onChangeStyle, fontWeightVal, fontStyleVal } = props
-    // const [letterSpacing, setFontSpace] = useState(0)
-    // const [lineHeight, setLineSpace] = useState(0)
+    const {textDecorationVal, onChangeStyle, fontWeightVal, fontStyleVal, value, onChange } = props
+    const [letterSpacing, setLetterSpacing] = useState(0)
+    const [lineHeight, setLineHeight] = useState(0)
 
     const handleFontSpace = (value: number) => {
-        onChangeStyle({
+        onChange({
             letterSpacing: value
         })
+        setLetterSpacing(value)
     };
 
     const handleLineSpace = value => {
-        onChangeStyle({
+        onChange({
             lineHeight: value
         })
+        setLineHeight(value)
     };
 
     const fontSpacingContent = (
@@ -33,9 +37,10 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
             width: '170px'
         }}>
             字间距:
-            <Slider onChange={handleFontSpace} value={letterSpacing} defaultValue={0} max={10} step={1} />
+            <Slider onChange={handleFontSpace} value={letterSpacing} defaultValue={1} max={10} step={1} />
             <InputNumber
                 min={1}
+                step={1}
                 max={10}
                 value={letterSpacing}
                 onChange={handleFontSpace}
@@ -48,10 +53,11 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
             width: '170px'
         }}>
             行高:
-            <Slider onChange={handleLineSpace} value={lineHeight} defaultValue={0} max={10} step={1} />
+            <Slider onChange={handleLineSpace} value={lineHeight} defaultValue={1} max={2} step={0.1} />
             <InputNumber
                 min={1}
-                max={10}
+                max={2}
+                step={0.1}
                 value={lineHeight}
                 onChange={handleLineSpace}
             />
@@ -64,7 +70,7 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
                 type="text"
                 onClick={() => {
                     // setModelVisible(true);
-                    onChangeStyle({
+                    onChange({
                         textAlign: 'left'
                     })
                 }}
@@ -75,7 +81,7 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
             <Button
                 type="text"
                 onClick={() => {
-                    onChangeStyle({
+                    onChange({
                         textAlign: 'center'
                     })
                 }}
@@ -86,7 +92,7 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
             <Button
                 type="text"
                 onClick={() => {
-                    onChangeStyle({
+                    onChange({
                         textAlign: 'right'
                     })
                 }}
@@ -100,34 +106,34 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
     return (
         <div className="style-btn">
             <i className="icon-bold iconfont" onClick={() => {
-                if (!fontWeightVal) {
-                    onChangeStyle({
+                if (value?.fontWeight !== 'bold') {
+                    onChange({
                         fontWeight: 'bold'
                     })
                 } else {
-                    onChangeStyle({
+                    onChange({
                         fontWeight: 'normal'
                     })
                 }
             }}></i>
             <i className="icon-tilt iconfont" onClick={() => {
-                if (!fontStyleVal) {
-                    onChangeStyle({
+                if (value?.fontStyle !== 'italic') {
+                    onChange({
                         fontStyle: 'italic'
                     })
                 } else {
-                    onChangeStyle({
+                    onChange({
                         fontStyle: 'normal'
                     })
                 }
             }}></i>
             <i className="icon-Underscore iconfont no-border" onClick={() => {
-                if (!textDecorationVal) {
-                    onChangeStyle({
+                if (value?.textDecoration !== 'underline') {
+                    onChange({
                         textDecoration: "underline"
                     })
                 } else {
-                    onChangeStyle({
+                    onChange({
                         textDecoration: "none"
                     })
                 }

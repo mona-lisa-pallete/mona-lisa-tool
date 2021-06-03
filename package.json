@@ -33,6 +33,7 @@
     "cors": "^2.8.5",
     "rc-color-picker": "^1.2.6",
     "react": "^16.14.0",
+    "react-color": "^2.19.3",
     "react-dom": "^16.14.0",
     "serve": "^11.3.2",
     "serve-handler": "^6.1.3"

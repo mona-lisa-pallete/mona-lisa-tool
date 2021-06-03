@@ -1,19 +1,29 @@
 import React from "react";
-import { DvImageProps } from "./types";
+import { DvTextProps } from "./types";
 import "./index.less";
-import { Text, Image, View } from "@tarojs/components";
+import { Text, View } from "@tarojs/components";
 
-const DvText: React.FC<DvImageProps> = (props) => {
-  const { url, onClick, edit } = props;
-  const ref = React.createRef();
+const DvText: React.FC<DvTextProps> = (props) => {
+  const { text, edit, fontSize = 12, color = '#000', font } = props;
 
-  if (edit && !url) {
-    return (<View className="dv-text">
+  if (edit && !text) {
+    return (<View className="dv-text" style={{fontSize: '15px'}}>
       <Text>请输入文字</Text>
     </View>)
   }
-  console.log(Image);
-  return <Image className="dv-image" onClick={onClick} ref={ref} src={url} mode="widthFix" />;
+
+  console.log(props, 'props');
+  
+  return <View style={{
+    fontSize: fontSize + 'px',
+    color: color,
+    fontStyle: font?.fontStyle || 'normal',
+    letterSpacing: font?.letterSpacing + 'px' || 'normal',
+    lineHeight: font?.lineHeight || 'normal',
+    textAlign: font?.textAlign || 'left',
+    fontWeight: font?.fontWeight || 'normal',
+    textDecoration: font?.textDecoration || 'none'
+  }} className="dv-text" >{text}</View>
 };
 
 export default DvText;
