@@ -2,7 +2,9 @@ const path = require("path");
 const glob = require("glob");
 const fse = require("fs-extra");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { bundlesPath } = require("./config");
+const {
+  bundlesPath
+} = require("./config");
 
 /**
  * 路径
@@ -27,33 +29,34 @@ module.exports = () => {
   const entries = glob.sync("./src/**/index.tsx").reduce((acc, _path) => {
     const pathArr = _path.split("/");
 
-    if (!pathArr.includes("_components")) {
-      console.log(pathArr);
-      // 准备目录路径
-      const dirPath = path.dirname(_path);
-      const metaPath = path.resolve(dirPath, "meta.json");
+    console.log(pathArr);
+    // 准备目录路径
+    const dirPath = path.dirname(_path);
+    const metaPath = path.resolve(dirPath, "meta.json");
 
-      if (fse.existsSync(metaPath)) {
-        // 读取 meta
-        const metadata = require(metaPath);
-        // console.log(metadata);
+    if (fse.existsSync(metaPath)) {
+      // 读取 meta
+      const metadata = require(metaPath);
+      // console.log(metadata);
 
-        // 这里取业务组件的 meta 的 elementRef 或者业务组件的表单的 formRef 作为编译的入口
-        const entryKey = metadata.elementRef || metadata.formRef;
+      // 这里取业务组件的 meta 的 elementRef 或者业务组件的表单的 formRef 作为编译的入口
+      const entryKey = metadata.elementRef || metadata.formRef;
 
-        // 将 meta 复制到 bundle 中
-        fse.copy(metaPath, path.join(bundlesPath, `${entryKey}.json`));
+      // 将 meta 复制到 bundle 中
+      fse.copy(metaPath, path.join(bundlesPath, `${entryKey}.json`), {
+        overwrite: true
+      });
 
-        // 设置 entryKey 的 key
-        acc[entryKey] = path.join(process.cwd(), _path);
+      // 设置 entryKey 的 key
+      acc[entryKey] = _path;
 
-        // 生成多个 html 入口
-        htmlEntriesPlugins.push(makeHtmlEntry(entryKey));
-      }
+      // 生成多个 html 入口
+      htmlEntriesPlugins.push(makeHtmlEntry(entryKey));
     }
 
     return acc;
   }, {});
+
   return {
     entry: entries,
     cache: true,
@@ -85,8 +88,7 @@ module.exports = () => {
       "@tarojs/runtime": "taroVendor.runtime"
     },
     module: {
-      rules: [
-        {
+      rules: [{
           test: /\.tsx?$/,
           include: [paths.sourcePath],
           use: {
@@ -103,8 +105,7 @@ module.exports = () => {
         },
         {
           test: /\.less$/,
-          use: [
-            {
+          use: [{
               loader: "style-loader" // 把css添加到dom
             },
             {
