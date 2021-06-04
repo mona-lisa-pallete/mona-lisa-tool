@@ -15,7 +15,6 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
   const UploadRef = useRef();
 
   useEffect(() => {
-    console.log(initialValues?.url, 'initialValues');
     UploadRef.current?.setUrlVal(initialValues?.url)
     form.setFieldsValue(initialValues);
   }, [initialValues, form]);

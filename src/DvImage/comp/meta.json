@@ -8,6 +8,6 @@
     "useSystemForm": true,
     "useCustomForm": true,
     "customFormRef": "DvImageForm",
-    "defaultFields": "url"
+    "useActionForm": true
   }
 }
