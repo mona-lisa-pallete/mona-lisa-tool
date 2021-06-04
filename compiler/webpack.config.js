@@ -83,9 +83,11 @@ module.exports = () => {
       react: "reactVendor.React",
       "react-dom": "reactVendor.ReactDOM",
       antd: "antd",
+      axios: "axios",
+      "@davinci/core": "davinciCore",
       "@tarojs/components": "taroVendor.components",
       "@tarojs/taro": "taroVendor.taro",
-      "@tarojs/runtime": "taroVendor.runtime"
+      "@tarojs/runtime": "taroVendor.runtime",
     },
     module: {
       rules: [{
@@ -112,11 +114,22 @@ module.exports = () => {
               loader: "css-loader" // 加载css
             },
             {
-              loader: "less-loader" // 加载less   less 转 css
-            }
-          ]
-        }
-      ]
+              loader: "postcss-loader",
+              options: {
+                plugins: [
+                  require("postcss-pxtorem")({
+                    rootValue: 40,
+                    propList: ["*"],
+                  }),
+                ],
+              },
+            },
+            {
+              loader: "less-loader", // 加载less   less 转 css
+            },
+          ],
+        },
+      ],
     },
     resolve: {
       modules: [paths.nodeModulePath],
