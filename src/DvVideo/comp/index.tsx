@@ -35,7 +35,7 @@ function DvVideo(props) {
       loop={false}
       muted={false}
       onPlay={() => {
-        click_play_video
+
       }}
       {...{
         ...props,
