@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "elementRef": "DvText",
+  "logo": "FiFeather",
+  "label": "文本组件",
+  "eventAttr": [{ "alias": "点击", "type": "onClick" }],
+  "propFormConfig": {
+    "useSystemForm": true,
+    "useCustomForm": true,
+    "customFormRef": "DvTextForm"
+  }
+}
