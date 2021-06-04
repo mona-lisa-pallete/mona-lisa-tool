@@ -1,8 +1,8 @@
 import { Form, Input, Radio } from 'antd';
-import TextArea from 'antd/lib/input/TextArea';
 import React, { useEffect, useState } from 'react';
 import './index.less';
 
+const {TextArea} = Input
 interface LinkActionFormProps {
   value: any;
   onChange: (value: any) => void;
@@ -20,7 +20,7 @@ const LinkActionForm: React.FC<LinkActionFormProps> = (props) => {
 
   useEffect(() => {
     if (value) {
-      form.setFieldsValue(JSON.parse(JSON.stringify(value)));
+        form.setFieldsValue(JSON.parse(JSON.stringify(value)));
     }
   }, [value]);
 
@@ -46,9 +46,7 @@ const LinkActionForm: React.FC<LinkActionFormProps> = (props) => {
               <>
                 {jumpMethod === JumpMethod.H5 && (
                   <Form.Item name="url">
-                    <div className="link-action-form-item">
-                      <TextArea placeholder="请输入H5路径" />
-                    </div>
+                    <TextArea placeholder="请输入H5路径" />
                   </Form.Item>
                 )}
                 {jumpMethod === JumpMethod.Mini && (
