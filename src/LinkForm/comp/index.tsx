@@ -35,7 +35,6 @@ const LinkActionForm: React.FC<LinkActionFormProps> = (props) => {
       <Form form={form} onValuesChange={handleValues}>
         <Form.Item name="jumpMethod">
           <Radio.Group>
-            {/* <Radio.Button>跳转页面</Radio.Button> */}
             <Radio.Button value={JumpMethod.H5}>跳转H5</Radio.Button>
             <Radio.Button value={JumpMethod.Mini}>跳转小程序</Radio.Button>
           </Radio.Group>

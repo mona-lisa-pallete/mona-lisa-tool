@@ -2,9 +2,7 @@ const path = require("path");
 const glob = require("glob");
 const fse = require("fs-extra");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const {
-  bundlesPath
-} = require("./config");
+const { bundlesPath } = require("./config");
 
 /**
  * 路径
@@ -87,10 +85,11 @@ module.exports = () => {
       "@davinci/core": "davinciCore",
       "@tarojs/components": "taroVendor.components",
       "@tarojs/taro": "taroVendor.taro",
-      "@tarojs/runtime": "taroVendor.runtime",
+      "@tarojs/runtime": "taroVendor.runtime"
     },
     module: {
-      rules: [{
+      rules: [
+        {
           test: /\.tsx?$/,
           include: [paths.sourcePath],
           use: {
@@ -107,7 +106,8 @@ module.exports = () => {
         },
         {
           test: /\.less$/,
-          use: [{
+          use: [
+            {
               loader: "style-loader" // 把css添加到dom
             },
             {
@@ -120,16 +120,17 @@ module.exports = () => {
                   require("postcss-pxtorem")({
                     rootValue: 40,
                     propList: ["*"],
-                  }),
-                ],
-              },
+                    selectorBlackList: ["dv-action-item"]
+                  })
+                ]
+              }
             },
             {
-              loader: "less-loader", // 加载less   less 转 css
-            },
-          ],
-        },
-      ],
+              loader: "less-loader" // 加载less   less 转 css
+            }
+          ]
+        }
+      ]
     },
     resolve: {
       modules: [paths.nodeModulePath],
