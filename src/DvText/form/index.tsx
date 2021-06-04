@@ -1,9 +1,7 @@
 import { Form, Input, Select } from "antd";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import "./form.less";
-import UploadTool from "@/_components/UploadTool/";
-import ColorPicker from "@/_components/ColorPicker";
-import StyleBtn from "@/_components/StyleBtn";
+import StyleBtn from './StyleBtn'
 
 interface DvImageFormProps {
   initialValues: any;
@@ -11,7 +9,7 @@ interface DvImageFormProps {
   platformCtx: any;
 }
 
-const fontSize = new Array(30).fill(1).map((i, index)=> {
+const fontSize = new Array(40).fill(1).map((i, index)=> {
   return {
     label: index + 12 + 'px',
     value: index + 12
@@ -58,7 +56,7 @@ const DvTextForm: React.FC<DvImageFormProps> = (props) => {
         <Form.Item label="文字选项">
           <div className="inline-form-item">
             <Form.Item name="color">
-              <ColorPicker></ColorPicker>
+              <platformCtx.ui.ColorPicker />
             </Form.Item>
             <Form.Item name="fontSize">
               <Select options={fontSize}>

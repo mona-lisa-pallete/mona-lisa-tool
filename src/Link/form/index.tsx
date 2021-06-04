@@ -1,10 +1,6 @@
 import { Form, Input, Select } from "antd";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import "./form.less";
-import UploadTool from "@/_components/UploadTool/";
-import ColorPicker from "@/_components/ColorPicker";
-import StyleBtn from "@/_components/StyleBtn";
-
 interface DvImageFormProps {
   initialValues: any;
   onChange: (allValues: any) => void;
