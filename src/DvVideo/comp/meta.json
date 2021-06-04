@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "elementRef": "DvVideo",
+  "logo": "https://static.guorou.net/course-static/a773da622ecc438ca3470f14977afab0.png",
+  "label": "视频预览组件",
+  "eventAttr": [],
+  "propFormConfig": {
+    "useSystemForm": true,
+    "useCustomForm": true,
+    "customFormRef": "DvVideoForm"
+  }
+}
