@@ -29,9 +29,18 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
         <platformCtx.ui.UploadTool
           ref={UploadRef}
           onProgress={(list)=>{
-            console.log(list);
+            // console.log(list);
           }}
           onSelected={(selectResult) => {
+            form.setFieldsValue({
+              url: selectResult.url
+            })
+            onChange({
+              url: selectResult.url
+            })
+            console.log(selectResult);
+          }}
+          onSelectedMaterial={(selectResult)=>{
             form.setFieldsValue({
               url: selectResult.url
             })

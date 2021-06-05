@@ -36,6 +36,14 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
               url: selectResult.url
             })
           }}
+          onSelectedMaterial={(selectResult)=>{
+            form.setFieldsValue({
+              url: selectResult.url
+            })
+            onChange({
+              url: selectResult.url
+            })
+          }}
         />
       </Form.Item>
       {actionRender}

@@ -39,7 +39,14 @@ const LinkActionForm: React.FC<LinkActionFormProps> = (props) => {
             <Radio.Button value={JumpMethod.Mini}>跳转小程序</Radio.Button>
           </Radio.Group>
         </Form.Item>
-        <Form.Item preserve={false} shouldUpdate={(prevValues, curValues) => prevValues?.jumpMethod !== curValues?.jumpMethod}>
+        <Form.Item preserve={false} shouldUpdate={(prevValues, curValues) => {
+          // if (prevValues?.jumpMethod !== curValues?.jumpMethod) {
+          //   form.setFieldsValue({
+          //     url: prevValues.url
+          //   })
+          // }
+          return prevValues?.jumpMethod !== curValues?.jumpMethod
+        }}>
           {({ getFieldValue }) => {
             const jumpMethod = getFieldValue(['jumpMethod']);
             return (
