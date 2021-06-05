@@ -28,6 +28,9 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
       <Form.Item name="url" label="图片素材">
         <platformCtx.ui.UploadTool
           ref={UploadRef}
+          onProgress={(list)=>{
+            console.log(list);
+          }}
           onSelected={(selectResult) => {
             form.setFieldsValue({
               url: selectResult.url

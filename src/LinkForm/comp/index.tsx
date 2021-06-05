@@ -39,22 +39,22 @@ const LinkActionForm: React.FC<LinkActionFormProps> = (props) => {
             <Radio.Button value={JumpMethod.Mini}>跳转小程序</Radio.Button>
           </Radio.Group>
         </Form.Item>
-        <Form.Item shouldUpdate>
+        <Form.Item preserve={false} shouldUpdate={(prevValues, curValues) => prevValues?.jumpMethod !== curValues?.jumpMethod}>
           {({ getFieldValue }) => {
             const jumpMethod = getFieldValue(['jumpMethod']);
             return (
               <>
                 {jumpMethod === JumpMethod.H5 && (
-                  <Form.Item name="url">
+                  <Form.Item preserve={false} name="url">
                     <TextArea placeholder="请输入H5路径" />
                   </Form.Item>
                 )}
                 {jumpMethod === JumpMethod.Mini && (
                   <>
-                    <Form.Item name="id">
+                    <Form.Item preserve={false} name="id">
                       <Input placeholder="请输入小程序id" />
                     </Form.Item>
-                    <Form.Item name="url">
+                    <Form.Item preserve={false} name="url">
                       <Input placeholder="请输入小程序路径" />
                     </Form.Item>
                   </>
