@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "elementRef": "DvVideoVertical",
+  "logo": "https://static.guorou.net/course-static/a773da622ecc438ca3470f14977afab0.png",
+  "label": "竖屏视频组件",
+  "eventAttr": [],
+  "propFormConfig": {
+    "useSystemForm": true,
+    "useCustomForm": true,
+    "customFormRef": "DvVideoVerticalForm"
+  }
+}

@@ -1,5 +1,5 @@
-import { Form, Input } from "antd";
-import React, { ReactNode, useEffect, useRef } from "react";
+import { Form } from "antd";
+import React, { useState, useEffect, useRef } from "react";
 
 interface DvDocViewerFormProps {
   initialValues: any;
@@ -8,38 +8,43 @@ interface DvDocViewerFormProps {
 }
 
 const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
-  const { onChange, initialValues } = props;
+  const { onChange, initialValues, platformCtx } = props;
   const [form] = Form.useForm();
-
+  const UploadRef = useRef();
+  const [loading, setLoading] = useState(false);
+  const [percent, setPercent] = useState(0);
   useEffect(() => {
-    if(form) {
-      form.setFieldsValue(initialValues);
-    }
-  }, [form]);
+    UploadRef.current?.setUrlVal(initialValues?.url);
+    form.setFieldsValue(initialValues);
+  }, [initialValues, form]);
 
   return (
-    <Form
-      form={form}
-      layout="vertical"
-      onValuesChange={(e) => {
-        if (onChange) {
-          const withNameList = e.list.map((v) => ({
-            src: v.src,
-            name: v.src.match(/.*\/(.*?)$/)[1],
-          }));
-          onChange({ ...e, list: withNameList });
-        }
-      }}
-    >
-      <div>基础配置</div>
-      <Form.Item name="title" label="文档名称">
-        <Input />
-      </Form.Item>
-      <Form.Item name={["list", 0, "src"]} label="文件素材1">
-        <Input />
-      </Form.Item>
-      <Form.Item name={["list", 1, "src"]} label="文件素材2">
-        <Input />
+    <Form form={form} layout="vertical" className="dv-image-form">
+      <div>{loading && `上传中..  ${percent}`}</div>
+
+      <Form.Item name="list" label="视频素材">
+        <platformCtx.ui.UploadTool
+          multiple
+          uploadContent="选择文档(可多选)"
+          ref={UploadRef}
+          onProgress={(e) => {
+            setLoading(true);
+            setPercent(
+              e
+                .map((v) => `${v.percent}`.substring(0, 3).concat("%"))
+                .join("，")
+            );
+          }}
+          onSelected={(values, ...args) => {
+            onChange({
+              list: values.map((v) => ({
+                src: v.url,
+                name: v.name,
+              })),
+            });
+            setLoading(false);
+          }}
+        />
       </Form.Item>
     </Form>
   );
