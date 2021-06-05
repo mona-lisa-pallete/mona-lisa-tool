@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "zip:src": "sh ./scripts/zip-comp.sh ./src",
     "start": "yarn && PORT=22111 node ./compiler/start.js"
   },
   "author": "",
