@@ -29,21 +29,14 @@ const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
 
   return (
     <Form
-      initialValues={initialValues}
       className="dv-form"
       form={form}
       layout="vertical"
-      onValuesChange={(_, values) => {
-        console.log("c", _, values);
-        onChange({
-          title: values.title,
-          list: [...values.list],
-        });
-      }}
+      onValuesChange={onChange}
     >
       <div className="dv-form-subtitle">基础配置</div>
       <Form.Item name="title" label="组件名称:">
-        <Input />
+        <Input defaultValue={initialValues.title} />
       </Form.Item>
       <Form.Item name="list" label="视频素材">
         <platformCtx.ui.UploadTool

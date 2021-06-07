@@ -1,8 +1,8 @@
 import { Form, Input } from "antd";
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
-import './index.less';
-import { PlusOutlined } from '@ant-design/icons';
+import "./index.less";
+import { PlusOutlined } from "@ant-design/icons";
 
 interface DvVideoFormProps {
   initialValues: any;
@@ -30,16 +30,24 @@ const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
       <div style={{ marginTop: 8 }}>上传图片</div>
     </div>
   );
-  
-  useEffect(() => {
-    UploadRef.current?.setUrlVal(initialValues?.url);
-    form.setFieldsValue(initialValues);
-  }, [initialValues, form]);
+
+  const list = [{
+    uid: 0,
+    name: "视频",
+    status: "done",
+    url: initialValues?.src,
+  }];
+
+  const posterList =  [{
+    uid: 0,
+    name: "封面",
+    status: "done",
+    url: initialValues?.poster,
+  }];
 
   return (
     <Form
-      initialValues={initialValues}
-      className='dv-form'
+      className="dv-form"
       onValuesChange={(_, values) => {
         onChange(values);
       }}
@@ -53,24 +61,27 @@ const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
       <div>{loading && `上传中..  ${percent}`}</div>
       <Form.Item name="src" label="视频:">
         <platformCtx.ui.UploadTool
-          uploadContent={uploadButton}
-          ref={UploadRef}
-          onSelected={(selectResult) => {
-            onChange({
-              src: selectResult.url,
-            });
-            setLoading(false);
+          onChangeFormatter={(e) => {
+            console.log("==onChangeFormatter==", e);
+            const { fileList } = e;
+
+            return fileList[fileList.length -1]?.url;
           }}
+          defaultFileList={list}
+          uploadContent={uploadButton}
         />
       </Form.Item>
       {type === "horizontal" && (
         <Form.Item name="poster" label="视频封面:">
           <platformCtx.ui.UploadTool
-            uploadContent={uploadButtonImage}
+            onChangeFormatter={(e) => {
+              const { fileList } = e;
+              return fileList[fileList.length -1]?.url;
+            }}
+            defaultFileList={posterList}
+            ref={UploadRef}
             onSelected={(selectResult) => {
-              onChange({
-                poster: selectResult.url,
-              });
+              UploadRef.current?.setUrlVal(selectResult.poster);
             }}
           />
         </Form.Item>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Video } from "@tarojs/components";
+import './index.less';
 
 // const mock = {
 //   src: "https://static.guorou.net/grow/grow_mp/video.mp4",
@@ -18,9 +19,9 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical'}) {
   const formatStyle =
     typeof style === "object"
       ? {
-          position: "relative",
-          height,
-          ...style,
+        height,
+        ...style,
+        position: "relative", // 覆盖默认传的 absolute 值
         }
       : style;
   return (
