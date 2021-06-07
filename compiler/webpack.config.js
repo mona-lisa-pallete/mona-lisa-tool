@@ -120,7 +120,11 @@ module.exports = () => {
                   require("postcss-pxtorem")({
                     rootValue: 40,
                     propList: ["*"],
-                    selectorBlackList: ["dv-action-item"]
+                    selectorBlackList: [
+                      "dv-action-item",
+                      /.dv-form/,
+                      /.ant-form/,
+                    ],
                   })
                 ]
               }

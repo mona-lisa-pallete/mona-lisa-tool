@@ -1,49 +1,61 @@
-import { Form } from "antd";
-import React, { useState, useEffect, useRef } from "react";
-
+import { Form, Input } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import React, { useRef } from "react";
+import "./index.less";
 interface DvDocViewerFormProps {
   initialValues: any;
   onChange: (allValues: any) => void;
   platformCtx: any;
+  value: { list: Array<{ url: string; name: string }> };
 }
 
 const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
   const { onChange, initialValues, platformCtx } = props;
   const [form] = Form.useForm();
   const UploadRef = useRef();
-  const [loading, setLoading] = useState(false);
-  const [percent, setPercent] = useState(0);
-  useEffect(() => {
-    UploadRef.current?.setUrlVal(initialValues?.url);
-    form.setFieldsValue(initialValues);
-  }, [initialValues, form]);
+
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>上传文件</div>
+    </div>
+  );
+  const list = initialValues?.list?.map((v, i) => ({
+    uid: i,
+    name: v.name,
+    status: "done",
+    url: v.src,
+  }));
 
   return (
-    <Form form={form} layout="vertical" className="dv-image-form">
-      <div>{loading && `上传中..  ${percent}`}</div>
-
+    <Form
+      initialValues={initialValues}
+      className="dv-form"
+      form={form}
+      layout="vertical"
+      onValuesChange={(_, values) => {
+        console.log("c", _, values);
+        onChange({
+          title: values.title,
+          list: [...values.list],
+        });
+      }}
+    >
+      <div className="dv-form-subtitle">基础配置</div>
+      <Form.Item name="title" label="组件名称:">
+        <Input />
+      </Form.Item>
       <Form.Item name="list" label="视频素材">
         <platformCtx.ui.UploadTool
+          onChangeFormatter={(e) => {
+            const { fileList } = e;
+            return fileList.map((v) => ({ src: v.url, name: v.name }));
+          }}
+          defaultFileList={list}
+          showUploadList={true}
           multiple
-          uploadContent="选择文档(可多选)"
+          uploadContent={uploadButton}
           ref={UploadRef}
-          onProgress={(e) => {
-            setLoading(true);
-            setPercent(
-              e
-                .map((v) => `${v.percent}`.substring(0, 3).concat("%"))
-                .join("，")
-            );
-          }}
-          onSelected={(values, ...args) => {
-            onChange({
-              list: values.map((v) => ({
-                src: v.url,
-                name: v.name,
-              })),
-            });
-            setLoading(false);
-          }}
         />
       </Form.Item>
     </Form>

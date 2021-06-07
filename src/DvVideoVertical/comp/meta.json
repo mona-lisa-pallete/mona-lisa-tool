@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "elementRef": "DvVideoVertical",
-  "logo": "https://static.guorou.net/course-static/a773da622ecc438ca3470f14977afab0.png",
-  "label": "竖屏视频组件",
+  "logo": "https://static.guorout.net/davinci/assets/images/provider/video_portrait.png",
+  "label": "竖屏全屏视频",
   "eventAttr": [],
   "propFormConfig": {
     "useSystemForm": true,

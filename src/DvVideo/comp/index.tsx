@@ -11,13 +11,15 @@ import { Video } from "@tarojs/components";
 /**
  * @see https://developers.weixin.qq.com/miniprogram/dev/component/video.html
  */
-function DvVideo(props) {
-  const { style } = props;
+function DvVideo(props: {style: any, type: 'horizontal'|'vertical'}) {
+  const { style, type = 'horizontal' } = props;
 
+  const height = type === 'horizontal' ? undefined: '100vh';
   const formatStyle =
     typeof style === "object"
       ? {
           position: "relative",
+          height,
           ...style,
         }
       : style;

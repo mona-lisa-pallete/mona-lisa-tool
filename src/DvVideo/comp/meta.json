@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "elementRef": "DvVideo",
-  "logo": "https://static.guorou.net/course-static/a773da622ecc438ca3470f14977afab0.png",
-  "label": "视频预览组件",
+  "logo": "https://static.guorout.net/davinci/assets/images/provider/video_landscape.png",
+  "label": "横屏视频",
   "eventAttr": [],
   "propFormConfig": {
     "useSystemForm": true,

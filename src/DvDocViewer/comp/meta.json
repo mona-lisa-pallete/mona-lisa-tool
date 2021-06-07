@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "elementRef": "DvDocViewer",
-  "logo": "https://static.guorou.net/course-static/a773da622ecc438ca3470f14977afab0.png",
-  "label": "文档预览组件",
+  "logo": "https://static.guorou.net/davinci/assets/images/provider/doc.png",
+  "label": "文档组件",
   "eventAttr": [],
   "propFormConfig": {
     "useSystemForm": true,
