@@ -34,10 +34,10 @@ function App() {
   const [selectedDevData, selectDevData] = useState<any>(null);
   return (
     <div className="App w-full">
-      <header className="p-4">
+      <header className="p-4 bg-white shadow-sm">
         <div className="text-xl">Da-Vinci 业务组件开发工具</div>
       </header>
-      <div className="flex main-container">
+      <div className="flex main-container p-4">
         <div className="left-nav">
           {devData && (
             <div className="dev-items">

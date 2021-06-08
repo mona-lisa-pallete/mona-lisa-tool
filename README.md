@@ -101,7 +101,7 @@ yarn start:dev-tool
 
 ### 4.2. 通过 Da Vinci API 发布
 
-第一次发布：
+首次发布：
 
 ```shell
 url: http://portalhome.uae.shensz.local/davinciapi/api/1/platform/component
@@ -127,4 +127,10 @@ form: {
 
 ## 5. 未来 TODO
 
-1. 开发工具云化：将组件的开发环境集成在达芬奇上（平台化二期）
+1. 工具集成组件管理功能（平台化二期），实现自动 zip、上传、版本管理
+   1. 组件版本管理
+   2. 组件发布
+   3. 组件更新
+   4. 新建组件工程
+   5. 集成 monaco 编辑器，在线开发组件
+2. 开发工具云化：将组件的开发环境集成在达芬奇上（平台化三期）
