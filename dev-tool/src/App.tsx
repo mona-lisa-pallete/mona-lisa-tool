@@ -34,11 +34,11 @@ function App() {
   const [selectedDevData, selectDevData] = useState<any>(null);
   return (
     <div className="App w-full">
-      <header className="p-4 bg-white shadow-sm">
-        <div className="text-xl">Da-Vinci 业务组件开发工具</div>
+      <header className="p-4 bg-white shadow-md relative z-10">
+        <div className="text-xl text-left">Da-Vinci 业务组件开发工具</div>
       </header>
-      <div className="flex main-container p-4">
-        <div className="left-nav">
+      <div className="flex main-container">
+        <div className="left-nav bg-white shadow-sm">
           {devData && (
             <div className="dev-items">
               {devData.map((devMetaData, idx) => {

@@ -5568,7 +5568,7 @@ long@^4.0.0:
   resolved "https://registry.npm.taobao.org/long/download/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
   integrity sha1-mntxz7fTYaGU6lVSQckvdGjVvyg=
 
-loose-envify@^1.0.0, loose-envify@^1.1.0:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npm.taobao.org/loose-envify/download/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha1-ce5R+nvkyuwaY4OffmgtgTLTDK8=
@@ -5879,6 +5879,18 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npm.taobao.org/mkdirp/download/mkdirp-1.0.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmkdirp%2Fdownload%2Fmkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha1-PrXtYmInVteaXw4qIh3+utdcL34=
+
+monaco-editor-webpack-plugin@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.nlark.com/monaco-editor-webpack-plugin/download/monaco-editor-webpack-plugin-3.1.0.tgz#972efc47a91b3bf3bd977885684a3180eb8f341b"
+  integrity sha1-ly78R6kbO/O9l3iFaEoxgOuPNBs=
+  dependencies:
+    loader-utils "^2.0.0"
+
+monaco-editor@*:
+  version "0.24.0"
+  resolved "https://registry.nlark.com/monaco-editor/download/monaco-editor-0.24.0.tgz#990b55096bcc95d08d8d28e55264c6eb17707269"
+  integrity sha1-mQtVCWvMldCNjSjlUmTG6xdwcmk=
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -7279,6 +7291,15 @@ prompts@2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
+prop-types@^15.7.2:
+  version "15.7.2"
+  resolved "https://registry.npm.taobao.org/prop-types/download/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
+  integrity sha1-UsQedbjIfnK52TYOAga5ncv/psU=
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.8.1"
+
 property-expr@^2.0.4:
   version "2.0.4"
   resolved "https://registry.npm.taobao.org/property-expr/download/property-expr-2.0.4.tgz#37b925478e58965031bb612ec5b3260f8241e910"
@@ -7484,6 +7505,19 @@ react-error-overlay@^6.0.9:
   version "6.0.9"
   resolved "https://registry.npm.taobao.org/react-error-overlay/download/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha1-PHQwEMk1lgjDdezWvHbzXZOZWwo=
+
+react-is@^16.8.1:
+  version "16.13.1"
+  resolved "https://registry.nlark.com/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+  integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
+
+react-monaco-editor@^0.43.0:
+  version "0.43.0"
+  resolved "https://registry.npm.taobao.org/react-monaco-editor/download/react-monaco-editor-0.43.0.tgz#495578470db7b27ab306af813b31f206a6bf9d1c"
+  integrity sha1-SVV4Rw23snqzBq+BOzHyBqa/nRw=
+  dependencies:
+    monaco-editor "*"
+    prop-types "^15.7.2"
 
 react-refresh@^0.8.3:
   version "0.8.3"

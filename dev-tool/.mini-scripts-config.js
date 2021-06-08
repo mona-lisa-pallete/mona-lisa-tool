@@ -1,3 +1,5 @@
+const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
+
 module.exports = {
   paths: {
     srcDir: "src",
@@ -22,6 +24,13 @@ module.exports = {
       "@tarojs/taro": "taroVendor.taro",
       "@tarojs/runtime": "taroVendor.runtime",
     },
+
+    plugins: [
+      new MonacoWebpackPlugin({
+        // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+        languages: ["json", "javascript", "typescript"],
+      }),
+    ],
   },
   preRun: () => {}
 };
