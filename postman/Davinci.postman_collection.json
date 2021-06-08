@@ -1,0 +1,234 @@
+{
+	"info": {
+		"_postman_id": "806f6c5f-62d6-40f1-9009-bf394480505e",
+		"name": "Davinci",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "上传组件 local",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "data",
+							"type": "file",
+							"src": "/Users/sanget/Engineering/grow/davinci/davinci-biz-widget-tool/src_zip/DvText.zip"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5400/davinciapi/api/1/platform/component",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5400",
+					"path": [
+						"davinciapi",
+						"api",
+						"1",
+						"platform",
+						"component"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新组件 local",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "data",
+							"type": "file",
+							"src": "/Users/sanget/Engineering/grow/davinci/davinci-biz-widget-tool/src_zip/DvText.zip"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5400/davinciapi/api/1/platform/component/46",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5400",
+					"path": [
+						"davinciapi",
+						"api",
+						"1",
+						"platform",
+						"component",
+						"46"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新组件 remote",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "data",
+							"type": "file",
+							"src": "/Users/sanget/Engineering/grow/davinci/davinci-biz-widget-tool/src_zip/DvText.zip"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5400/davinciapi/api/1/platform/component/46",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5400",
+					"path": [
+						"davinciapi",
+						"api",
+						"1",
+						"platform",
+						"component",
+						"46"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "上传组件 remote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "data",
+							"type": "file",
+							"src": "/Users/sanget/Engineering/grow/davinci/davinci-biz-widget-tool/src_zip/DvText.zip"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5400/davinciapi/api/1/platform/component",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5400",
+					"path": [
+						"davinciapi",
+						"api",
+						"1",
+						"platform",
+						"component"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "保存页面",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
+			"name": "DSL 编译",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=UTF-8"
+					},
+					{
+						"key": "Origin",
+						"value": "http://portalhome.uae.shensz.local"
+					},
+					{
+						"key": "Referer",
+						"value": "http://portalhome.uae.shensz.local/davinciprovider/editor"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "zh-CN,zh;q=0.9,en;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "_ga=GA1.2.1399751387.1616745319; grow_portal_api_host=http://growportalapi.uae.shensz.local/grow_portalapi; _gcl_au=1.1.1760623463.1618932319; _fbp=fb.1.1618932321027.1726320131; _mkto_trk=id:173-DTI-322&token:_mch-shensz.local-1618932321544-30397; _biz_uid=f8a7a50f64894dc1b63b62158e49b7da; _biz_nA=2; _hjid=d83a4510-03f3-4ead-bda3-dcc8b707d870; _biz_pendingA=%5B%5D; _biz_flagsA=%7B%22Version%22%3A1%2C%22Mkto%22%3A%221%22%2C%22ViewThrough%22%3A%221%22%2C%22XDomain%22%3A%221%22%7D; username=%E5%BC%A0%E5%BB%BA%E4%B8%9A; username.sig=p9cYVCOofFE00FDu2K5DOLQvY9p6SZHvbH9zsUon3Zo; portal_uid=33; portal_uid.sig=eQHx3QqwymoXuoG_e45ectCS8_8FrIDWNaAKAPR0tlg; portal_access_token=zjy; portal_access_token.sig=wuDNxbW5HBcinqFXGxPdFSxpyyMclvIXFj1M9wAoeUU; course_portal_api_v4.connect.sid=E0MGk8enDmtlKlyFzbj2UsMqN7aCeF28j534dwojDJ6M2qYrOabht3sAmq0pBCCS"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dsl\": {\n        \"content\": [\n            {\n                \"contentType\": \"container\",\n                \"elementRef\": \"DavinciPage\",\n                \"contentProp\": {\n                    \"style\": {\n                        \"position\": \"relative\"\n                    },\n                    \"event\": {\n                        \"onClick\": [\n                            \"bb\",\n                            \"cc\"\n                        ]\n                    }\n                },\n                \"contentChild\": [\n                    {\n                        \"contentType\": \"element\",\n                        \"contentProp\": {\n                            \"style\": {\n                                \"position\": \"absolute\",\n                                \"left\": \"20px\",\n                                \"top\": \"30px\"\n                            },\n                            \"event\": {\n                                \"onLoad\": [\n                                    \"cc\"\n                                ],\n                                \"onClick\": [\n                                    \"bca84122a2a498e30300bce50b2ca490\"\n                                ]\n                            },\n                            \"src\": \"https://static.guorou.net/upload_collection/202125/3d6dbc359b7181614943756062.png\"\n                        },\n                        \"elementId\": \"1\",\n                        \"elementRef\": \"DavinciImage\"\n                    }\n                ]\n            }\n        ],\n        \"action\": {\n            \"cc\": {\n                \"actionLabel\": \"打开新页面\",\n                \"actionType\": \"openPage\",\n                \"actionProp\": {\n                    \"url\": \"path/a\",\n                    \"type\": \"h5\"\n                }\n            },\n            \"bb\": {\n                \"actionLabel\": \"登录页面test\",\n                \"actionType\": \"login\",\n                \"actionProp\": {\n                    \"phone\": \"${store.user.phone}\",\n                    \"password\": \"${store.user.password}\"\n                }\n            },\n            \"bca84122a2a498e30300bce50b2ca490\": {\n                \"actionLabel\": \"登录\",\n                \"actionType\": \"login\",\n                \"actionProp\": {\n                    \"phone\": \"${store.user.phone}\",\n                    \"password\": \"${store.user.password}\"\n                }\n            }\n        }\n    },\n    \"page\": \"22d6651741e049bca3db95216e0749b9\",\n    \"name\": \"cc\"\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:5400/davinciapi/api/1/provider/dsl",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5400",
+					"path": [
+						"davinciapi",
+						"api",
+						"1",
+						"provider",
+						"dsl"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
