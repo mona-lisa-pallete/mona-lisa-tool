@@ -2,7 +2,11 @@ const path = require("path");
 const glob = require("glob");
 const fse = require("fs-extra");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { bundlesPath } = require("./config");
+const {
+  bundlesPath
+} = require("./config");
+
+fse.mkdirp(bundlesPath);
 
 /**
  * 路径
@@ -22,12 +26,25 @@ const makeHtmlEntry = filePath => {
   });
 };
 
+/**
+ * 存储用于开发者工具的元数据
+ */
+class DevToolMetaHelper {
+  metaList = [];
+  push(metadata) {
+    this.metaList.push(metadata)
+  }
+  save(savePath) {
+    fse.writeFileSync(path.join(savePath, `__dev_tool__.json`), JSON.stringify(this.metaList))
+  }
+}
+
 module.exports = () => {
   const htmlEntriesPlugins = [];
+  const devToolMetaHelper = new DevToolMetaHelper()
   const entries = glob.sync("./src/**/index.tsx").reduce((acc, _path) => {
     const pathArr = _path.split("/");
 
-    console.log(pathArr);
     // 准备目录路径
     const dirPath = path.dirname(_path);
     const metaPath = path.resolve(dirPath, "meta.json");
@@ -39,6 +56,10 @@ module.exports = () => {
 
       // 这里取业务组件的 meta 的 elementRef 或者业务组件的表单的 formRef 作为编译的入口
       const entryKey = metadata.elementRef || metadata.formRef;
+
+      if (metadata.elementRef) {
+        devToolMetaHelper.push(entryKey)
+      }
 
       // 将 meta 复制到 bundle 中
       fse.copy(metaPath, path.join(bundlesPath, `${entryKey}.json`), {
@@ -54,6 +75,8 @@ module.exports = () => {
 
     return acc;
   }, {});
+
+  devToolMetaHelper.save(bundlesPath)
 
   return {
     entry: entries,
@@ -88,8 +111,7 @@ module.exports = () => {
       "@tarojs/runtime": "taroVendor.runtime"
     },
     module: {
-      rules: [
-        {
+      rules: [{
           test: /\.tsx?$/,
           include: [paths.sourcePath],
           use: {
@@ -106,8 +128,7 @@ module.exports = () => {
         },
         {
           test: /\.less$/,
-          use: [
-            {
+          use: [{
               loader: "style-loader" // 把css添加到dom
             },
             {
