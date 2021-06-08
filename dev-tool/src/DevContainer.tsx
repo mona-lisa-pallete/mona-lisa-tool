@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Input, Tabs } from "antd";
 import React, { useState, useEffect } from "react";
 import { LowCodeEditor } from "./components/LowCodeEditor";
 import { LoadScript } from "./load-stuff";
@@ -68,14 +68,21 @@ const PlatformContext = {
   },
 };
 
-const useForm = (initVal = {}): [any, any] => {
+const formStorage = {};
+const useForm = (meta): [any, any] => {
+  const initVal = formStorage[meta] || {};
   const [formState, setFormState] = useState(initVal);
   const setForm = (nextForm = {}) => {
-    setFormState({
+    const nextVal = {
       ...formState,
       ...nextForm,
-    });
+    };
+    formStorage[meta] = nextVal;
+    setFormState(nextVal);
   };
+  useEffect(() => {
+    setFormState(formStorage[meta] || {});
+  }, [meta]);
   return [formState, setForm];
 };
 
@@ -86,7 +93,7 @@ export const DevContainer = ({ selectedDevData }: any) => {
   // @ts-ignore
   const WidgetForm = LoadWidget(devMetaData?.propFormConfig?.customFormRef);
 
-  const [formState, setFormState] = useForm({});
+  const [formState, setFormState] = useForm(selectedDevData);
 
   const editorRef = React.createRef<LowCodeEditor>();
 
@@ -127,19 +134,40 @@ export const DevContainer = ({ selectedDevData }: any) => {
           )}
         </div>
       </div>
-      <div className="code-editor">
-        <h4>DSL 代码片段</h4>
-        <LowCodeEditor
-          ref={editorRef}
-          width={"800px"}
-          language="json"
-          onSubmit={(nextValue) => {
-            // console.log(nextValue);
-            if (nextValue.json) {
-              setFormState(nextValue.json);
-            }
-          }}
-        />
+      <div
+        className="code-editor shadow-2xl bg-white z-50"
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 380,
+          overflow: "auto",
+        }}
+      >
+        <Tabs type="card">
+          <Tabs.TabPane
+            tab="DSL 代码片段"
+            className="px-2"
+            style={{
+              height: 300,
+              overflow: "auto",
+            }}
+          >
+            <LowCodeEditor
+              ref={editorRef}
+              width={"800px"}
+              height="270px"
+              language="json"
+              onSubmit={(nextValue) => {
+                // console.log(nextValue);
+                if (nextValue.json) {
+                  setFormState(nextValue.json);
+                }
+              }}
+            />
+          </Tabs.TabPane>
+        </Tabs>
       </div>
     </div>
   );

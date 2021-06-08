@@ -12,6 +12,7 @@ export interface LowCodeEditorProps {
   defaultValue?: {
     code: string;
   };
+  title?: string;
   language?: string;
   width?: string | number;
   height?: string | number;
@@ -100,16 +101,20 @@ export class LowCodeEditor extends React.Component<
         insertSpaces: false,
         tabSize: 2,
       },
+      title,
       notSave,
     } = this.props;
     return (
       <Suspense fallback={<div>editor loading</div>}>
         <div className="low-code-editor" id="LowCodeEditorContainer">
-          {!notSave && <Button onClick={this.onSubmit}>保存</Button>}
           {ready && (
             <div className="flex">
-              <div className="method-selector"></div>
-              <div className="">
+              <div className="helper">
+                {title && <h4>{title}</h4>}
+                {!notSave && <Button onClick={this.onSubmit}>保存</Button>}
+              </div>
+              <span className="flex-1"></span>
+              <div className="flex-1">
                 <MonacoEditor
                   width={width}
                   height={height}
