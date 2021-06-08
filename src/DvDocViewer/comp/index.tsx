@@ -105,7 +105,6 @@ function DvDocViewer(props: docProps) {
     );
   }, []);
   const { isPreview, preSrc, preDocName } = previewData;
-  console.log('DvDocViewer======props', props)
   return (
     <View className="dv_doc_viewer" {...p}>
       {Array.isArray(list)  && list.map(({ src = "", name }) => (

@@ -1,8 +1,8 @@
 import { Form, Input } from "antd";
-import React, { useEffect, useRef } from "react";
-import { useState } from "react";
+import React, { useRef } from "react";
 import "./index.less";
 import { PlusOutlined } from "@ant-design/icons";
+import UploadContent from "../../_components/UploadContent/index";
 
 interface DvVideoFormProps {
   initialValues: any;
@@ -13,10 +13,9 @@ interface DvVideoFormProps {
 
 const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
   const { onChange, initialValues, platformCtx, type = "horizontal" } = props;
+  console.log("==DvVideoForm=====", props);
   const [form] = Form.useForm();
   const UploadRef = useRef();
-  const [loading, setLoading] = useState(false);
-  const [percent, setPercent] = useState(0);
 
   const uploadButton = (
     <div>
@@ -31,19 +30,23 @@ const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
     </div>
   );
 
-  const list = [{
-    uid: 0,
-    name: "视频",
-    status: "done",
-    url: initialValues?.src,
-  }];
+  const list = initialValues?.src && [
+    {
+      uid: 0,
+      name: "视频",
+      status: "done",
+      url: initialValues?.src,
+    },
+  ];
 
-  const posterList =  [{
-    uid: 0,
-    name: "封面",
-    status: "done",
-    url: initialValues?.poster,
-  }];
+  const posterList = initialValues?.poster && [
+    {
+      uid: 0,
+      name: "封面",
+      status: "done",
+      url: initialValues?.poster,
+    },
+  ];
 
   return (
     <Form
@@ -56,16 +59,16 @@ const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
     >
       <div className="dv-form-subtitle">基础配置</div>
       <Form.Item name="title" label="组件名称:">
-        <Input />
+        <Input defaultValue={initialValues?.title} />
       </Form.Item>
-      <div>{loading && `上传中..  ${percent}`}</div>
       <Form.Item name="src" label="视频:">
         <platformCtx.ui.UploadTool
+          showUploadList
           onChangeFormatter={(e) => {
             console.log("==onChangeFormatter==", e);
             const { fileList } = e;
 
-            return fileList[fileList.length -1]?.url;
+            return fileList[fileList.length - 1]?.url;
           }}
           defaultFileList={list}
           uploadContent={uploadButton}
@@ -74,10 +77,12 @@ const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
       {type === "horizontal" && (
         <Form.Item name="poster" label="视频封面:">
           <platformCtx.ui.UploadTool
+            showUploadList
             onChangeFormatter={(e) => {
               const { fileList } = e;
-              return fileList[fileList.length -1]?.url;
+              return fileList[fileList.length - 1]?.url;
             }}
+            UploadContent={uploadButtonImage}
             defaultFileList={posterList}
             ref={UploadRef}
             onSelected={(selectResult) => {
