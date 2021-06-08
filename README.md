@@ -93,13 +93,17 @@ yarn start:dev-tool
 
 如果有新的库的需求，请联系 [`建业` | `炳瑞` | `相杰`] 协助。
 
-## 4. 发布
+## 4. 时序图
 
-### 4.1. zip 组件源代码
+![](./docs/asserts/组件开发工具.jpg)
+
+## 5. 发布
+
+### 5.1. zip 组件源代码
 
 通过脚本 `npm run zip:src` 将 `./src` 目录下的所有组件分别 zip，输出目录为 `./src_zip`。
 
-### 4.2. 通过 Da Vinci API 发布
+### 5.2. 通过 Da Vinci API 发布
 
 首次发布：
 
@@ -125,7 +129,7 @@ form: {
 
 详情查看 [yapi](http://mock.guorou.local/project/206/interface/api/19017)
 
-## 5. 未来 TODO
+## 6. 未来 TODO
 
 1. 工具集成组件管理功能（平台化二期），实现自动 zip、上传、版本管理
    1. 组件版本管理
