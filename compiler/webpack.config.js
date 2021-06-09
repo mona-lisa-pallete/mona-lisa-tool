@@ -139,7 +139,7 @@ module.exports = () => {
               options: {
                 plugins: [
                   require("postcss-pxtorem")({
-                    rootValue: 40,
+                    rootValue: 46.875,
                     propList: ["*"],
                     selectorBlackList: [
                       "dv-action-item",
