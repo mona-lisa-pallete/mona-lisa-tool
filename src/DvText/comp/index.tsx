@@ -12,8 +12,6 @@ const DvText: React.FC<DvTextProps> = (props) => {
     </View>)
   }
 
-  console.log(props, 'props');
-  
   return <View style={{
     fontSize: fontSize + 'px',
     color: color,

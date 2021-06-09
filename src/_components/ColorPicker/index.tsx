@@ -17,8 +17,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({value, onChange}) => {
           <Popover 
             content={<SketchPicker color={color}
             onChange={(colorCode)=>{
-                console.log(colorCode.rgb);
-                
                 onChange && onChange(`rgba(${colorCode.rgb.r}, ${colorCode.rgb.g}, ${colorCode.rgb.b}, ${colorCode.rgb.a})`)
               setColor(colorCode.rgb);
             }}></SketchPicker>}>

@@ -54,7 +54,7 @@ const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
       form={form}
       layout="vertical"
     >
-      <div className="dv-form-subtitle">基础配置</div>
+      <div className="dv-form dv-form-subtitle">基础配置</div>
       <Form.Item name="title" label="组件名称:">
         <Input />
       </Form.Item>

@@ -46,7 +46,7 @@ const DvTextForm: React.FC<DvImageFormProps> = (props) => {
   return (
     <div>
       <Form form={form} layout="vertical" className="dv-image-form" onValuesChange={onChange}>
-        <div className="dv-image-form__sub-title">基础配置</div>
+        <div className="dv-form dv-image-form__sub-title">基础配置</div>
         <Form.Item name="title" label="组件名称">
           <Input />
         </Form.Item>

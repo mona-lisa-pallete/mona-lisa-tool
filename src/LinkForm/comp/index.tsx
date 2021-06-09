@@ -31,7 +31,7 @@ const LinkActionForm: React.FC<LinkActionFormProps> = (props) => {
   };
 
   return (
-    <div className="link-action-form">
+    <div className="dv-form link-action-form">
       <Form form={form} onValuesChange={handleValues}>
         <Form.Item name="jumpMethod">
           <Radio.Group>

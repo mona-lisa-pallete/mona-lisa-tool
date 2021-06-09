@@ -13,7 +13,10 @@ const DvImage: React.FC<DvImageProps> = (props) => {
       <View>请上传图片</View>
     </View>)
   }
-  return <Image className="dv-image" onClick={onClick} ref={ref} src={url} mode="widthFix" />;
+
+  return <Image style={{
+    width: style?.width + 'px'
+  }} className="dv-image" onClick={onClick} ref={ref} src={url} mode="widthFix" />;
 };
 
 export default DvImage;

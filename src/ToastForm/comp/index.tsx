@@ -30,7 +30,7 @@ const ToastActionForm: React.FC<ToastActionFormProps> = (props) => {
   };
 
   return (
-    <div className="link-action-form">
+    <div className="dv-form link-action-form">
       <Form form={form}  onValuesChange={handleValues}>
         <Form.Item name="msg">
           <Input maxLength={20}></Input>
