@@ -44,7 +44,7 @@ const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
         <platformCtx.ui.UploadTool
           onChangeFormatter={(e) => {
             const { fileList } = e;
-            return fileList.map((v) => ({ src: v.url, name: v.name }));
+            return fileList.map((v) => ({ size: v.size, src: v.url, name: v.name }));
           }}
           defaultFileList={list}
           showUploadList={true}

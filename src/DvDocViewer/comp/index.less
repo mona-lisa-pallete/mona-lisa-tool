@@ -1,5 +1,10 @@
 .dv_doc_viewer {
   min-height: 180px;
+  .one-line {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
   .doc_item {
     margin: 14px 34px;
     height: 152px;
@@ -45,10 +50,12 @@
     top: 0;
     background: white;
     .doc_preview_header {
+      text-align: center;
       height: 88px;
       display: flex;
       flex-direction: row;
       .doc_preview_title {
+        width: 600px;
         font-size: 36px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
