@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import AppInfoComp from "./components/Version";
 import { DevContainer } from "./DevContainer";
 import { getJSON } from "./utils";
 
@@ -34,8 +35,10 @@ function App() {
   const [selectedDevData, selectDevData] = useState<any>(null);
   return (
     <div className="App w-full">
-      <header className="p-4 bg-white shadow-md relative z-10">
+      <header className="p-4 bg-white shadow-md relative z-10 flex items-center">
         <div className="text-xl text-left">Da-Vinci 业务组件开发工具</div>
+        <span className="flex-1"></span>
+        <AppInfoComp />
       </header>
       <div
         className="flex main-container"

@@ -156,7 +156,7 @@ export const DevContainer = ({ selectedDevData }: any) => {
           >
             <LowCodeEditor
               ref={editorRef}
-              width={"800px"}
+              width={"calc(100vw - 200px)"}
               height="270px"
               language="json"
               onSubmit={(nextValue) => {

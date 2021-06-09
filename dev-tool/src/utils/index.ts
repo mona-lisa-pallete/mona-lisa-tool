@@ -35,12 +35,15 @@ export class DebounceClass {
   }
 }
 
-export const getJSON = (data: string) => {
+export const getJSON = (
+  jsonName: string,
+  baseUrl = "http://localhost:22111"
+) => {
   return new Promise((resolve, reject) => {
-    fetch(`http://localhost:22111/${data}.json`)
+    fetch(`${baseUrl}/${jsonName}.json`)
       .then((res) => res.json())
-      .then((data) => {
-        resolve(data);
+      .then((jsonName) => {
+        resolve(jsonName);
       })
       .catch((err) => reject(err));
   });
