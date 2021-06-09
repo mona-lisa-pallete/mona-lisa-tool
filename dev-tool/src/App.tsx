@@ -43,7 +43,7 @@ function App() {
       <div
         className="flex main-container"
         style={{
-          height: "calc(100vh - 60px)",
+          height: "calc(100vh - 70px)",
           // paddingBottom: "360",
         }}
       >

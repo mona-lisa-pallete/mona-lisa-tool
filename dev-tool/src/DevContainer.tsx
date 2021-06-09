@@ -1,5 +1,7 @@
 import { Input, Tabs } from "antd";
 import React, { useState, useEffect } from "react";
+import { CodeEditor } from "./components/CodeEditor";
+import { JSONDisplayer } from "./components/JsonDisplayer";
 import { LowCodeEditor } from "./components/LowCodeEditor";
 import { LoadScript } from "./load-stuff";
 import { getJSON } from "./utils";
@@ -135,7 +137,7 @@ export const DevContainer = ({ selectedDevData }: any) => {
         </div>
       </div>
       <div
-        className="code-editor shadow-2xl bg-white z-50"
+        className="code-editor bg-white z-50"
         style={{
           position: "absolute",
           bottom: 0,
@@ -143,11 +145,24 @@ export const DevContainer = ({ selectedDevData }: any) => {
           right: 0,
           height: 380,
           overflow: "auto",
+          boxShadow: `0 0 50px 0 rgb(0 0 0 / 8%)`,
         }}
       >
         <Tabs type="card">
           <Tabs.TabPane
-            tab="DSL 代码片段"
+            tab="组件元数据"
+            key="metadata"
+            className="px-2"
+            style={{
+              height: 300,
+              overflow: "auto",
+            }}
+          >
+            <JSONDisplayer jsonData={devMetaData} />
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab="表单数据"
+            key="form-state"
             className="px-2"
             style={{
               height: 300,
@@ -166,6 +181,17 @@ export const DevContainer = ({ selectedDevData }: any) => {
                 }
               }}
             />
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab="组件工程代码编"
+            key="widget-code"
+            className="px-2"
+            style={{
+              height: 300,
+              overflow: "auto",
+            }}
+          >
+            <CodeEditor text="1. TODO：组件工程代码编器 2. 组件工程管理" />
           </Tabs.TabPane>
         </Tabs>
       </div>
