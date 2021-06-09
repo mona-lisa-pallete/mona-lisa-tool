@@ -25,3 +25,5 @@ proxy.local.js
 .bundles
 
 src_zip
+
+__app_info__.json

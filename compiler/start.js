@@ -10,11 +10,15 @@ const WebpackDevServer = require("webpack-dev-server");
 // const handler = require("serve-handler");
 // const http = require("http");
 
-const { devServerPort } = require("./config");
+const {
+  devServerPort
+} = require("./config");
 const webpackConfig = require("./webpack.config");
 const createDevServerConfig = require("./webpackDevServer.config");
 
-const { PORT = devServerPort, HOST = "0.0.0.0" } = process.env;
+const {
+  PORT = devServerPort, HOST = "0.0.0.0"
+} = process.env;
 const srcFolder = path.join(__dirname, "../src");
 const watchSourceDir = srcFolder;
 
@@ -31,8 +35,7 @@ const startDevServer = () => {
 
   compiler.watch({}, (err, stats) => {
     console.log(err);
-    if (stats.hasErrors()) {
-    }
+    if (stats.hasErrors()) {}
     // Stats Object
     // ...
   });
@@ -50,67 +53,6 @@ const startDevServer = () => {
   return () => {
     server.close();
   };
-
-  // const server = http.createServer((request, response) => {
-  //   // You pass two more arguments for config and middleware
-  //   // More details here: https://github.com/vercel/serve-handler#options
-  //   return handler(request, response, {
-  //     public: ".bundles",
-  //     headers: [
-  //       {
-  //         source: "*",
-  //         headers: [
-  //           {
-  //             key: "Access-Control-Allow-Origin",
-  //             value: "*",
-  //           },
-  //           {
-  //             key: "Access-Control-Allow-Methods",
-  //             value: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-  //           },
-  //           {
-  //             key: "Access-Control-Allow-Headers",
-  //             value: "X-Requested-With, content-type, Authorization",
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   });
-  // });
-
-  // server.listen(PORT, () => {
-  //   console.log(`Running at http://localhost:${PORT}`);
-  // });
-
-  // return () => {
-  //   server.close();
-  // };
-
-  // const serverConfig = createDevServerConfig();
-
-  // const devServer = new WebpackDevServer(
-  //   compiler,
-  //   Object.assign({}, serverConfig)
-  // );
-
-  // devServer.listen(PORT, HOST, (err) => {
-  //   if (err) {
-  //     return console.log(`devServer error`, err);
-  //   }
-
-  //   return console.log(chalk.cyan("Starting the preview server...\n"));
-  // });
-
-  // ["SIGINT", "SIGTERM"].forEach((sig) => {
-  //   process.on(sig, () => {
-  //     devServer.close();
-  //     process.exit();
-  //   });
-  // });
-
-  // return () => {
-  //   devServer.close();
-  // };
 };
 
 let close = startDevServer();

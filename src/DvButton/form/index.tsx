@@ -27,19 +27,19 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
         <platformCtx.ui.UploadTool
           onSelected={(selectResult) => {
             form.setFieldsValue({
-              url: selectResult.url
-            })
+              url: selectResult.url,
+            });
             onChange({
-              url: selectResult.url
-            })
+              url: selectResult.url,
+            });
           }}
-          onSelectedMaterial={(selectResult)=>{
+          onSelectedMaterial={(selectResult) => {
             form.setFieldsValue({
-              url: selectResult.url
-            })
+              url: selectResult.url,
+            });
             onChange({
-              url: selectResult.url
-            })
+              url: selectResult.url,
+            });
           }}
         />
       </Form.Item>

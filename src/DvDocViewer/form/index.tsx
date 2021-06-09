@@ -32,7 +32,9 @@ const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
       className="dv-form"
       form={form}
       layout="vertical"
-      onValuesChange={onChange}
+      onValuesChange={(_, values) => {
+        onChange(values);
+      }}
     >
       <div className="dv-form-subtitle">基础配置</div>
       <Form.Item name="title" label="组件名称:">
