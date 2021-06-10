@@ -62,6 +62,8 @@ const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
       </Form.Item>
       <Form.Item name="src" label="视频:">
         <platformCtx.ui.UploadTool
+          materialType="video"
+          accept="video/*"
           showUploadList
           onChangeFormatter={(e) => {
             console.log("==onChangeFormatter==", e);
@@ -76,6 +78,8 @@ const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
       {type === "horizontal" && (
         <Form.Item name="poster" label="视频封面:">
           <platformCtx.ui.UploadTool
+            materialType="image"
+            accept="image/*"
             showUploadList
             onChangeFormatter={(e) => {
               const { fileList } = e;
