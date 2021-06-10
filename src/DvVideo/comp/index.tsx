@@ -1,6 +1,6 @@
 import React from "react";
 import { Video } from "@tarojs/components";
-import './index.less';
+import "./index.less";
 
 // const mock = {
 //   src: "https://static.guorou.net/grow/grow_mp/video.mp4",
@@ -26,6 +26,7 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical'}) {
       : style;
   return (
     <Video
+      className={type === "horizontal" ? "" : "dv_video_portrain"}
       object-fit="contain"
       show-center-play-btn={false}
       // enable-progress-gesture={false}
