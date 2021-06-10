@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "elementRef": "$__ELEMENT_REF__",
+  "logo": "",
+  "label": "按钮组件",
+  "eventAttr": [{ "alias": "点击", "type": "onClick" }],
+  "propFormConfig": {
+    "useSystemForm": true,
+    "useCustomForm": true,
+    "customFormRef": "$__ELEMENT_REF__Form",
+    "useActionForm": true
+  }
+}

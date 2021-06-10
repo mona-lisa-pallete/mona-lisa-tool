@@ -2,7 +2,6 @@ import { Form, Input } from "antd";
 import React, { useRef } from "react";
 import "./index.less";
 import { PlusOutlined } from "@ant-design/icons";
-import UploadContent from "../../_components/UploadContent/index";
 
 interface DvVideoFormProps {
   initialValues: any;

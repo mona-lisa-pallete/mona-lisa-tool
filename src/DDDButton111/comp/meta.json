@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "elementRef": "DDDButton111",
+  "logo": "",
+  "label": "按钮组件",
+  "eventAttr": [{ "alias": "点击", "type": "onClick" }],
+  "propFormConfig": {
+    "useSystemForm": true,
+    "useCustomForm": true,
+    "customFormRef": "DDDButton111Form",
+    "useActionForm": true
+  }
+}
