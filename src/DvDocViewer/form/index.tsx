@@ -40,8 +40,10 @@ const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
       <Form.Item name="title" label="组件名称:">
         <Input defaultValue={initialValues.title} />
       </Form.Item>
-      <Form.Item name="list" label="视频素材">
+      <Form.Item name="list" label="文档上传:">
         <platformCtx.ui.UploadTool
+          materialType='file'
+          accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
           onChangeFormatter={(e) => {
             const { fileList } = e;
             return fileList.map((v) => ({ size: v.size, src: v.url, name: v.name }));
