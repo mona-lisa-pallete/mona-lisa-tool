@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, View, Image } from "@tarojs/components";
 
-import "./comp.less";
+import "./index.less";
 
 /**
  * props 由自定义的 form 表单传入

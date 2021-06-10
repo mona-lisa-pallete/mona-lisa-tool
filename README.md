@@ -125,11 +125,26 @@ sh ./scripts/create-widget.sh DvButton
 
 ## 5. 发布
 
-### 5.1. zip 组件源代码
+### 5.1. 通过自动化脚本发布
+
+```shell
+sh ./scripts/upload-widget-2-oss.sh {widgetName} {widgetID}
+```
+
+注意：
+
+- {widgetName} 必填
+- {widgetID} 选填（目前需要手动从数据库查询后填入）
+  - 如果没填，则认为是新增组件，通过 POST 上传
+  - 如果填了，则认为是更新组件，通过 PUT 上传
+
+### 5.2. 深入了解
+
+#### 5.2.1. zip 组件源代码
 
 通过脚本 `npm run zip:src` 将 `./src` 目录下的所有组件分别 zip，输出目录为 `./src_zip`。
 
-### 5.2. 通过 Da Vinci API 发布
+#### 5.2.2. 通过 Da Vinci API 发布
 
 首次发布：
 
