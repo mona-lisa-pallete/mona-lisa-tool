@@ -1,30 +1,39 @@
 import { Form, Input } from "antd";
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import "./form.less";
 
 interface DvImageFormProps {
   initialValues: any;
-  onChange: (changedValues: any) => void;
-  actionRender: React.Component | ReactNode;
+  onChange: (allValues: any) => void;
   platformCtx: any;
 }
 
-const DvImageForm: React.FC<DvImageFormProps> = (props) => {
-  const { onChange, platformCtx, initialValues, actionRender } = props;
+const DvButtonForm: React.FC<DvImageFormProps> = (props) => {
+  const { onChange, initialValues, platformCtx } = props;
   const [form] = Form.useForm();
+  const UploadRef = useRef();
 
+  
   useEffect(() => {
-    form.setFieldsValue(initialValues);
+    console.log(initialValues, 'initialValues');
+    UploadRef.current?.setUrlVal(initialValues?.url);
+    form.setFieldsValue({title: initialValues?.title || ''});
   }, [initialValues, form]);
 
   return (
-    <Form layout="vertical" className="dv-image-form" onValuesChange={onChange}>
-      <div className="dv-form dv-image-form__sub-title">基础配置</div>
+    <Form
+      form={form}
+      layout="vertical"
+      className="dv-image-form"
+      onValuesChange={onChange}
+    >
+      <div className="dv-image-form__sub-title">基础配置</div>
       <Form.Item name="title" label="组件名称">
         <Input />
       </Form.Item>
       <Form.Item name="url" label="图片素材">
         <platformCtx.ui.UploadTool
+          ref={UploadRef}
           onSelected={(selectResult) => {
             form.setFieldsValue({
               url: selectResult.url,
@@ -43,9 +52,8 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
           }}
         />
       </Form.Item>
-      {actionRender}
     </Form>
   );
 };
 
-export default DvImageForm;
+export default DvButtonForm;

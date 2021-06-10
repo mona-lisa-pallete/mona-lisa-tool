@@ -13,9 +13,11 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
   const [form] = Form.useForm();
   const UploadRef = useRef();
 
+  
   useEffect(() => {
+    console.log(initialValues, 'initialValues');
     UploadRef.current?.setUrlVal(initialValues?.url);
-    form.setFieldsValue(initialValues);
+    form.setFieldsValue({title: initialValues?.title || ''});
   }, [initialValues, form]);
 
   return (
@@ -32,9 +34,6 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
       <Form.Item name="url" label="图片素材">
         <platformCtx.ui.UploadTool
           ref={UploadRef}
-          onProgress={(list) => {
-            // console.log(list);
-          }}
           onSelected={(selectResult) => {
             form.setFieldsValue({
               url: selectResult.url,
@@ -42,7 +41,6 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
             onChange({
               url: selectResult.url,
             });
-            console.log(selectResult);
           }}
           onSelectedMaterial={(selectResult) => {
             form.setFieldsValue({
