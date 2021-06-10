@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "elementRef": "LoginModal",
+  "logo": "https://static.guorou.net/course-static/a773da622ecc438ca3470f14977afab0.png",
+  "label": "登录组件",
+  "propFormConfig": {
+    "useSystemForm": false,
+    "useCustomForm": false,
+    "customFormRef": "LoginModalForm",
+    "useActionForm": false
+  }
+}
