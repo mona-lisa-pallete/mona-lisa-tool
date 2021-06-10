@@ -1,5 +1,6 @@
 import { Input, Tabs } from "antd";
 import React, { useState, useEffect } from "react";
+import classnames from "classnames";
 import { CodeEditor } from "./components/CodeEditor";
 import { JSONDisplayer } from "./components/JsonDisplayer";
 import { LowCodeEditor } from "./components/LowCodeEditor";
@@ -99,6 +100,8 @@ export const DevContainer = ({ selectedDevData }: any) => {
 
   const editorRef = React.createRef<LowCodeEditor>();
 
+  const [showPanel, setShowPanel] = useState(true);
+
   useEffect(() => {
     editorRef?.current?.onChange(JSON.stringify(formState));
   }, [formState]);
@@ -143,12 +146,21 @@ export const DevContainer = ({ selectedDevData }: any) => {
           bottom: 0,
           left: 0,
           right: 0,
-          height: 380,
+          height: showPanel ? 380 : 40,
           overflow: "auto",
           boxShadow: `0 0 50px 0 rgb(0 0 0 / 8%)`,
         }}
       >
-        <Tabs type="card">
+        <Tabs
+          type="card"
+          onChange={(activeKey) => {
+            if (activeKey === "toggle-panel") {
+              setShowPanel(!showPanel);
+            } else {
+              setShowPanel(true);
+            }
+          }}
+        >
           <Tabs.TabPane
             tab="组件元数据"
             key="metadata"
@@ -193,6 +205,11 @@ export const DevContainer = ({ selectedDevData }: any) => {
           >
             <CodeEditor text="1. TODO：组件工程代码编器 2. 组件工程管理" />
           </Tabs.TabPane>
+          <Tabs.TabPane
+            tab={showPanel ? "收起" : "展开"}
+            key="toggle-panel"
+            className="px-2"
+          ></Tabs.TabPane>
         </Tabs>
       </div>
     </div>

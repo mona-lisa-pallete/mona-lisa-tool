@@ -56,7 +56,31 @@ yarn start:dev-tool
 
 ## 3. 组件开发
 
-### 3.1. 组件工作区
+### 3.1. 通过自动化脚本创建组件
+
+达芬奇组件开发工具提供了自动化组件脚本，轻松创建组件：
+
+```shell
+sh ./scripts/create-widget.sh {widgetName}
+```
+
+注意： **`{widgetName}` 替换成对应的组件名**，并且不允许重名
+
+例如
+
+```shell
+sh ./scripts/create-widget.sh DvButton
+```
+
+脚本将自动在 `./src` 目录下创建 {widgetName} 的组件
+
+### 3.2. 深入了解
+
+#### 3.2.1. 组件模板
+
+模板目录 `./tmpl`
+
+#### 3.2.2. 组件工作区
 
 在目录 `./src` 之下，根据业务需求创建如下组件的目录结构：
 
@@ -83,7 +107,7 @@ yarn start:dev-tool
 | form/index.tsx  | 组件属性编辑表单的实现入口文件 |
 | form/meta.json  | 描述组件属性编辑表单的元数据   |
 
-### 3.2. 业务组件可以使用的库
+### 3.3. 业务组件可以使用的库
 
 由于达芬奇的架构采用『运行时依赖』，暂时不支持 package.json 中的 dependencies。以下会列举出达芬奇支持的库：
 
@@ -101,11 +125,26 @@ yarn start:dev-tool
 
 ## 5. 发布
 
-### 5.1. zip 组件源代码
+### 5.1. 通过自动化脚本发布
+
+```shell
+sh ./scripts/upload-widget-2-oss.sh {widgetName} {widgetID}
+```
+
+注意：
+
+- {widgetName} 必填
+- {widgetID} 选填（目前需要手动从数据库查询后填入）
+  - 如果没填，则认为是新增组件，通过 POST 上传
+  - 如果填了，则认为是更新组件，通过 PUT 上传
+
+### 5.2. 深入了解
+
+#### 5.2.1. zip 组件源代码
 
 通过脚本 `npm run zip:src` 将 `./src` 目录下的所有组件分别 zip，输出目录为 `./src_zip`。
 
-### 5.2. 通过 Da Vinci API 发布
+#### 5.2.2. 通过 Da Vinci API 发布
 
 首次发布：
 

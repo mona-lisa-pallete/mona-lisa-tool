@@ -1,5 +1,7 @@
 {
+  "name": "@davinci/widget-dev-tool",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite --port 33222",
     "start": "PORT=33222 minictl start",

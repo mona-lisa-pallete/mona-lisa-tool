@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Image } from "@tarojs/components";
-import { sendEvenLog } from "@davinci/core";
+import Taro from "@tarojs/taro";
+import { sendEvenLog, IS_H5 } from "@davinci/core";
 import axios from "axios";
 
 import "./index.less";
@@ -36,9 +37,49 @@ type docProps = {
 type docItem = {
   src: string;
   name: string;
+  size: number;
 };
 
+async function downloadPDF({ url, name }) {
+  if (!IS_H5) {
+    Taro.showToast({
+      title: "下载pdf只能在非小程序页面使用",
+      icon: "none",
+    });
+    return;
+  }
+  const { data } = await Taro.request({
+    method: "GET",
+    url,
+    responseType: "arraybuffer",
+  });
 
+  const blob = new Blob([data]);
+  const a = document.createElement("a");
+  document.body.appendChild(a);
+  a.style.display = "none";
+  // 使用获取到的blob对象创建的url
+  const urlObject = window.URL.createObjectURL(blob);
+  a.href = urlObject;
+  // 指定下载的文件名
+  a.download = name;
+  a.click();
+  document.body.removeChild(a);
+  // 移除blob对象的url
+  window.URL.revokeObjectURL(urlObject);
+}
+
+function formatKB(kb: number, decimals = 2) {
+  if (kb === 0) return "0";
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "K", "M", "G"];
+
+  const i = Math.floor(Math.log(kb) / Math.log(k));
+
+  return parseFloat((kb / Math.pow(k, i)).toFixed(dm)) + sizes[i];
+}
 
 const loadScript = (src: string, cb: Function) => {
   return new Promise((resolve: Function, reject) => {
@@ -95,7 +136,7 @@ function DvDocViewer(props: docProps) {
       e_n: "doc_view",
     });
   }
-  
+
   useEffect(() => {
     loadScript(
       "//g.alicdn.com/IMM/office-js/1.1.9/aliyun-web-office-sdk.min.js",
@@ -107,55 +148,56 @@ function DvDocViewer(props: docProps) {
   const { isPreview, preSrc, preDocName } = previewData;
   return (
     <View className="dv_doc_viewer" {...p}>
-      {Array.isArray(list)  && list.map(({ src = "", name }) => (
-        <View
-          className="doc_item"
-          key={src}
-          onClick={async () => {
-            const url = src.replace(
-              "https://static.guorou.net",
-              "oss://static-zy-com"
-            );
-            const { data } = await axios.get(
-              "http://portalhome.uae.shensz.local/davinciapi/api/1/core/util/office/preview_url",
-              {
-                params: {
-                  url,
-                },
+      {Array.isArray(list) &&
+        list.map(({ src = "", name = "-", size = 0 }, index) => (
+          <View
+            className="doc_item"
+            key={index}
+            onClick={async () => {
+              const url = src.replace(
+                "https://static.guorou.net",
+                "oss://static-zy-com"
+              );
+              const { data } = await axios.get(
+                "http://portalhome.uae.shensz.local/davinciapi/api/1/core/util/office/preview_url",
+                {
+                  params: {
+                    url,
+                  },
+                }
+              );
+              let { code = -1, msg, data: res } = data;
+              const { PreviewURL, AccessToken } = res;
+              console.log(data, data.data);
+              if (code === -1) {
+                console.error(msg);
               }
-            );
-            let { code = -1, msg, data: res } = data;
-            const { PreviewURL, AccessToken } = res;
-            console.log(data, data.data);
-            if (code === -1) {
-              console.error(msg);
-            }
-            setPreviewData({
-              preSrc: src,
-              preDocName: name,
-              isPreview: true,
-            });
-            let instance = aliyun.config({
-              url: PreviewURL, //设置文档预览U  RL地址。
-              mount: document.querySelector("#aliyun_preview_iframe"),
-            });
-            instance.setToken({
-              token: AccessToken,
-            });
-          }}
-        >
-          <Image
-            className="doc_icon"
-            src={IconDict[(src.match(/.*\.(.*)$/) || ["", ""])[1]]}
-          />
-          <View className="doc_content">
-            <View className="doc_title">{name}</View>
-            <View className="doc_size">330M</View>
+              setPreviewData({
+                preSrc: src,
+                preDocName: name,
+                isPreview: true,
+              });
+              let instance = aliyun.config({
+                url: PreviewURL, //设置文档预览U  RL地址。
+                mount: document.querySelector("#aliyun_preview_iframe"),
+              });
+              instance.setToken({
+                token: AccessToken,
+              });
+            }}
+          >
+            <Image
+              className="doc_icon"
+              src={IconDict[(src.match(/.*\.(.*)$/) || ["", ""])[1]]}
+            />
+            <View className="doc_content">
+              <View className="doc_title one-line">{name}</View>
+              <View className="doc_size">{formatKB(size)}</View>
+            </View>
+            <Image className="entry_icon" src={EntryIcon} />
+            <View className="divider_down" />
           </View>
-          <Image className="entry_icon" src={EntryIcon} />
-          <View className="divider_down" />
-        </View>
-      ))}
+        ))}
       {isPreview && (
         <View className="doc_preview_modal">
           <View className="doc_preview_header">
@@ -170,7 +212,7 @@ function DvDocViewer(props: docProps) {
               }}
               src={BackIcon}
             />
-            <View className="doc_preview_title">{preDocName}</View>
+            <View className="doc_preview_title one-line">{preDocName}</View>
           </View>
           <div
             className="doc_iframe_container"
@@ -178,7 +220,18 @@ function DvDocViewer(props: docProps) {
           ></div>
           <Image
             onClick={() => {
-              window.location.href = preSrc;
+              if (!IS_H5) {
+                Taro.showToast({
+                  title: "下载文件只能在非小程序页面使用",
+                  icon: "none",
+                });
+                return;
+              }
+              if (/\.pdf$/.test(preSrc)) {
+                downloadPDF({ url: preSrc, name: preDocName });
+              } else {
+                window.location.href = preSrc;
+              }
               clickTrack();
             }}
             className="doc_download_icon"
