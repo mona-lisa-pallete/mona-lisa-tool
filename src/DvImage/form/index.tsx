@@ -33,6 +33,7 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
       </Form.Item>
       <Form.Item name="url" label="图片素材">
         <platformCtx.ui.UploadTool
+          accept="image/png,image/jpeg,image/gif"
           ref={UploadRef}
           onSelected={(selectResult) => {
             form.setFieldsValue({
