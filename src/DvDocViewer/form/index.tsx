@@ -1,8 +1,9 @@
 import { Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import "./index.less";
 interface DvDocViewerFormProps {
+  id: string;
   initialValues: any;
   onChange: (allValues: any) => void;
   platformCtx: any;
@@ -10,10 +11,17 @@ interface DvDocViewerFormProps {
 }
 
 const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
-  const { onChange, initialValues, platformCtx } = props;
+  const { onChange, initialValues, platformCtx, id } = props;
   const [form] = Form.useForm();
   const UploadRef = useRef();
-
+  useEffect(() => {
+    if (form) {
+      form.resetFields();
+      setTimeout(() => {
+        form.setFieldsValue(initialValues);
+      }, 100);
+    }
+  }, [id, form]);
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -38,17 +46,23 @@ const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
     >
       <div className="dv-form-subtitle">基础配置</div>
       <Form.Item name="title" label="组件名称:">
-        <Input defaultValue={initialValues.title} />
+        <Input />
       </Form.Item>
-      <Form.Item name="list" label="文档上传:">
+      <Form.Item
+        getValueFromEvent={(fileList) => {
+          return fileList.map((v) => ({
+            size: v.size,
+            src: v.url,
+            name: v.name,
+          }));
+        }}
+        valuePropName="fileList"
+        name="list"
+        label="文档上传:"
+      >
         <platformCtx.ui.UploadTool
-          materialType='file'
+          materialType="file"
           accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
-          onChangeFormatter={(e) => {
-            const { fileList } = e;
-            return fileList.map((v) => ({ size: v.size, src: v.url, name: v.name }));
-          }}
-          defaultFileList={list}
           showUploadList={true}
           multiple
           uploadContent={uploadButton}
