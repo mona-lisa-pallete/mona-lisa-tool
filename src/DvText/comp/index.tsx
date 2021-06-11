@@ -4,7 +4,7 @@ import "./index.less";
 import { Text, View } from "@tarojs/components";
 
 const DvText: React.FC<DvTextProps> = (props) => {
-  const { text, edit, fontSize = 12, color = '#000', font } = props;
+  const { text, edit, fontSize = 12, color = '#000', font, style } = props;
 
   if (edit && !text) {
     return (<View className="dv-text" style={{fontSize: '15px'}}>
@@ -13,6 +13,7 @@ const DvText: React.FC<DvTextProps> = (props) => {
   }
 
   return <View style={{
+    ...style,
     fontSize: fontSize + 'px',
     color: color,
     fontStyle: font?.fontStyle || 'normal',
