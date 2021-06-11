@@ -21,15 +21,15 @@ const DvImage: React.FC<DvImageProps> = (props) => {
   }
 
   const transform = (size: number) => {
-    if (isAdmin()) {
+    // if (isAdmin()) {
       return size + 'px'
-    } else {
-      return pxTransform(size, 750)
-    }
+    // } else {
+    //   return pxTransform(size, 750)
+    // }
   }
 
   return <Image style={{
-    ...style,
+    position: style?.position || 'static',
     width: transform(style?.width),
     height: transform(style?.height),
     left: transform(style?.left),

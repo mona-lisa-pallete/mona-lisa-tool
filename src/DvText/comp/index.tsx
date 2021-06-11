@@ -12,9 +12,24 @@ const DvText: React.FC<DvTextProps> = (props) => {
     </View>)
   }
 
+  const isAdmin = () => {
+    const host = window.location.host
+    return ["localhost:9999", "portalhome.uae.shensz.local", "portal.guorou.net"].includes(host)
+  }
+
+  const transform = (size: number) => {
+    // if (isAdmin()) {
+      return size + 'px'
+    // } else {
+    //   return pxTransform(size, 750)
+    // }
+  }
+
   return <View style={{
-    ...style,
+    position: style?.position || 'static',
     fontSize: fontSize + 'px',
+    left: transform(style?.left),
+    top: transform(style?.top),
     color: color,
     fontStyle: font?.fontStyle || 'normal',
     letterSpacing: font?.letterSpacing + 'px' || 'normal',
