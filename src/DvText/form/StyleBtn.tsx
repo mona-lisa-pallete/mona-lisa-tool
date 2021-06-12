@@ -37,12 +37,12 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
             width: '170px'
         }}>
             字间距:
-            <Slider onChange={handleFontSpace} value={letterSpacing} defaultValue={1} max={10} step={1} />
+            <Slider onChange={handleFontSpace} value={value?.letterSpacing} defaultValue={1} max={10} step={1} />
             <InputNumber
                 min={1}
                 step={1}
                 max={10}
-                value={letterSpacing}
+                value={value?.letterSpacing}
                 onChange={handleFontSpace}
             />
         </div>
@@ -53,12 +53,12 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
             width: '170px'
         }}>
             行高:
-            <Slider onChange={handleLineSpace} value={lineHeight} defaultValue={1} max={2} step={0.1} />
+            <Slider onChange={handleLineSpace} value={value?.lineHeight} defaultValue={1.5} max={2} step={0.1} />
             <InputNumber
                 min={1}
                 max={2}
                 step={0.1}
-                value={lineHeight}
+                value={value?.lineHeight}
                 onChange={handleLineSpace}
             />
         </div>

@@ -20,32 +20,26 @@ const fontSize = new Array(40).fill(1).map((i, index)=> {
 const DvTextForm: React.FC<DvImageFormProps> = (props) => {
   const { onChange, initialValues, platformCtx } = props;
   const [form] = Form.useForm();
-  const [style, setStyle] = useState({
-    lineHeight: 0,
-    letterSpacing: 0,
-    fontWeightVal: false,
-    fontStyleVal: false,
-    textDecorationVal: false
-  })
 
-  const handleStyle = (css: React.CSSProperties) => {
-    console.log(css);
-  }
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, []);
 
   useEffect(() => {
     if (!initialValues.fontSize) {
       initialValues.fontSize = 12
     }
     form.setFieldsValue(initialValues);
-    if (initialValues?.style) {
-      console.log(initialValues?.style, 'initialValues');
-      // setStyle(initialValues.style)
-    }
-  }, [initialValues, form]);
+  }, []);
 
   return (
     <div>
-      <Form form={form} layout="vertical" className="dv-image-form" 
+      <Form form={form} layout="vertical" initialValues={{
+        font: {
+          lineHeight: 1.5,
+          letterSpacing: 0
+        }
+      }} className="dv-image-form" 
         onValuesChange={(_:any, allVal: any)=>{
           onChange(allVal)
         }}>
@@ -68,7 +62,7 @@ const DvTextForm: React.FC<DvImageFormProps> = (props) => {
           </div>
         </Form.Item>
         <Form.Item noStyle name="font">
-          <StyleBtn onChangeStyle={handleStyle} textDecorationVal={style.textDecorationVal} fontWeightVal={style.fontWeightVal} fontStyleVal={style.fontStyleVal} letterSpacing={style.letterSpacing} lineHeight={style.lineHeight}></StyleBtn>
+          <StyleBtn></StyleBtn>
         </Form.Item>
       </Form>
     </div>
