@@ -1,5 +1,4 @@
 import { Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import React, { useRef, useEffect } from "react";
 import "./index.less";
 interface DvDocViewerFormProps {
@@ -24,7 +23,7 @@ const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
   }, [id, form]);
   const uploadButton = (
     <div>
-      <PlusOutlined />
+      <i className="icon-plus iconfont" />
       <div style={{ marginTop: 8 }}>上传文件</div>
     </div>
   );
