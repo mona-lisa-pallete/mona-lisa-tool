@@ -1,5 +1,5 @@
 import { Form, Input } from "antd";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./index.less";
 
 interface DvVideoFormProps {
@@ -11,41 +11,11 @@ interface DvVideoFormProps {
 
 const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
   const { onChange, initialValues, platformCtx, type = "horizontal" } = props;
-  console.log("==DvVideoForm=====", props);
   const [form] = Form.useForm();
-  const UploadRef = useRef();
 
-  const uploadButton = (
-    <div>
-      <i className="icon-plus iconfont" />
-      <div style={{ marginTop: 8 }}>上传视频</div>
-    </div>
-  );
-  const uploadButtonImage = (
-    <div>
-      <i className="icon-plus iconfont" />
-      <div style={{ marginTop: 8 }}>上传图片</div>
-    </div>
-  );
-
-  const list = initialValues?.src && [
-    {
-      uid: 0,
-      name: "视频",
-      status: "done",
-      url: initialValues?.src,
-    },
-  ];
-
-  const posterList = initialValues?.poster && [
-    {
-      uid: 0,
-      name: "封面",
-      status: "done",
-      url: initialValues?.poster,
-    },
-  ];
-
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, []);
   return (
     <Form
       className="dv-form"
@@ -57,40 +27,14 @@ const DvVideoForm: React.FC<DvVideoFormProps> = (props) => {
     >
       <div className="dv-form dv-form-subtitle">基础配置</div>
       <Form.Item name="title" label="组件名称:">
-        <Input defaultValue={initialValues?.title} />
+        <Input />
       </Form.Item>
       <Form.Item name="src" label="视频:">
-        <platformCtx.ui.UploadTool
-          materialType="video"
-          accept="video/*"
-          showUploadList
-          onChangeFormatter={(e) => {
-            console.log("==onChangeFormatter==", e);
-            const { fileList } = e;
-
-            return fileList[fileList.length - 1]?.url;
-          }}
-          defaultFileList={list}
-          uploadContent={uploadButton}
-        />
+        <platformCtx.ui.Upload name='src' type="video" />
       </Form.Item>
       {type === "horizontal" && (
         <Form.Item name="poster" label="视频封面:">
-          <platformCtx.ui.UploadTool
-            materialType="image"
-            accept="image/*"
-            showUploadList
-            onChangeFormatter={(e) => {
-              const { fileList } = e;
-              return fileList[fileList.length - 1]?.url;
-            }}
-            UploadContent={uploadButtonImage}
-            defaultFileList={posterList}
-            ref={UploadRef}
-            onSelected={(selectResult) => {
-              UploadRef.current?.setUrlVal(selectResult.poster);
-            }}
-          />
+          <platformCtx.ui.Upload name='poster' />
         </Form.Item>
       )}
     </Form>
