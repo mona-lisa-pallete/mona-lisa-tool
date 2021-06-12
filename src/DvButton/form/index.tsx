@@ -11,14 +11,10 @@ interface DvImageFormProps {
 const DvButtonForm: React.FC<DvImageFormProps> = (props) => {
   const { onChange, initialValues, platformCtx } = props;
   const [form] = Form.useForm();
-  const UploadRef = useRef();
 
-  
   useEffect(() => {
-    console.log(initialValues, 'initialValues');
-    UploadRef.current?.setUrlVal(initialValues?.url);
-    form.setFieldsValue({title: initialValues?.title || ''});
-  }, [initialValues, form]);
+    form.setFieldsValue(initialValues);
+  }, []);
 
   return (
     <Form
@@ -32,26 +28,7 @@ const DvButtonForm: React.FC<DvImageFormProps> = (props) => {
         <Input />
       </Form.Item>
       <Form.Item name="url" label="图片素材">
-        <platformCtx.ui.UploadTool
-          ref={UploadRef}
-          accept="image/png,image/jpeg,image/gif"
-          onSelected={(selectResult) => {
-            form.setFieldsValue({
-              url: selectResult.url,
-            });
-            onChange({
-              url: selectResult.url,
-            });
-          }}
-          onSelectedMaterial={(selectResult) => {
-            form.setFieldsValue({
-              url: selectResult.url,
-            });
-            onChange({
-              url: selectResult.url,
-            });
-          }}
-        />
+        <platformCtx.ui.Upload />
       </Form.Item>
     </Form>
   );
