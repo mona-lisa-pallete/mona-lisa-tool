@@ -21,7 +21,9 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
       form={form}
       layout="vertical"
       className="dv-image-form"
-      onValuesChange={onChange}
+      onValuesChange={(_:any, allVal: any)=>{
+        onChange(allVal)
+      }}
     >
       <div className="dv-image-form__sub-title">基础配置</div>
       <Form.Item name="title" label="组件名称">
