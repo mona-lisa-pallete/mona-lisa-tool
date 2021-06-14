@@ -1,8 +1,8 @@
+import { dvPxTransform } from '@davinci/core';
+import { Image, View } from "@tarojs/components";
 import React from "react";
-import { DvImageProps } from "./types";
 import "./index.less";
-import { Button, Image, View } from "@tarojs/components";
-import { pxTransform } from "@tarojs/taro";
+import { DvImageProps } from "./types";
 
 const DvImage: React.FC<DvImageProps> = (props) => {
   const { url, onClick, edit, style } = props;
@@ -15,25 +15,12 @@ const DvImage: React.FC<DvImageProps> = (props) => {
     </View>)
   }
 
-  const isAdmin = () => {
-    const host = window.location.host
-    return ["localhost:9999", "portalhome.uae.shensz.local", "portal.guorou.net"].includes(host)
-  }
-
-  const transform = (size: number) => {
-    // if (isAdmin()) {
-      return size + 'px'
-    // } else {
-    //   return pxTransform(size, 750)
-    // }
-  }
-
-  return <Image style={{
+  return <Image 
+  style={{
     position: style?.position || 'static',
-    width: transform(style?.width),
-    height: transform(style?.height),
-    left: transform(style?.left),
-    top: transform(style?.top)
+    width: dvPxTransform(style?.width),
+    left: dvPxTransform(style?.left),
+    top: dvPxTransform(style?.top)
   }} className="dv-image" onClick={onClick} ref={ref} src={url} mode="widthFix" />;
 };
 

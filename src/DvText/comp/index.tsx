@@ -1,7 +1,8 @@
-import React from "react";
-import { DvTextProps } from "./types";
-import "./index.less";
+import { dvPxTransform } from '@davinci/core';
 import { Text, View } from "@tarojs/components";
+import React from "react";
+import "./index.less";
+import { DvTextProps } from "./types";
 
 const DvText: React.FC<DvTextProps> = (props) => {
   const { text, edit, fontSize = 12, color = '#000', font, style } = props;
@@ -12,27 +13,14 @@ const DvText: React.FC<DvTextProps> = (props) => {
     </View>)
   }
 
-  const isAdmin = () => {
-    const host = window.location.host
-    return ["localhost:9999", "portalhome.uae.shensz.local", "portal.guorou.net"].includes(host)
-  }
-
-  const transform = (size: number) => {
-    // if (isAdmin()) {
-      return size + 'px'
-    // } else {
-    //   return pxTransform(size, 750)
-    // }
-  }
-
   return <View style={{
     position: style?.position || 'static',
-    fontSize: fontSize + 'px',
-    left: transform(style?.left),
-    top: transform(style?.top),
+    fontSize: dvPxTransform(fontSize),
+    left: dvPxTransform(style?.left),
+    top: dvPxTransform(style?.top),
     color: color,
     fontStyle: font?.fontStyle || 'normal',
-    letterSpacing: font?.letterSpacing + 'px' || 'normal',
+    letterSpacing: dvPxTransform(font?.letterSpacing) || 'normal',
     lineHeight: font?.lineHeight || 'normal',
     textAlign: font?.textAlign || 'left',
     fontWeight: font?.fontWeight || 'normal',

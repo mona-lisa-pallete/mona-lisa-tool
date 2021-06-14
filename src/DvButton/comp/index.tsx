@@ -1,7 +1,7 @@
-import { Button, View, Image } from "@tarojs/components";
+import { dvPxTransform } from '@davinci/core';
+import { Image, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";
-import { pxTransform } from "@tarojs/taro";
 
 const DvButton = ({ onClick, children, url, edit , style }) => {
 
@@ -12,27 +12,13 @@ const DvButton = ({ onClick, children, url, edit , style }) => {
     </View>)
   }
 
-  const isAdmin = () => {
-    const host = window.location.host
-    return ["localhost:9999", "portalhome.uae.shensz.local", "portal.guorou.net"].includes(host)
-  }
-
-  const transform = (size: number) => {
-    // if (isAdmin()) {
-      return size + 'px'
-    // } else {
-    //   return pxTransform(size, 750)
-    // }
-  }
-
   console.log(style, 'style');
   
   return <Image style={{
     position: style?.position || 'static',
-    width: transform(style?.width),
-    height: transform(style?.height),
-    left: transform(style?.left),
-    top: transform(style?.top)
+    width: dvPxTransform(style?.width),
+    left: dvPxTransform(style?.left),
+    top: dvPxTransform(style?.top)
   }} className="dv-btn" onClick={onClick} src={url} mode="widthFix" />;
 };
 
