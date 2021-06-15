@@ -119,13 +119,9 @@ sh ./scripts/create-widget.sh DvButton
 
 如果有新的库的需求，请联系 [`建业` | `炳瑞` | `相杰`] 协助。
 
-## 4. 时序图
+## 4. 发布
 
-![](./docs/asserts/组件开发工具.jpg)
-
-## 5. 发布
-
-### 5.1. 通过自动化脚本发布
+### 4.1. 通过自动化脚本发布
 
 ```shell
 sh ./scripts/upload-widget-2-oss.sh {widgetName} {widgetID}
@@ -138,13 +134,13 @@ sh ./scripts/upload-widget-2-oss.sh {widgetName} {widgetID}
   - 如果没填，则认为是新增组件，通过 POST 上传
   - 如果填了，则认为是更新组件，通过 PUT 上传
 
-### 5.2. 深入了解
+### 4.2. 深入了解
 
-#### 5.2.1. zip 组件源代码
+#### 4.2.1. zip 组件源代码
 
 通过脚本 `npm run zip:src` 将 `./src` 目录下的所有组件分别 zip，输出目录为 `./src_zip`。
 
-#### 5.2.2. 通过 Da Vinci API 发布
+#### 4.2.2. 通过 Da Vinci API 发布
 
 首次发布：
 
@@ -169,6 +165,10 @@ form: {
 通过 `postman` 来上传组件，这里已经准备好了 `postman` 配置文件，查看 `./postman/Davinci.postman_collection.json`。
 
 详情查看 [yapi](http://mock.guorou.local/project/206/interface/api/19017)
+
+## 5. 时序图
+
+![](./docs/asserts/组件开发工具.jpg)
 
 ## 6. 未来 TODO
 

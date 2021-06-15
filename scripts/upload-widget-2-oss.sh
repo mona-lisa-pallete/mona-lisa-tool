@@ -17,18 +17,20 @@ method=POST
 
 api=http://portalhome.uae.shensz.local/davinciapi/api/1/platform/component
 
+request_info=发布新组件
+
 if [ ! -f $target_zip ]; then
   echo "不已存在组件: $target_zip"
   exit 1
 fi
 
-if [ -n $comp_id ]; then
-  echo 有组件id
+if [ $2 != "" ]; then
   method=PUT
   api=$api/$comp_id
-
-  echo $api
+  request_info=更新组件
 fi
+
+echo $request_info
 
 echo "API: $api"
 
