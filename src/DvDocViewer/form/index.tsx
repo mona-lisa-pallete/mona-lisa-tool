@@ -1,8 +1,8 @@
 import { Form, Input } from "antd";
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import "./index.less";
+
 interface DvDocViewerFormProps {
-  id: string;
   initialValues: any;
   onChange: (allValues: any) => void;
   platformCtx: any;
@@ -10,32 +10,12 @@ interface DvDocViewerFormProps {
 }
 
 const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
-  const { onChange, initialValues, platformCtx, id } = props;
+  const { onChange, initialValues, platformCtx } = props;
   const [form] = Form.useForm();
-  const UploadRef = useRef();
-  useEffect(() => {
-    if (form) {
-      form.resetFields();
-      setTimeout(() => {
-        form.setFieldsValue(initialValues);
-      }, 100);
-    }
-  }, [id, form]);
-  const uploadButton = (
-    <div>
-      <i className="icon-plus iconfont" />
-      <div style={{ marginTop: 8 }}>上传文件</div>
-    </div>
-  );
-  const list = initialValues?.list?.map((v, i) => ({
-    uid: i,
-    name: v.name,
-    status: "done",
-    url: v.src,
-  }));
 
   return (
     <Form
+      initialValues={initialValues}
       className="dv-form"
       form={form}
       layout="vertical"
@@ -47,26 +27,9 @@ const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
       <Form.Item name="title" label="组件名称:">
         <Input />
       </Form.Item>
-      <Form.Item
-        getValueFromEvent={(fileList) => {
-          return fileList.map((v) => ({
-            size: v.size,
-            src: v.url,
-            name: v.name,
-          }));
-        }}
-        valuePropName="fileList"
-        name="list"
-        label="文档上传:"
-      >
-        <platformCtx.ui.UploadTool
-          materialType="file"
-          accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
-          showUploadList={true}
-          multiple
-          uploadContent={uploadButton}
-          ref={UploadRef}
-        />
+
+      <Form.Item name="list" label="文档上传:">
+        <platformCtx.ui.Upload type="file" />
       </Form.Item>
     </Form>
   );

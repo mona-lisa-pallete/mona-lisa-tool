@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { View, Image } from "@tarojs/components";
+import { IS_H5, sendEvenLog } from "@davinci/core";
+import { Image, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { sendEvenLog, IS_H5 } from "@davinci/core";
 import axios from "axios";
-
+import React, { useEffect, useState } from "react";
 import "./index.less";
 
 // import { Document, Page } from "react-pdf";
@@ -35,7 +34,7 @@ type docProps = {
 };
 
 type docItem = {
-  src: string;
+  url: string;
   name: string;
   size: number;
 };
@@ -102,27 +101,8 @@ const loadScript = (src: string, cb: Function) => {
   });
 };
 
-// const mock=[
-//   {
-//     name: "四年级英语深度课程EXCEL",
-//     src: `https://static.guorou.net/davinci/test_doc/wps.xls`,
-//   },
-//   {
-//     name: "四年级英语深度课程PDF",
-//     src: `https://static.guorou.net/davinci/test_doc/wps.pdf`,
-//   },
-//   {
-//     name: "四年级英语深度课程PPT",
-//     src: `https://static.guorou.net/davinci/test_doc/wps.ppt`,
-//   },
-//   {
-//     name: "四年级英语深度课程WORD",
-//     src: `https://static.guorou.net/davinci/test_doc/wps.doc`,
-//   },
-// ]
 function DvDocViewer(props: docProps) {
   const { list, ...p } = props;
-
   const [previewData, setPreviewData] = useState({
     preSrc: "",
     preDocName: "",
@@ -149,12 +129,12 @@ function DvDocViewer(props: docProps) {
   return (
     <View className="dv_doc_viewer" {...p}>
       {Array.isArray(list) &&
-        list.map(({ src = "", name = "-", size = 0 }, index) => (
+        list.map(({ url = "", name = "-", size = 0 }, index) => (
           <View
             className="doc_item"
             key={index}
             onClick={async () => {
-              const url = src.replace(
+              const preSrc = url.replace(
                 "https://static.guorou.net",
                 "oss://static-zy-com"
               );
@@ -162,7 +142,7 @@ function DvDocViewer(props: docProps) {
                 "http://portalhome.uae.shensz.local/davinciapi/api/1/core/util/office/preview_url",
                 {
                   params: {
-                    url,
+                    url: preSrc,
                   },
                 }
               );
@@ -173,7 +153,7 @@ function DvDocViewer(props: docProps) {
                 console.error(msg);
               }
               setPreviewData({
-                preSrc: src,
+                preSrc:url,
                 preDocName: name,
                 isPreview: true,
               });
@@ -188,7 +168,7 @@ function DvDocViewer(props: docProps) {
           >
             <Image
               className="doc_icon"
-              src={IconDict[(src.match(/.*\.(.*)$/) || ["", ""])[1]]}
+              src={IconDict[(url.match(/.*\.(.*)$/) || ["", ""])[1]]}
             />
             <View className="doc_content">
               <View className="doc_title one-line">{name}</View>
