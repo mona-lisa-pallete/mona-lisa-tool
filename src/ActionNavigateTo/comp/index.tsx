@@ -10,10 +10,10 @@ export enum PageType {
 const navigateTypeFieldName = 'navigateType';
 
 const types = [
-  {
-    name: "跳转页面",
-    value: PageType.InternalPage,
-  },
+  // {
+  //   name: "跳转页面",
+  //   value: PageType.InternalPage,
+  // },
   {
     name: "跳转H5",
     value: PageType.H5,
@@ -46,12 +46,12 @@ const ToastActionForm: React.FC<ToastActionFormProps> = (props) => {
       }}
     >
       <Form.Item name={`${navigateTypeFieldName}`}>
-        <Radio.Group>
+        <Radio.Group style={{ display: 'flex' }}>
           {types.map((v) => (
             <Radio.Button
               key={v.value}
               onClick={() => setType(v.value)}
-              style={{ fontSize: "13px" }}
+              style={{ fontSize: "13px", flex: 1, textAlign: 'center' }}
               value={v.value}
             >
               {v.name}
@@ -59,7 +59,7 @@ const ToastActionForm: React.FC<ToastActionFormProps> = (props) => {
           ))}
         </Radio.Group>
       </Form.Item>
-      {type === PageType.InternalPage && (
+      {/* {type === PageType.InternalPage && (
         <Form.Item name="url">
           <Select placeholder="请选择链接页面">
             {pageData.map((i) => {
@@ -67,7 +67,7 @@ const ToastActionForm: React.FC<ToastActionFormProps> = (props) => {
             })}
           </Select>
         </Form.Item>
-      )}
+      )} */}
       {type === PageType.H5 && (
         <Form.Item name="url">
           <TextArea placeholder="请输入页面url" />

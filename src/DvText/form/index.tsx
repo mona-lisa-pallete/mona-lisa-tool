@@ -22,10 +22,6 @@ const DvTextForm: React.FC<DvImageFormProps> = (props) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    form.setFieldsValue(initialValues);
-  }, []);
-
-  useEffect(() => {
     if (!initialValues.fontSize) {
       initialValues.fontSize = 12
     }
