@@ -36,6 +36,6 @@ echo "API: $api"
 
 echo "上传的文件: $target_zip"
 
-# curl --location --request $method $api \
-# --header 'Cookie: portal_access_token=zjy; portal_access_token.sig=wuDNxbW5HBcinqFXGxPdFSxpyyMclvIXFj1M9wAoeUU' \
-# --form "data=@\"$target_zip\""
+curl --location --request $method $api \
+--header 'Cookie: portal_access_token=zjy; portal_access_token.sig=wuDNxbW5HBcinqFXGxPdFSxpyyMclvIXFj1M9wAoeUU' \
+--form "data=@\"$target_zip\""
