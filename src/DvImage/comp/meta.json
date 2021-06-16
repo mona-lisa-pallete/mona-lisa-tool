@@ -9,5 +9,6 @@
     "useCustomForm": true,
     "customFormRef": "DvImageForm",
     "useActionForm": true
-  }
+  },
+  "classification": "Image"
 }

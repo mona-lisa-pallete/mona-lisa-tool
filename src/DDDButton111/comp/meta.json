@@ -9,5 +9,6 @@
     "useCustomForm": true,
     "customFormRef": "DDDButton111Form",
     "useActionForm": true
-  }
+  },
+  "classification": "Button"
 }
