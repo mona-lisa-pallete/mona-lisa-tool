@@ -12,6 +12,8 @@
    1. 组件编译模块
 2. 业务组件开发工具
 
+---
+
 ## 2. 环境准备
 
 注意: **需要同时启动 watcher 和 dev-tool 两个服务!**
@@ -107,7 +109,18 @@ sh ./scripts/create-widget.sh DvButton
 | form/index.tsx  | 组件属性编辑表单的实现入口文件 |
 | form/meta.json  | 描述组件属性编辑表单的元数据   |
 
-### 3.3. 业务组件可以使用的库
+### 3.3. 依赖范围
+
+组件的依赖范围不可超过自身工程，否则编译不会通过。例如：
+
+```tsx
+// comp/index.tsx
+import * from '../../xx' //这是不生效的
+```
+
+原因：**由于组件编译环境并不包含组件目录以外的文件，所以编译不会通过。**
+
+### 3.4. 业务组件可以使用的库
 
 由于达芬奇的架构采用『运行时依赖』，暂时不支持 package.json 中的 dependencies。以下会列举出达芬奇支持的库：
 
@@ -118,6 +131,8 @@ sh ./scripts/create-widget.sh DvButton
 5. taro/components
 
 如果有新的库的需求，请联系 [`建业` | `炳瑞` | `相杰`] 协助。
+
+---
 
 ## 4. 发布
 
@@ -166,9 +181,13 @@ form: {
 
 详情查看 [yapi](http://mock.guorou.local/project/206/interface/api/19017)
 
+---
+
 ## 5. 时序图
 
 ![](./docs/asserts/组件开发工具.jpg)
+
+---
 
 ## 6. 未来 TODO
 
