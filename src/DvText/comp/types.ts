@@ -7,4 +7,5 @@ export interface DvTextProps {
   fontSize: number;
   color: string;
   font: any;
+  style?: CSSProperties;
 }

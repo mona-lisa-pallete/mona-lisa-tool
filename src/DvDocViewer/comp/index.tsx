@@ -31,6 +31,7 @@ const IconDict = {
 
 type docProps = {
   list: docItem[];
+  id: string;
 };
 
 type docItem = {
@@ -102,7 +103,7 @@ const loadScript = (src: string, cb: Function) => {
 };
 
 function DvDocViewer(props: docProps) {
-  const { list, ...p } = props;
+  const { list, id, ...p } = props;
   const [previewData, setPreviewData] = useState({
     preSrc: "",
     preDocName: "",
@@ -111,11 +112,31 @@ function DvDocViewer(props: docProps) {
 
   function clickTrack() {
     sendEvenLog({
-      e_c: "activity",
+      e_c: "page",
       e_a: "click",
-      e_n: "doc_view",
+      e_n: "document_component_click",
+      other: {
+        page_id: "pageId",
+        page_name: "pageName",
+        component_id: id,
+        component_name: ''
+      }
     });
   }
+
+  useEffect(()=>{
+    if (previewData.isPreview) {
+      sendEvenLog({
+        e_c: "page",
+        e_a: "click",
+        e_n: "document_preview_expose",
+        other: {
+          material_id: "",
+          document_name: previewData.preDocName,
+        }
+      });
+    }
+  },[previewData.isPreview])
 
   useEffect(() => {
     loadScript(
@@ -134,6 +155,7 @@ function DvDocViewer(props: docProps) {
             className="doc_item"
             key={index}
             onClick={async () => {
+              clickTrack();
               const preSrc = url.replace(
                 "https://static.guorou.net",
                 "oss://static-zy-com"
@@ -207,12 +229,20 @@ function DvDocViewer(props: docProps) {
                 });
                 return;
               }
+              sendEvenLog({
+                e_c: "page",
+                e_a: "click",
+                e_n: "click_document_download",
+                other: {
+                  material_id: "",
+                  document_name: preDocName,
+                }
+              });
               if (/\.pdf$/.test(preSrc)) {
                 downloadPDF({ url: preSrc, name: preDocName });
               } else {
                 window.location.href = preSrc;
               }
-              clickTrack();
             }}
             className="doc_download_icon"
             src={DownloadIcon}

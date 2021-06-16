@@ -1,11 +1,17 @@
-import { dvPxTransform } from '@davinci/core';
+import { dvPxTransform, sendEvenLog, dvConnect } from '@davinci/core';
 import { Image, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";
 import { DvImageProps } from "./types";
 
-const DvImage: React.FC<DvImageProps> = (props) => {
-  const { url, onClick, edit, style } = props;
+interface EventProps {
+  pageId: string;
+  pageName: string;
+  id: string;
+}
+
+const DvImage: React.FC<DvImageProps & EventProps> = (props) => {
+  const { url, onClick, edit, style, pageId, pageName, id } = props;
   const ref = React.createRef();
 
   if (edit && !url) {
@@ -14,6 +20,20 @@ const DvImage: React.FC<DvImageProps> = (props) => {
       <View>请上传图片</View>
     </View>)
   }
+  
+  function clickTrack() {
+    sendEvenLog({
+      e_c: "page",
+      e_a: "click",
+      e_n: "picture_component_click",
+      other: {
+        page_id: "pageId",
+        page_name: "pageName",
+        component_id: id,
+        component_name: ''
+      }
+    });
+  }
 
   return <Image 
   style={{
@@ -21,7 +41,10 @@ const DvImage: React.FC<DvImageProps> = (props) => {
     width: dvPxTransform(style?.width),
     left: dvPxTransform(style?.left),
     top: dvPxTransform(style?.top)
-  }} className="dv-image" onClick={onClick} ref={ref} src={url} mode="widthFix" />;
+  }} className="dv-image" onClick={()=>{
+    onClick && onClick()
+    clickTrack()
+  }} ref={ref} src={url} mode="widthFix" />;
 };
 
 export default DvImage;

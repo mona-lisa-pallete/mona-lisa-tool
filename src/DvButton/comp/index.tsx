@@ -1,9 +1,9 @@
-import { dvPxTransform } from '@davinci/core';
 import { Image, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";
+import { dvPxTransform, sendEvenLog, dvConnect } from '@davinci/core';
 
-const DvButton = ({ onClick, children, url, edit , style }) => {
+const DvButton = ({ onClick, children, url, edit , style, id }) => {
 
   if (edit && !url) {
     return (<View className="dv-image--no-data">
@@ -12,6 +12,20 @@ const DvButton = ({ onClick, children, url, edit , style }) => {
     </View>)
   }
 
+
+  function clickTrack() {
+    sendEvenLog({
+      e_c: "page",
+      e_a: "click",
+      e_n: "button_component_click",
+      other: {
+        page_id: "pageId",
+        page_name: "pageName",
+        component_id: id,
+        component_name: ''
+      }
+    });
+  }
   console.log(style, 'style');
   
   return <Image style={{
@@ -19,7 +33,10 @@ const DvButton = ({ onClick, children, url, edit , style }) => {
     width: dvPxTransform(style?.width),
     left: dvPxTransform(style?.left),
     top: dvPxTransform(style?.top)
-  }} className="dv-btn" onClick={onClick} src={url} mode="widthFix" />;
+  }} className="dv-btn" onClick={()=>{
+    onClick && onClick()
+    clickTrack()
+  }} src={url} mode="widthFix" />;
 };
 
 export default DvButton;
