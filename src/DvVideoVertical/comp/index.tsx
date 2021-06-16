@@ -1,5 +1,5 @@
 import React from "react";
-import DvVideoCompBase from "../../DvVideo/comp"; 
+import DvVideoCompBase from "./base"; 
 
 function DvVideoVertical(props) {
   return (
