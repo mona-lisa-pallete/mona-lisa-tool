@@ -1,7 +1,7 @@
 import { Image, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";
-import { dvPxTransform, sendEvenLog, dvConnect } from '@davinci/core';
+import { dvPxTransform, trackLog, dvConnect } from '@davinci/core';
 
 const DvButton = ({ onClick, children, url, edit , style, id }) => {
 
@@ -14,7 +14,7 @@ const DvButton = ({ onClick, children, url, edit , style, id }) => {
 
 
   function clickTrack() {
-    sendEvenLog({
+    trackLog({
       e_c: "page",
       e_a: "click",
       e_n: "button_component_click",

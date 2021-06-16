@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Video } from "@tarojs/components";
 import "./index.less";
-import { IS_H5, sendEvenLog } from "@davinci/core";
+import { IS_H5, trackLog } from "@davinci/core";
 
 // const mock = {
 //   src: "https://static.guorou.net/grow/grow_mp/video.mp4",
@@ -43,7 +43,7 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical', id: string})
       loop={false}
       muted={false}
       onPlay={() => {
-        sendEvenLog({
+        trackLog({
           e_c: "page",
           e_a: "click",
           e_n: "click_play_video",
@@ -57,7 +57,7 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical', id: string})
           }
         });
         playTimer.current = setInterval(()=>{
-          sendEvenLog({
+          trackLog({
             e_c: "page",
             e_a: "click",
             e_n: type === 'horizontal' ? "watch_video": "watch_video2",
@@ -76,7 +76,7 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical', id: string})
         time.current = e.detail.currentTime
       }}
       onFullscreenChange={(e)=>{
-        sendEvenLog({
+        trackLog({
           e_c: "page",
           e_a: "click",
           e_n: e.detail.fullScreen ? "click_full_screen" : 'cancel_full_screen',
@@ -94,7 +94,7 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical', id: string})
         if (playTimer.current) {
           clearInterval(playTimer.current)
         }
-        sendEvenLog({
+        trackLog({
           e_c: "page",
           e_a: "click",
           e_n: type === 'horizontal' ? "click_stop_video": "stop_play_video",

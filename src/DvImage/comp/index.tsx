@@ -1,4 +1,4 @@
-import { dvPxTransform, sendEvenLog, dvConnect } from '@davinci/core';
+import { dvPxTransform, trackLog, dvConnect } from '@davinci/core';
 import { Image, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";
@@ -22,7 +22,7 @@ const DvImage: React.FC<DvImageProps & EventProps> = (props) => {
   }
   
   function clickTrack() {
-    sendEvenLog({
+    trackLog({
       e_c: "page",
       e_a: "click",
       e_n: "picture_component_click",

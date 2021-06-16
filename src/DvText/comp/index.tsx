@@ -1,4 +1,4 @@
-import { dvPxTransform, sendEvenLog, dvConnect } from '@davinci/core';
+import { dvPxTransform, trackLog, dvConnect } from '@davinci/core';
 import { Text, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";
@@ -18,7 +18,7 @@ const DvText: React.FC<DvTextProps & EventProps> = (props) => {
   }
 
   function clickTrack() {
-    sendEvenLog({
+    trackLog({
       e_c: "page",
       e_a: "click",
       e_n: "text_component_click",

@@ -1,4 +1,4 @@
-import { IS_H5, sendEvenLog } from "@davinci/core";
+import { IS_H5, trackLog } from "@davinci/core";
 import { Image, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import axios from "axios";
@@ -111,7 +111,7 @@ function DvDocViewer(props: docProps) {
   });
 
   function clickTrack() {
-    sendEvenLog({
+    trackLog({
       e_c: "page",
       e_a: "click",
       e_n: "document_component_click",
@@ -126,7 +126,7 @@ function DvDocViewer(props: docProps) {
 
   useEffect(()=>{
     if (previewData.isPreview) {
-      sendEvenLog({
+      trackLog({
         e_c: "page",
         e_a: "click",
         e_n: "document_preview_expose",
@@ -229,7 +229,7 @@ function DvDocViewer(props: docProps) {
                 });
                 return;
               }
-              sendEvenLog({
+              trackLog({
                 e_c: "page",
                 e_a: "click",
                 e_n: "click_document_download",
