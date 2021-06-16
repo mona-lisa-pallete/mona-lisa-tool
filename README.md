@@ -115,21 +115,15 @@ sh ./scripts/create-widget.sh DvButton
 
 示例：
 
-| prop key       | 类型                                | 说明                                                                   |
-| -------------- | ----------------------------------- | ---------------------------------------------------------------------- |
-| version        | string                              | 业务组件版本                                                           |
-| elementRef     | string                              | 对页面 DSL 的 elementRef，B 端编辑器在编辑时会使用该 prop key          |
-| logo           | string                              | 组件在 B 端编辑器组件面板显示的 logo                                   |
-| label          | string                              | 组件在 B 端编辑器组件面板显示的 label                                  |
-| eventAttr      | ({ alias: string, type: string })[] | 业务组件中可以被编辑器配置的事件枚举                                   |
-| propFormConfig |                                     | { useSystemForm: boolean useCustomForm: boolean customFormRef: string} |
-| classification | string                              | 在 b 端编辑器左侧分类的类型                                            |
-
-编辑表单描述
-
-useSystemForm 是否使用系统默认的配器表单
-useCustomForm 是否使用自定义表单
-customFormRef 自定义表单的引用，指向业务组件属性编辑表单的 meta.json 中的 formRef
+| prop key       | 类型                                | 说明                                                                                                                                                                                    |
+| -------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| version        | string                              | 业务组件版本                                                                                                                                                                            |
+| elementRef     | string                              | 对页面 DSL 的 elementRef，B 端编辑器在编辑时会使用该 prop key                                                                                                                           |
+| logo           | string                              | 组件在 B 端编辑器组件面板显示的 logo                                                                                                                                                    |
+| label          | string                              | 组件在 B 端编辑器组件面板显示的 label                                                                                                                                                   |
+| eventAttr      | ({ alias: string, type: string })[] |                                                                                                                                                                                         |
+| propFormConfig |                                     | 编辑表单描述<br/>useSystemForm 是否使用系统默认的配器表单<br/>useCustomForm 是否使用自定义表单<br/>customFormRef 自定义表单的引用，指向业务<br/>件属性编辑表单的 meta.json 中的 formRef |
+| classification | string                              | 在 b 端编辑器左侧分类的类型                                                                                                                                                             |
 
 ### 3.4. 依赖范围
 
