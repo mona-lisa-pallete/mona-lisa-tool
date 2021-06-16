@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Video } from "@tarojs/components";
 import "./index.less";
+import { IS_H5, sendEvenLog } from "@davinci/core";
 
 // const mock = {
 //   src: "https://static.guorou.net/grow/grow_mp/video.mp4",
@@ -12,8 +13,10 @@ import "./index.less";
 /**
  * @see https://developers.weixin.qq.com/miniprogram/dev/component/video.html
  */
-function DvVideo(props: {style: any, type: 'horizontal'|'vertical'}) {
-  const { style, type = 'horizontal' } = props;
+function DvVideoVertical(props: {style: any, type: 'horizontal'|'vertical', id: string}) {
+  const { style, type = 'horizontal', id } = props;
+  const time = useRef(0)
+  const playTimer = useRef<any>()
 
   const height = type === 'horizontal' ? undefined: '100vh';
   const formatStyle =
@@ -24,6 +27,7 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical'}) {
         position: "relative", // 覆盖默认传的 absolute 值
         }
       : style;
+
   return (
     <Video
       className={type === "horizontal" ? "" : "dv_video_portrain"}
@@ -39,7 +43,71 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical'}) {
       loop={false}
       muted={false}
       onPlay={() => {
-
+        sendEvenLog({
+          e_c: "page",
+          e_a: "click",
+          e_n: "click_play_video",
+          other: {
+            page_id: "pageId",
+            page_name: "pageName",
+            component_id: id,
+            component_name: '',
+            video_material_id: "",
+            video_material_name: ''
+          }
+        });
+        playTimer.current = setInterval(()=>{
+          sendEvenLog({
+            e_c: "page",
+            e_a: "click",
+            e_n: type === 'horizontal' ? "watch_video": "watch_video2",
+            other: {
+              page_id: "pageId",
+              page_name: "pageName",
+              component_id: id,
+              component_name: '',
+              video_material_id: "",
+              video_material_name: ''
+            }
+          });
+        }, 5000)
+      }}
+      onTimeUpdate={(e)=>{
+        time.current = e.detail.currentTime
+      }}
+      onFullscreenChange={(e)=>{
+        sendEvenLog({
+          e_c: "page",
+          e_a: "click", 
+          e_n: e.detail.fullScreen ? "click_full_screen" : 'cancel_full_screen',
+          other: {
+            page_id: "pageId",
+            page_name: "pageName",
+            component_id: id,
+            component_name: '',
+            video_material_id: "",
+            video_material_name: ''
+          }
+        });
+      }}
+      onPause={()=> {
+        if (playTimer.current) {
+          clearInterval(playTimer.current)
+        }
+        sendEvenLog({
+          e_c: "page",
+          e_a: "click",
+          e_n: type === 'horizontal' ? "click_stop_video": "stop_play_video",
+          other: {
+            page_id: "pageId",
+            page_name: "pageName",
+            component_id: id,
+            component_name: '',
+            video_material_id: "",
+            video_material_name: '',
+            time: time.current
+          }
+        });
       }}
       {...{
         ...props,
@@ -49,4 +117,4 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical'}) {
   );
 }
 
-export default DvVideo;
+export default DvVideoVertical;

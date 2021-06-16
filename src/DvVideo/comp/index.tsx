@@ -27,6 +27,7 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical', id: string})
         position: "relative", // 覆盖默认传的 absolute 值
         }
       : style;
+
   return (
     <Video
       className={type === "horizontal" ? "" : "dv_video_portrain"}
