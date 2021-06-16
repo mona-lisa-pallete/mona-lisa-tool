@@ -9,5 +9,6 @@
     "useCustomForm": true,
     "customFormRef": "$__ELEMENT_REF__Form",
     "useActionForm": true
-  }
+  },
+  "classification": "Other"
 }

@@ -9,5 +9,6 @@
     "useCustomForm": true,
     "customFormRef": "DvTextForm",
     "useActionForm": true
-  }
+  },
+  "classification": "Other"
 }

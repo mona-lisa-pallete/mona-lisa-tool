@@ -8,5 +8,6 @@
     "useSystemForm": true,
     "useCustomForm": true,
     "customFormRef": "DvVideoVerticalForm"
-  }
+  },
+  "classification": "video"
 }

@@ -8,5 +8,6 @@
     "useCustomForm": false,
     "customFormRef": "LoginModalForm",
     "useActionForm": false
-  }
+  },
+  "classification": "Image"
 }
