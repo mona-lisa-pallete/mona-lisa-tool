@@ -1,5 +1,5 @@
 import React from "react";
-import DvVideoFormBase from "../../DvVideo/form"; 
+import DvVideoFormBase from "./base"; 
 
 interface DvVideoVerticalFormProps {
   initialValues: any;
