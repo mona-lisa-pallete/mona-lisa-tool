@@ -109,7 +109,29 @@ sh ./scripts/create-widget.sh DvButton
 | form/index.tsx  | 组件属性编辑表单的实现入口文件 |
 | form/meta.json  | 描述组件属性编辑表单的元数据   |
 
-### 3.3. 依赖范围
+### 3.3. 元数据描述
+
+作用：业务组件接入 B 端编辑器时需要的元数据信息。
+
+示例：
+
+| prop key       | 类型                                | 说明                                                                   |
+| -------------- | ----------------------------------- | ---------------------------------------------------------------------- |
+| version        | string                              | 业务组件版本                                                           |
+| elementRef     | string                              | 对页面 DSL 的 elementRef，B 端编辑器在编辑时会使用该 prop key          |
+| logo           | string                              | 组件在 B 端编辑器组件面板显示的 logo                                   |
+| label          | string                              | 组件在 B 端编辑器组件面板显示的 label                                  |
+| eventAttr      | ({ alias: string, type: string })[] | 业务组件中可以被编辑器配置的事件枚举                                   |
+| propFormConfig |                                     | { useSystemForm: boolean useCustomForm: boolean customFormRef: string} |
+| classification | string                              | 在 b 端编辑器左侧分类的类型                                            |
+
+编辑表单描述
+
+useSystemForm 是否使用系统默认的配器表单
+useCustomForm 是否使用自定义表单
+customFormRef 自定义表单的引用，指向业务组件属性编辑表单的 meta.json 中的 formRef
+
+### 3.4. 依赖范围
 
 组件的依赖范围不可超过自身工程，否则编译不会通过。例如：
 
@@ -120,7 +142,7 @@ import * from '../../xx' //这是不生效的
 
 原因：**由于组件编译环境并不包含组件目录以外的文件，所以编译不会通过。**
 
-### 3.4. 业务组件可以使用的库
+### 3.5. 业务组件可以使用的库
 
 由于达芬奇的架构采用『运行时依赖』，暂时不支持 package.json 中的 dependencies。以下会列举出达芬奇支持的库：
 

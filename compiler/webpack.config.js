@@ -141,6 +141,7 @@ module.exports = () => {
                   require("postcss-pxtorem")({
                     rootValue: 46.875,
                     propList: ["*"],
+                    exclude: /form/i,
                     selectorBlackList: [
                       "dv-action-item",
                       /.dv-form/,

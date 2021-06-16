@@ -15,8 +15,8 @@ target_zip="$work_dir/$element_ref.zip"
 
 method=POST
 
-# api=http://localhost:5400/davinciapi/api/1/platform/component
-api=http://portalhome.uae.shensz.local/davinciapi/api/1/platform/component
+api=http://localhost:5400/davinciapi/api/1/platform/component
+# api=http://portalhome.uae.shensz.local/davinciapi/api/1/platform/component
 
 request_info=发布新组件
 
