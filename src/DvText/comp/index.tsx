@@ -23,8 +23,6 @@ const DvText: React.FC<DvTextProps & EventProps> = (props) => {
       e_a: "click",
       e_n: "text_component_click",
       other: {
-        page_id: "pageId",
-        page_name: "pageName",
         component_id: id,
         component_name: ''
       }

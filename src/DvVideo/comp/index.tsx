@@ -48,8 +48,6 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical', id: string})
           e_a: "click",
           e_n: "click_play_video",
           other: {
-            page_id: "pageId",
-            page_name: "pageName",
             component_id: id,
             component_name: '',
             video_material_id: "",
@@ -62,8 +60,6 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical', id: string})
             e_a: "click",
             e_n: type === 'horizontal' ? "watch_video": "watch_video2",
             other: {
-              page_id: "pageId",
-              page_name: "pageName",
               component_id: id,
               component_name: '',
               video_material_id: "",
@@ -81,8 +77,6 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical', id: string})
           e_a: "click",
           e_n: e.detail.fullScreen ? "click_full_screen" : 'cancel_full_screen',
           other: {
-            page_id: "pageId",
-            page_name: "pageName",
             component_id: id,
             component_name: '',
             video_material_id: "",
@@ -99,8 +93,6 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical', id: string})
           e_a: "click",
           e_n: type === 'horizontal' ? "click_stop_video": "stop_play_video",
           other: {
-            page_id: "pageId",
-            page_name: "pageName",
             component_id: id,
             component_name: '',
             video_material_id: "",

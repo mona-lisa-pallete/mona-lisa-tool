@@ -1,4 +1,4 @@
-import { dvPxTransform, trackLog, dvConnect } from '@davinci/core';
+import { dvPxTransform, trackLog, dvConnect, getPageData } from '@davinci/core';
 import { Image, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";
@@ -11,7 +11,7 @@ interface EventProps {
 }
 
 const DvImage: React.FC<DvImageProps & EventProps> = (props) => {
-  const { url, onClick, edit, style, pageId, pageName, id } = props;
+  const { url, onClick, edit, style, id } = props;
   const ref = React.createRef();
 
   if (edit && !url) {
@@ -27,8 +27,6 @@ const DvImage: React.FC<DvImageProps & EventProps> = (props) => {
       e_a: "click",
       e_n: "picture_component_click",
       other: {
-        page_id: "pageId",
-        page_name: "pageName",
         component_id: id,
         component_name: ''
       }

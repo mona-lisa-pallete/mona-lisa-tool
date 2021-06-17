@@ -19,8 +19,6 @@ const DvButton = ({ onClick, children, url, edit , style, id }) => {
       e_a: "click",
       e_n: "button_component_click",
       other: {
-        page_id: "pageId",
-        page_name: "pageName",
         component_id: id,
         component_name: ''
       }

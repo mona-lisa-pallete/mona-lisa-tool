@@ -116,8 +116,6 @@ function DvDocViewer(props: docProps) {
       e_a: "click",
       e_n: "document_component_click",
       other: {
-        page_id: "pageId",
-        page_name: "pageName",
         component_id: id,
         component_name: ''
       }
