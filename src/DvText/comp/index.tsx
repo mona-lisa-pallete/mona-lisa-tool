@@ -29,7 +29,7 @@ const DvText: React.FC<DvTextProps & EventProps> = (props) => {
     });
   }
 
-  return <View style={{
+  return <View id={id} style={{
     position: style?.position || 'static',
     fontSize: dvPxTransform(fontSize),
     left: dvPxTransform(style?.left),

@@ -26,7 +26,7 @@ const DvButton = ({ onClick, children, url, edit , style, id }) => {
   }
   console.log(style, 'style');
   
-  return <Image style={{
+  return <Image id={id} style={{
     position: style?.position || 'static',
     width: dvPxTransform(style?.width),
     left: dvPxTransform(style?.left),

@@ -3,7 +3,7 @@ import { Image, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";
 
-const DvButtonContainer = ({ onClick, children, url, edit , style }) => {
+const DvButtonContainer = ({ onClick, children, url, edit , style, id }) => {
 
   if (edit && !url) {
     return (<View className="dv-image--no-data">
@@ -14,7 +14,7 @@ const DvButtonContainer = ({ onClick, children, url, edit , style }) => {
 
   console.log(style, 'style');
   
-  return <Image style={{
+  return <Image id={id} style={{
     position: style?.position || 'static',
     width: dvPxTransform(style?.width),
     left: dvPxTransform(style?.left),

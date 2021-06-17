@@ -105,6 +105,7 @@ function DvVideo(props: {style: any, type: 'horizontal'|'vertical', id: string})
         ...props,
         style: formatStyle,
       }}
+      id={id}
     ></Video>
   );
 }

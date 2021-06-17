@@ -33,7 +33,8 @@ const DvImage: React.FC<DvImageProps & EventProps> = (props) => {
     });
   }
 
-  return <Image 
+  return <Image
+  id={id}
   style={{
     position: style?.position || 'static',
     width: dvPxTransform(style?.width),

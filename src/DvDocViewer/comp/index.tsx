@@ -146,7 +146,7 @@ function DvDocViewer(props: docProps) {
   }, []);
   const { isPreview, preSrc, preDocName } = previewData;
   return (
-    <View className="dv_doc_viewer" {...p}>
+    <View id={id} className="dv_doc_viewer" {...p}>
       {Array.isArray(list) &&
         list.map(({ url = "", name = "-", size = 0 }, index) => (
           <View
