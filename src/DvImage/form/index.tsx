@@ -11,7 +11,7 @@ interface DvImageFormProps {
 const DvImageForm: React.FC<DvImageFormProps> = (props) => {
   const { onChange, initialValues, platformCtx } = props;
   const [form] = Form.useForm();
-  
+
   useEffect(() => {
     form.setFieldsValue(initialValues);
   }, []);
@@ -30,7 +30,7 @@ const DvImageForm: React.FC<DvImageFormProps> = (props) => {
         <Input />
       </Form.Item>
       <Form.Item name="url" label="图片素材">
-        <platformCtx.ui.Upload />
+        {platformCtx?.ui?.Upload ? <platformCtx.ui.Upload /> : '平台提供能力'}
       </Form.Item>
     </Form>
   );
