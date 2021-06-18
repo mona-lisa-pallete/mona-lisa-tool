@@ -27,7 +27,6 @@ const DvTextForm: React.FC<DvImageFormProps> = (props) => {
     }
     form.setFieldsValue(initialValues);
   }, []);
-
   return (
     <div>
       <Form form={form} layout="vertical" initialValues={{
@@ -35,7 +34,7 @@ const DvTextForm: React.FC<DvImageFormProps> = (props) => {
           lineHeight: 1.5,
           letterSpacing: 0
         }
-      }} className="dv-image-form" 
+      }} className="dv-image-form"
         onValuesChange={(_:any, allVal: any)=>{
           onChange(allVal)
         }}>
