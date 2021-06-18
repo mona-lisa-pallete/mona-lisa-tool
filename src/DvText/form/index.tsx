@@ -48,11 +48,13 @@ const DvTextForm: React.FC<DvImageFormProps> = (props) => {
         </Form.Item>
         <Form.Item label="文字选项">
           <div className="inline-form-item">
-            <Form.Item name="color">
+            <Form.Item noStyle name="color">
               <platformCtx.ui.ColorPicker />
             </Form.Item>
-            <Form.Item name="fontSize">
-              <Select options={fontSize}>
+            <Form.Item noStyle name="fontSize">
+              <Select style={{
+                width: "128px"
+              }} options={fontSize}>
               </Select>
             </Form.Item>
           </div>

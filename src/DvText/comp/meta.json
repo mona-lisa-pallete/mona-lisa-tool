@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "elementRef": "DvText",
-  "logo": "https://static.guorou.net/course-static/a773da622ecc438ca3470f14977afab0.png",
+  "logo": "https://static.guorou.net/course-static/f86e7cc07ecf45598b7cd4bdf2efeaec.png",
   "label": "文本组件",
   "eventAttr": [{ "alias": "点击", "type": "onClick" }],
   "propFormConfig": {
