@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "elementRef": "DvDiv",
+  "logo": "",
+  "label": "Div组件",
+  "eventAttr": [{ "alias": "点击", "type": "onClick" }],
+  "propFormConfig": {
+    "useSystemForm": true,
+    "useCustomForm": true,
+    "customFormRef": "",
+    "useActionForm": true
+  },
+  "classification": "other"
+}
