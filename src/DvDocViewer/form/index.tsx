@@ -29,7 +29,7 @@ const DvDocViewerForm: React.FC<DvDocViewerFormProps> = (props) => {
       </Form.Item>
 
       <Form.Item name="list" label="文档上传:">
-        <platformCtx.ui.Upload type="file" />
+        {platformCtx?.ui?.Upload ? <platformCtx.ui.Upload type="file" /> : '平台上传组件'}
       </Form.Item>
     </Form>
   );

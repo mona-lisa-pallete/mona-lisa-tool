@@ -103,7 +103,7 @@ const loadScript = (src: string, cb: Function) => {
 };
 
 function DvDocViewer(props: docProps) {
-  const { list, id, ...p } = props;
+  const { list = [], id, ...p } = props;
   const [previewData, setPreviewData] = useState({
     preSrc: "",
     preDocName: "",
@@ -148,7 +148,7 @@ function DvDocViewer(props: docProps) {
   return (
     <View id={id} className="dv_doc_viewer" {...p}>
       {Array.isArray(list) &&
-        list.map(({ url = "", name = "-", size = 0 }, index) => (
+        (list.length > 0 ? list.map(({ url = "", name = "-", size = 0 }, index) => (
           <View
             className="doc_item"
             key={index}
@@ -197,7 +197,15 @@ function DvDocViewer(props: docProps) {
             <Image className="entry_icon" src={EntryIcon} />
             <View className="divider_down" />
           </View>
-        ))}
+        ))  : <View className="doc_item default-status">
+          <Image
+              className="doc_icon"
+              src={IconDict.doc}
+            />
+          <View className="doc_content">
+            <View className="doc_title one-line">请选择文件</View>
+          </View>
+        </View>)}
       {isPreview && (
         <View className="doc_preview_modal">
           <View className="doc_preview_header">

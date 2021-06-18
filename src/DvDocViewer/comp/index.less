@@ -5,6 +5,13 @@
     white-space: nowrap;
     overflow: hidden;
   }
+  .doc_title {
+    font-size: 32px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 48px;
+  }
   .doc_item {
     margin: 14px 34px;
     height: 152px;
@@ -16,13 +23,6 @@
     .doc_content {
       width: 530px;
       margin-left: 24px;
-      .doc_title {
-        font-size: 32px;
-        font-family: PingFangSC-Medium, PingFang SC;
-        font-weight: 500;
-        color: #333333;
-        line-height: 48px;
-      }
       .doc_size {
         font-size: 24px;
         font-family: PingFangSC-Regular, PingFang SC;
@@ -77,6 +77,13 @@
       position: fixed;
       bottom: 76px;
       right: 16px;
+    }
+  }
+  .default-status {
+    opacity: 0.8;
+
+    .doc_title {
+      color: #ccc;
     }
   }
 }
