@@ -14,19 +14,20 @@ interface StyleBtnProps {
 }
 
 const StyleBtn: React.FC<StyleBtnProps> = (props) => {
-    const {textDecorationVal, onChangeStyle, fontWeightVal, fontStyleVal, value, onChange } = props
+    const {textDecorationVal, onChangeStyle, fontWeightVal, fontStyleVal, value: allData, onChange } = props
     const [letterSpacing, setLetterSpacing] = useState(0)
     const [lineHeight, setLineHeight] = useState(0)
-
     const handleFontSpace = (value: number) => {
         onChange({
-            letterSpacing: value
+          ...allData,
+          letterSpacing: value
         })
         setLetterSpacing(value)
     };
 
     const handleLineSpace = value => {
         onChange({
+            ...allData,
             lineHeight: value
         })
         setLineHeight(value)
@@ -37,12 +38,12 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
             width: '170px'
         }}>
             字间距:
-            <Slider onChange={handleFontSpace} value={value?.letterSpacing} defaultValue={1} max={10} step={1} />
+            <Slider onChange={handleFontSpace} value={allData?.letterSpacing} defaultValue={1} max={10} step={1} />
             <InputNumber
                 min={1}
                 step={1}
                 max={10}
-                value={value?.letterSpacing}
+                value={allData?.letterSpacing}
                 onChange={handleFontSpace}
             />
         </div>
@@ -53,12 +54,12 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
             width: '170px'
         }}>
             行高:
-            <Slider onChange={handleLineSpace} value={value?.lineHeight} defaultValue={1.5} max={2} step={0.1} />
+            <Slider onChange={handleLineSpace} value={allData?.lineHeight} defaultValue={1.5} max={2} step={0.1} />
             <InputNumber
                 min={1}
                 max={2}
                 step={0.1}
-                value={value?.lineHeight}
+                value={allData?.lineHeight}
                 onChange={handleLineSpace}
             />
         </div>
@@ -71,6 +72,7 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
                 onClick={() => {
                     // setModelVisible(true);
                     onChange({
+                        ...allData,
                         textAlign: 'left'
                     })
                 }}
@@ -82,6 +84,7 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
                 type="text"
                 onClick={() => {
                     onChange({
+                        ...allData,
                         textAlign: 'center'
                     })
                 }}
@@ -93,6 +96,7 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
                 type="text"
                 onClick={() => {
                     onChange({
+                        ...allData,
                         textAlign: 'right'
                     })
                 }}
@@ -102,38 +106,48 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
             </Button>
         </div>
     )
-
+    const textAlignClass = {
+      'center': 'icon-T_Aligncenter',
+      'left': 'icon-T_Alignleft',
+      'right': 'icon-T_Alignright'
+    };
     return (
         <div className="style-btn">
-            <i className="icon-bold iconfont" onClick={() => {
-                if (value?.fontWeight !== 'bold') {
+            <i className={`icon-bold iconfont ${allData?.fontWeight === 'bold' ? 'selected' : ''}`} onClick={() => {
+                if (allData?.fontWeight !== 'bold') {
                     onChange({
+                        ...allData,
                         fontWeight: 'bold'
                     })
                 } else {
                     onChange({
+                        ...allData,
                         fontWeight: 'normal'
                     })
                 }
             }}></i>
-            <i className="icon-tilt iconfont" onClick={() => {
-                if (value?.fontStyle !== 'italic') {
+            <i className={`icon-tilt iconfont ${allData?.fontStyle === 'italic' ? 'selected' : ''}`} onClick={() => {
+                if (allData?.fontStyle !== 'italic') {
                     onChange({
+                        ...allData,
                         fontStyle: 'italic'
                     })
                 } else {
                     onChange({
+                        ...allData,
                         fontStyle: 'normal'
                     })
                 }
             }}></i>
-            <i className="icon-Underscore iconfont no-border" onClick={() => {
-                if (value?.textDecoration !== 'underline') {
+            <i className={`icon-Underscore iconfont no-border ${allData?.textDecoration === 'underline' ? 'selected' : ''}`} onClick={() => {
+                if (allData?.textDecoration !== 'underline') {
                     onChange({
+                        ...allData,
                         textDecoration: "underline"
                     })
                 } else {
                     onChange({
+                        ...allData,
                         textDecoration: "none"
                     })
                 }
@@ -145,7 +159,7 @@ const StyleBtn: React.FC<StyleBtnProps> = (props) => {
                 <i className="icon-Lineheight iconfont"></i>
             </Popover>
             <Popover trigger='click' overlayClassName="text-align-content" content={textAlignContent}>
-                <i className="icon-T_Aligncenter iconfont no-border"></i>
+                <i className={`iconfont no-border ${textAlignClass[allData?.textAlign] || 'icon-T_Alignleft'}`}></i>
             </Popover>
         </div>
     )
