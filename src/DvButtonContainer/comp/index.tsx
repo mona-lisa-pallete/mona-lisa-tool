@@ -6,9 +6,12 @@ import "./index.less";
 const DvButtonContainer = ({ onClick, children, url, edit , style, id }) => {
 
   if (edit && !url) {
-    return (<View className="dv-image--no-data">
-      <Image style={{userSelect: 'none'}} src="https://static.guorou.net/course-static/0318311ec3d44a7f9f4433c54b94cc7f.png"></Image>
-      <View>请上传按钮</View>
+    return (<View style={{
+      height: '168px',
+      width: '375px'
+    }} className="dv-image--no-data">
+      <Image className="dv-image__img" style={{ width: '96px', height: '49px' }} src="https://static.guorou.net/course-static/0ac63ea5e76548bc99f21916f3a143c2.png"></Image>
+      <View>在右侧配置图片</View>
     </View>)
   }
 

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "elementRef": "DvButton",
-  "logo": "https://static.guorou.net/course-static/0318311ec3d44a7f9f4433c54b94cc7f.png",
+  "logo": "https://static.guorou.net/course-static/e646099d42674c3ba56e5291247179af.png",
   "label": "按钮组件",
   "eventAttr": [{ "alias": "点击", "type": "onClick" }],
   "propFormConfig": {

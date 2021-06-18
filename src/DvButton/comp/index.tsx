@@ -6,9 +6,11 @@ import { dvPxTransform, trackLog, dvConnect } from '@davinci/core';
 const DvButton = ({ onClick, children, url, edit , style, id }) => {
 
   if (edit && !url) {
-    return (<View className="dv-image--no-data">
-      <Image style={{userSelect: 'none'}} src="https://static.guorou.net/course-static/0318311ec3d44a7f9f4433c54b94cc7f.png"></Image>
-      <View>请上传按钮</View>
+    return (<View style={{
+      width: '168px',
+      height: '32px'
+    }} className="dv-btn--no-data">
+      <Image style={{userSelect: 'none'}} src="https://static.guorou.net/course-static/e646099d42674c3ba56e5291247179af.png"></Image>
     </View>)
   }
 

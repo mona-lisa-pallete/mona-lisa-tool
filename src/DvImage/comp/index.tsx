@@ -15,9 +15,12 @@ const DvImage: React.FC<DvImageProps & EventProps> = (props) => {
   const ref = React.createRef();
 
   if (edit && !url) {
-    return (<View className="dv-image--no-data">
-      <Image style={{userSelect: 'none'}} src="https://static.guorou.net/course-static/345f26dde8c94fefb9e2e4c5259083c9.png"></Image>
-      <View>请上传图片</View>
+    return (<View style={{
+      height: '168px',
+      width: '375px'
+    }} className="dv-image--no-data">
+      <Image className="dv-image__img" style={{ width: '96px', height: '49px' }} src="https://static.guorou.net/course-static/0ac63ea5e76548bc99f21916f3a143c2.png"></Image>
+      <View>在右侧配置图片</View>
     </View>)
   }
   

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "elementRef": "DvButtonContainer",
-  "logo": "https://static.guorou.net/course-static/95f8c429e7f9438a94e5296ced0fc028.png",
+  "logo": "https://static.guorou.net/course-static/979213000a694d80a65d9fddb00b1246.png",
   "label": "满宽按钮组件",
   "eventAttr": [{ "alias": "点击", "type": "onClick" }],
   "propFormConfig": {
