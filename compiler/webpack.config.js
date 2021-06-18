@@ -42,7 +42,7 @@ class DevToolMetaHelper {
 module.exports = () => {
   const htmlEntriesPlugins = [];
   const devToolMetaHelper = new DevToolMetaHelper()
-  const entries = glob.sync("./src/**/index.tsx").reduce((acc, _path) => {
+  const entries = glob.sync("./packages/**/index.tsx").reduce((acc, _path) => {
     const pathArr = _path.split("/");
 
     // 准备目录路径

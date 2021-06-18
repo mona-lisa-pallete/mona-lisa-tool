@@ -1,10 +1,10 @@
 pwd=$PWD
 
 # 模板目录
-tmpl_dir=$pwd/packages/tmpl/widget
+tmpl_dir=$pwd/packages/tmpl/actions
 
 # 组件工作目录
-work_dir=$pwd/packages/widgets
+work_dir=$pwd/packages/actions
 
 echo "工作目录：$work_dir"
 

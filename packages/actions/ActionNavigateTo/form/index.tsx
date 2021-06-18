@@ -1,13 +1,14 @@
 import { Form, Input, Radio, Select } from "antd";
-import TextArea from "antd/lib/input/TextArea";
 import React, { useState } from "react";
+
+const { TextArea } = Input;
 
 export enum PageType {
   InternalPage = "internalPage",
   H5 = "h5",
   Mini = "mini",
 }
-const navigateTypeFieldName = 'navigateType';
+const navigateTypeFieldName = "navigateType";
 
 const types = [
   // {
@@ -33,7 +34,9 @@ interface ToastActionFormProps {
 const ToastActionForm: React.FC<ToastActionFormProps> = (props) => {
   const { value, onChange, pageData = [] } = props;
   const [form] = Form.useForm();
-  const [type, setType] = useState<PageType>(value?.[`${navigateTypeFieldName}`]);
+  const [type, setType] = useState<PageType>(
+    value?.[`${navigateTypeFieldName}`]
+  );
   return (
     <Form
       initialValues={value}
@@ -46,12 +49,12 @@ const ToastActionForm: React.FC<ToastActionFormProps> = (props) => {
       }}
     >
       <Form.Item name={`${navigateTypeFieldName}`}>
-        <Radio.Group style={{ display: 'flex' }}>
+        <Radio.Group style={{ display: "flex" }}>
           {types.map((v) => (
             <Radio.Button
               key={v.value}
               onClick={() => setType(v.value)}
-              style={{ fontSize: "13px", flex: 1, textAlign: 'center' }}
+              style={{ fontSize: "13px", flex: 1, textAlign: "center" }}
               value={v.value}
             >
               {v.name}
