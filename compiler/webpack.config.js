@@ -13,7 +13,7 @@ fse.mkdirp(bundlesPath);
  */
 const paths = {
   htmlTemplate: path.join(__dirname, "../.runtime/index.html"),
-  sourcePath: path.resolve(__dirname, "../src"),
+  sourcePath: path.resolve(__dirname, "../packages"),
   nodeModulePath: path.resolve(__dirname, "../node_modules")
 };
 
@@ -161,9 +161,6 @@ module.exports = () => {
     resolve: {
       modules: [paths.nodeModulePath],
       extensions: [".ts", ".tsx", ".js", ".json", ".jsx", ".css"],
-      alias: {
-        "@": path.resolve("src")
-      }
     },
     // performance: {
     //   hints: "warning",
