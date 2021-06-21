@@ -1,8 +1,10 @@
-import { IS_H5, trackLog } from "@davinci/core";
-import { Image, View } from "@tarojs/components";
-import Taro from "@tarojs/taro";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { View, Image } from "@tarojs/components";
+import Taro from "@tarojs/taro";
+import { sendEvenLog } from "@gr-davinci/core";
+
+const IS_H5 = process.env.TARO_ENV === "h5";
+
 import "./index.less";
 
 // import { Document, Page } from "react-pdf";
@@ -31,11 +33,10 @@ const IconDict = {
 
 type docProps = {
   list: docItem[];
-  id: string;
 };
 
 type docItem = {
-  url: string;
+  src: string;
   name: string;
   size: number;
 };
@@ -82,6 +83,9 @@ function formatKB(kb: number, decimals = 2) {
 }
 
 const loadScript = (src: string, cb: Function) => {
+  if (!IS_H5) {
+    return;
+  }
   return new Promise((resolve: Function, reject) => {
     const _id = `__aliyun_web_office_sdk`;
     if (document.querySelector(_id)) {
@@ -102,8 +106,27 @@ const loadScript = (src: string, cb: Function) => {
   });
 };
 
+// const mock=[
+//   {
+//     name: "四年级英语深度课程EXCEL",
+//     src: `https://static.guorou.net/davinci/test_doc/wps.xls`,
+//   },
+//   {
+//     name: "四年级英语深度课程PDF",
+//     src: `https://static.guorou.net/davinci/test_doc/wps.pdf`,
+//   },
+//   {
+//     name: "四年级英语深度课程PPT",
+//     src: `https://static.guorou.net/davinci/test_doc/wps.ppt`,
+//   },
+//   {
+//     name: "四年级英语深度课程WORD",
+//     src: `https://static.guorou.net/davinci/test_doc/wps.doc`,
+//   },
+// ]
 function DvDocViewer(props: docProps) {
-  const { list = [], id, ...p } = props;
+  const { list, ...p } = props;
+
   const [previewData, setPreviewData] = useState({
     preSrc: "",
     preDocName: "",
@@ -111,30 +134,15 @@ function DvDocViewer(props: docProps) {
   });
 
   function clickTrack() {
-    trackLog({
-      e_c: "page",
+    sendEvenLog({
+      e_c: "activity",
       e_a: "click",
-      e_n: "document_component_click",
+      e_n: "doc_view",
       other: {
-        component_id: id,
-        component_name: ''
-      }
+        key: "value_bar", // 打点table
+      },
     });
   }
-
-  useEffect(()=>{
-    if (previewData.isPreview) {
-      trackLog({
-        e_c: "page",
-        e_a: "click",
-        e_n: "document_preview_expose",
-        other: {
-          material_id: "",
-          document_name: previewData.preDocName,
-        }
-      });
-    }
-  },[previewData.isPreview])
 
   useEffect(() => {
     loadScript(
@@ -144,36 +152,49 @@ function DvDocViewer(props: docProps) {
       }
     );
   }, []);
+  const { debug = "" } = Taro.useRouter()?.params || {};
+
   const { isPreview, preSrc, preDocName } = previewData;
   return (
-    <View id={id} className="dv_doc_viewer" {...p}>
+    <View className="dv_doc_viewer" {...p}>
       {Array.isArray(list) &&
-        (list.length > 0 ? list.map(({ url = "", name = "-", size = 0 }, index) => (
+        list.map(({ src = "", name = "-", size = 0 }, index) => (
           <View
             className="doc_item"
             key={index}
             onClick={async () => {
-              clickTrack();
-              const preSrc = url.replace(
+              const url = src.replace(
                 "https://static.guorou.net",
                 "oss://static-zy-com"
               );
-              const { data } = await axios.get(
-                "http://portalhome.uae.shensz.local/davinciapi/api/1/core/util/office/preview_url",
-                {
-                  params: {
-                    url: preSrc,
-                  },
-                }
-              );
+              const { data } = await Taro.request({
+                method: "GET",
+                url: "https://portal.guorou.net/davinciapi/api/1/core/util/office/preview_url",
+                data: {
+                  url,
+                },
+              });
+
               let { code = -1, msg, data: res } = data;
               const { PreviewURL, AccessToken } = res;
               console.log(data, data.data);
               if (code === -1) {
                 console.error(msg);
               }
+              if (!IS_H5) {
+                Taro.navigateTo({
+                  url: `/pages/office/index?imm_url=${encodeURIComponent(
+                    PreviewURL
+                  )}&imm_token=${encodeURIComponent(
+                    AccessToken
+                  )}&title=${name}&file_url=${encodeURIComponent(
+                    src
+                  )}&debug=${debug}`,
+                });
+                return;
+              }
               setPreviewData({
-                preSrc:url,
+                preSrc: src,
                 preDocName: name,
                 isPreview: true,
               });
@@ -188,7 +209,7 @@ function DvDocViewer(props: docProps) {
           >
             <Image
               className="doc_icon"
-              src={IconDict[(url.match(/.*\.(.*)$/) || ["", ""])[1]]}
+              src={IconDict[(src.match(/.*\.(.*)$/) || ["", ""])[1]]}
             />
             <View className="doc_content">
               <View className="doc_title one-line">{name}</View>
@@ -197,16 +218,8 @@ function DvDocViewer(props: docProps) {
             <Image className="entry_icon" src={EntryIcon} />
             <View className="divider_down" />
           </View>
-        ))  : <View className="doc_item default-status">
-          <Image
-              className="doc_icon"
-              src={IconDict.doc}
-            />
-          <View className="doc_content">
-            <View className="doc_title one-line">请选择文件</View>
-          </View>
-        </View>)}
-      {isPreview && (
+        ))}
+      {IS_H5 && isPreview && (
         <View className="doc_preview_modal">
           <View className="doc_preview_header">
             <Image
@@ -235,20 +248,12 @@ function DvDocViewer(props: docProps) {
                 });
                 return;
               }
-              trackLog({
-                e_c: "page",
-                e_a: "click",
-                e_n: "click_document_download",
-                other: {
-                  material_id: "",
-                  document_name: preDocName,
-                }
-              });
               if (/\.pdf$/.test(preSrc)) {
                 downloadPDF({ url: preSrc, name: preDocName });
               } else {
                 window.location.href = preSrc;
               }
+              clickTrack();
             }}
             className="doc_download_icon"
             src={DownloadIcon}
