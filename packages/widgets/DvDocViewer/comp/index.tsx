@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { sendEvenLog } from "@gr-davinci/core";
+import { trackLog } from "@gr-davinci/core";
 
 const IS_H5 = process.env.TARO_ENV === "h5";
 
@@ -33,10 +33,11 @@ const IconDict = {
 
 type docProps = {
   list: docItem[];
+  id: string;
 };
 
 type docItem = {
-  src: string;
+  url: string;
   name: string;
   size: number;
 };
@@ -83,9 +84,6 @@ function formatKB(kb: number, decimals = 2) {
 }
 
 const loadScript = (src: string, cb: Function) => {
-  if (!IS_H5) {
-    return;
-  }
   return new Promise((resolve: Function, reject) => {
     const _id = `__aliyun_web_office_sdk`;
     if (document.querySelector(_id)) {
@@ -106,27 +104,8 @@ const loadScript = (src: string, cb: Function) => {
   });
 };
 
-// const mock=[
-//   {
-//     name: "四年级英语深度课程EXCEL",
-//     src: `https://static.guorou.net/davinci/test_doc/wps.xls`,
-//   },
-//   {
-//     name: "四年级英语深度课程PDF",
-//     src: `https://static.guorou.net/davinci/test_doc/wps.pdf`,
-//   },
-//   {
-//     name: "四年级英语深度课程PPT",
-//     src: `https://static.guorou.net/davinci/test_doc/wps.ppt`,
-//   },
-//   {
-//     name: "四年级英语深度课程WORD",
-//     src: `https://static.guorou.net/davinci/test_doc/wps.doc`,
-//   },
-// ]
 function DvDocViewer(props: docProps) {
-  const { list, ...p } = props;
-
+  const { list = [], id, ...p } = props;
   const [previewData, setPreviewData] = useState({
     preSrc: "",
     preDocName: "",
@@ -134,15 +113,30 @@ function DvDocViewer(props: docProps) {
   });
 
   function clickTrack() {
-    sendEvenLog({
-      e_c: "activity",
+    trackLog({
+      e_c: "page",
       e_a: "click",
-      e_n: "doc_view",
+      e_n: "document_component_click",
       other: {
-        key: "value_bar", // 打点table
-      },
+        component_id: id,
+        component_name: ''
+      }
     });
   }
+
+  useEffect(()=>{
+    if (previewData.isPreview) {
+      trackLog({
+        e_c: "page",
+        e_a: "click",
+        e_n: "document_preview_expose",
+        other: {
+          material_id: "",
+          document_name: previewData.preDocName,
+        }
+      });
+    }
+  },[previewData.isPreview])
 
   useEffect(() => {
     loadScript(
@@ -152,18 +146,18 @@ function DvDocViewer(props: docProps) {
       }
     );
   }, []);
-  const { debug = "" } = Taro.useRouter()?.params || {};
-
+  // const { debug = "" } = Taro.useRouter()?.params || {};
   const { isPreview, preSrc, preDocName } = previewData;
   return (
-    <View className="dv_doc_viewer" {...p}>
+    <View id={id} className="dv_doc_viewer" {...p}>
       {Array.isArray(list) &&
-        list.map(({ src = "", name = "-", size = 0 }, index) => (
+        (list.length > 0 ? list.map(({ url = "", name = "-", size = 0 }, index) => (
           <View
             className="doc_item"
             key={index}
             onClick={async () => {
-              const url = src.replace(
+              clickTrack();
+              const preSrc = url.replace(
                 "https://static.guorou.net",
                 "oss://static-zy-com"
               );
@@ -172,10 +166,9 @@ function DvDocViewer(props: docProps) {
                 url:
                   "https://portal.guorou.net/davinciapi/api/1/core/util/office/preview_url",
                 data: {
-                  url,
+                  url: preSrc,
                 },
               });
-
               let { code = -1, msg, data: res } = data;
               const { PreviewURL, AccessToken } = res;
               console.log(data, data.data);
@@ -189,13 +182,13 @@ function DvDocViewer(props: docProps) {
                   )}&imm_token=${encodeURIComponent(
                     AccessToken
                   )}&title=${name}&file_url=${encodeURIComponent(
-                    src
-                  )}&debug=${debug}`,
+                    preSrc
+                  )}&debug=${0}`,
                 });
                 return;
               }
               setPreviewData({
-                preSrc: src,
+                preSrc: preSrc,
                 preDocName: name,
                 isPreview: true,
               });
@@ -210,14 +203,25 @@ function DvDocViewer(props: docProps) {
           >
             <Image
               className="doc_icon"
-              src={IconDict[(src.match(/.*\.(.*)$/) || ["", ""])[1]]}
+              src={IconDict[(url.match(/.*\.(.*)$/) || ["", ""])[1]]}
             />
             <View className="doc_content">
-              <View className="doc_title one-line">请选择文件</View>
+              <View className="doc_title one-line">{name}</View>
+              <View className="doc_size">{formatKB(size)}</View>
             </View>
+            <Image className="entry_icon" src={EntryIcon} />
+            <View className="divider_down" />
           </View>
-        ))}
-      {IS_H5 && isPreview && (
+        ))  : <View className="doc_item default-status">
+          <Image
+              className="doc_icon"
+              src={IconDict.doc}
+            />
+          <View className="doc_content">
+            <View className="doc_title one-line">请选择文件</View>
+          </View>
+        </View>)}
+      {isPreview && (
         <View className="doc_preview_modal">
           <View className="doc_preview_header">
             <Image
@@ -246,12 +250,20 @@ function DvDocViewer(props: docProps) {
                 });
                 return;
               }
+              trackLog({
+                e_c: "page",
+                e_a: "click",
+                e_n: "click_document_download",
+                other: {
+                  material_id: "",
+                  document_name: preDocName,
+                }
+              });
               if (/\.pdf$/.test(preSrc)) {
                 downloadPDF({ url: preSrc, name: preDocName });
               } else {
                 window.location.href = preSrc;
               }
-              clickTrack();
             }}
             className="doc_download_icon"
             src={DownloadIcon}
