@@ -19,7 +19,7 @@ const createDevServerConfig = require("./webpackDevServer.config");
 const {
   PORT = devServerPort, HOST = "0.0.0.0"
 } = process.env;
-const srcFolder = path.join(__dirname, "../packsges");
+const srcFolder = path.join(__dirname, "../packages");
 const watchSourceDir = srcFolder;
 
 const makeWorkingDir = () => {
