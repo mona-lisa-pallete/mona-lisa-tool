@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Video } from "@tarojs/components";
 import "./index.less";
-import { IS_H5, trackLog } from "@davinci/core";
+import { IS_H5, trackLog } from "@gr-davinci/core";
 
 // const mock = {
 //   src: "https://static.guorou.net/grow/grow_mp/video.mp4",
@@ -13,18 +13,22 @@ import { IS_H5, trackLog } from "@davinci/core";
 /**
  * @see https://developers.weixin.qq.com/miniprogram/dev/component/video.html
  */
-function DvVideoVertical(props: {style: any, type: 'horizontal'|'vertical', id: string}) {
-  const { style, type = 'horizontal', id } = props;
-  const time = useRef(0)
-  const playTimer = useRef<any>()
+function DvVideoVertical(props: {
+  style: any;
+  type: "horizontal" | "vertical";
+  id: string;
+}) {
+  const { style, type = "horizontal", id } = props;
+  const time = useRef(0);
+  const playTimer = useRef<any>();
 
-  const height = type === 'horizontal' ? undefined: '100vh';
+  const height = type === "horizontal" ? undefined : "100vh";
   const formatStyle =
     typeof style === "object"
       ? {
-        height,
-        ...style,
-        position: "relative", // 覆盖默认传的 absolute 值
+          height,
+          ...style,
+          position: "relative", // 覆盖默认传的 absolute 值
         }
       : style;
 
@@ -49,56 +53,56 @@ function DvVideoVertical(props: {style: any, type: 'horizontal'|'vertical', id: 
           e_n: "click_play_video",
           other: {
             component_id: id,
-            component_name: '',
+            component_name: "",
             video_material_id: "",
-            video_material_name: ''
-          }
+            video_material_name: "",
+          },
         });
-        playTimer.current = setInterval(()=>{
+        playTimer.current = setInterval(() => {
           trackLog({
             e_c: "page",
             e_a: "click",
-            e_n: type === 'horizontal' ? "watch_video": "watch_video2",
+            e_n: type === "horizontal" ? "watch_video" : "watch_video2",
             other: {
               component_id: id,
-              component_name: '',
+              component_name: "",
               video_material_id: "",
-              video_material_name: ''
-            }
+              video_material_name: "",
+            },
           });
-        }, 5000)
+        }, 5000);
       }}
-      onTimeUpdate={(e)=>{
-        time.current = e.detail.currentTime
+      onTimeUpdate={(e) => {
+        time.current = e.detail.currentTime;
       }}
-      onFullscreenChange={(e)=>{
+      onFullscreenChange={(e) => {
         trackLog({
           e_c: "page",
-          e_a: "click", 
-          e_n: e.detail.fullScreen ? "click_full_screen" : 'cancel_full_screen',
+          e_a: "click",
+          e_n: e.detail.fullScreen ? "click_full_screen" : "cancel_full_screen",
           other: {
             component_id: id,
-            component_name: '',
+            component_name: "",
             video_material_id: "",
-            video_material_name: ''
-          }
+            video_material_name: "",
+          },
         });
       }}
-      onPause={()=> {
+      onPause={() => {
         if (playTimer.current) {
-          clearInterval(playTimer.current)
+          clearInterval(playTimer.current);
         }
         trackLog({
           e_c: "page",
           e_a: "click",
-          e_n: type === 'horizontal' ? "click_stop_video": "stop_play_video",
+          e_n: type === "horizontal" ? "click_stop_video" : "stop_play_video",
           other: {
             component_id: id,
-            component_name: '',
+            component_name: "",
             video_material_id: "",
-            video_material_name: '',
-            time: time.current
-          }
+            video_material_name: "",
+            time: time.current,
+          },
         });
       }}
       {...{

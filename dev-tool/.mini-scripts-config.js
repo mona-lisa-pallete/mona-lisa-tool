@@ -18,12 +18,12 @@ module.exports = {
     externals: {
       react: "reactVendor.React",
       "react-dom": "reactVendor.ReactDOM",
-      "@davinci/core": "davinciCore",
       antd: "antd",
       axios: "axios",
       "@tarojs/components": "taroVendor.components",
       "@tarojs/taro": "taroVendor.taro",
       "@tarojs/runtime": "taroVendor.runtime",
+      "@gr-davinci/core": "davinciCore",
     },
 
     plugins: [

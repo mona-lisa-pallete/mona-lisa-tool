@@ -169,7 +169,8 @@ function DvDocViewer(props: docProps) {
               );
               const { data } = await Taro.request({
                 method: "GET",
-                url: "https://portal.guorou.net/davinciapi/api/1/core/util/office/preview_url",
+                url:
+                  "https://portal.guorou.net/davinciapi/api/1/core/util/office/preview_url",
                 data: {
                   url,
                 },
@@ -212,11 +213,8 @@ function DvDocViewer(props: docProps) {
               src={IconDict[(src.match(/.*\.(.*)$/) || ["", ""])[1]]}
             />
             <View className="doc_content">
-              <View className="doc_title one-line">{name}</View>
-              <View className="doc_size">{formatKB(size)}</View>
+              <View className="doc_title one-line">请选择文件</View>
             </View>
-            <Image className="entry_icon" src={EntryIcon} />
-            <View className="divider_down" />
           </View>
         ))}
       {IS_H5 && isPreview && (

@@ -7,7 +7,7 @@ export default defineConfig({
   define: {
     react: "reactVendor.React",
     "react-dom": "reactVendor.ReactDOM",
-    "@davinci/core": "davinciCore",
+    "@gr-davinci/core": "davinciCore",
     antd: "antd",
     axios: "axios",
     "@tarojs/components": "taroVendor.components",

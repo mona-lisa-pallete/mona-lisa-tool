@@ -57,6 +57,20 @@ const PlatformContext = {
         />
       </div>
     ),
+    Upload: ({ onSelected }) => (
+      <div>
+        输入 url 地址调试
+        <Input
+          onChange={(e) => {
+            const value = e.target.value;
+            onSelected({
+              src: value,
+              url: value,
+            });
+          }}
+        />
+      </div>
+    ),
     ColorPicker: ({ onChange }) => (
       <div>
         输入 RGB 数值调试

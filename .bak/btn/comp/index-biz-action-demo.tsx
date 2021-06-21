@@ -1,6 +1,6 @@
 import { Button, View } from "@tarojs/components";
 import React from "react";
-import { isUserLogged } from "@davinci/sdk";
+import { isUserLogged } from "@gr-davinci/sdk";
 import "./index.less";
 
 const DvButton = ({ onClick, children }) => {
