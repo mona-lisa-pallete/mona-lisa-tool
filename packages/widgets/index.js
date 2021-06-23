@@ -1,10 +1,10 @@
-export * from './DDDButton111/comp'
-export * from './DvButton/comp'
-export * from './DvButtonContainer/comp'
-export * from './DvDiv/comp'
-export * from './DvDocViewer/comp'
-export * from './DvImage/comp'
-export * from './DvText/comp'
-export * from './DvVideo/comp'
-export * from './DvVideoVertical/comp'
-export * from './LoginModal/comp'
+export { default as DDDButton111 } from "./DDDButton111/comp";
+export { default as DvButton } from "./DvButton/comp";
+export { default as DvButtonContainer } from "./DvButtonContainer/comp";
+export { default as DvDiv } from "./DvDiv/comp";
+export { default as DvDocViewer } from "./DvDocViewer/comp";
+export { default as DvImage } from "./DvImage/comp";
+export { default as DvText } from "./DvText/comp";
+export { default as DvVideo } from "./DvVideo/comp";
+export { default as DvVideoVertical } from "./DvVideoVertical/comp";
+export { default as LoginModal } from "./LoginModal/comp";
