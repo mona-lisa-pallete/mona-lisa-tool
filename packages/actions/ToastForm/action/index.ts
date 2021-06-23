@@ -1,4 +1,4 @@
-function (args) {
+export function toast(args) {
   const {
     props
   } = args;

@@ -1,4 +1,4 @@
-function (args) {
+export function navigateTo(args) {
   const {
     props
   } = args;

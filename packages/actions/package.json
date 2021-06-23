@@ -1,0 +1,13 @@
+{
+  "name": "@gr-davinci/actions",
+  "version": "0.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "release": "npm publish"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {}
+}
