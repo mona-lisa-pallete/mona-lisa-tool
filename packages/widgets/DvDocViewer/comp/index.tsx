@@ -3,7 +3,7 @@ import { View, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import { trackLog } from "@gr-davinci/core";
 
-const IS_H5 = process.env.TARO_ENV === "h5";
+const IS_MINI = process.env.TARO_ENV === "weapp";
 
 import "./index.less";
 
@@ -43,7 +43,7 @@ type docItem = {
 };
 
 async function downloadPDF({ url, name }) {
-  if (!IS_H5) {
+  if (IS_MINI) {
     Taro.showToast({
       title: "下载pdf只能在非小程序页面使用",
       icon: "none",
@@ -175,7 +175,7 @@ function DvDocViewer(props: docProps) {
               if (code === -1) {
                 console.error(msg);
               }
-              if (!IS_H5) {
+              if (IS_MINI) {
                 Taro.navigateTo({
                   url: `/pages/office/index?imm_url=${encodeURIComponent(
                     PreviewURL
@@ -243,7 +243,7 @@ function DvDocViewer(props: docProps) {
           ></div>
           <Image
             onClick={() => {
-              if (!IS_H5) {
+              if (IS_MINI) {
                 Taro.showToast({
                   title: "下载文件只能在非小程序页面使用",
                   icon: "none",
