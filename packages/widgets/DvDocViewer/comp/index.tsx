@@ -157,7 +157,7 @@ function DvDocViewer(props: docProps) {
             key={index}
             onClick={async () => {
               clickTrack();
-              const preSrc = url.replace(
+              const ossUrl = url.replace(
                 "https://static.guorou.net",
                 "oss://static-zy-com"
               );
@@ -166,7 +166,7 @@ function DvDocViewer(props: docProps) {
                 url:
                   "https://portal.guorou.net/davinciapi/api/1/core/util/office/preview_url",
                 data: {
-                  url: preSrc,
+                  url: ossUrl,
                 },
               });
               let { code = -1, msg, data: res } = data;
@@ -182,13 +182,13 @@ function DvDocViewer(props: docProps) {
                   )}&imm_token=${encodeURIComponent(
                     AccessToken
                   )}&title=${name}&file_url=${encodeURIComponent(
-                    preSrc
+                    url
                   )}&debug=${0}`,
                 });
                 return;
               }
               setPreviewData({
-                preSrc: preSrc,
+                preSrc: url,
                 preDocName: name,
                 isPreview: true,
               });
