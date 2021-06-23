@@ -14,9 +14,9 @@
   "license": "ISC",
   "devDependencies": {
     "@mini-code/env-scripts": "^0.0.6",
-    "@tarojs/cli": "^3.2.8",
-    "@tarojs/mini-runner": "^3.2.8",
-    "@tarojs/webpack-runner": "^3.2.8",
+    "@tarojs/cli": "^3.2.13",
+    "@tarojs/mini-runner": "^3.2.13",
+    "@tarojs/webpack-runner": "^3.2.13",
     "@types/antd": "1.0.0",
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
@@ -29,10 +29,10 @@
     "webpack-dev-middleware": "^4.1.0"
   },
   "dependencies": {
-    "@tarojs/components": "^3.2.8",
-    "@tarojs/react": "^3.2.8",
-    "@tarojs/runtime": "^3.2.8",
-    "@tarojs/taro": "^3.2.8",
+    "@tarojs/components": "^3.2.13",
+    "@tarojs/react": "^3.2.13",
+    "@tarojs/runtime": "^3.2.13",
+    "@tarojs/taro": "^3.2.13",
     "@types/webpack-dev-server": "^3.11.4",
     "antd": "^4.15.6",
     "axios": "^0.21.1",
