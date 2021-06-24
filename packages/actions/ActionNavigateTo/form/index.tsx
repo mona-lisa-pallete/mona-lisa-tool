@@ -71,22 +71,19 @@ const ToastActionForm: React.FC<ToastActionFormProps> = (props) => {
           </Select>
         </Form.Item>
       )} */}
-      {type === PageType.H5 && (
-        <Form.Item name="url">
-          <TextArea placeholder="请输入页面url" />
-        </Form.Item>
-      )}
 
-      {type === PageType.Mini && (
-        <>
-          <Form.Item name="id">
-            <Input placeholder="请输入小程序ID" />
-          </Form.Item>
-          <Form.Item name="url">
-            <TextArea placeholder="请输入URL" />
-          </Form.Item>
-        </>
-      )}
+      <Form.Item hidden={type !== PageType.H5} name="urlH5">
+        <TextArea placeholder="请输入页面url: https://path" />
+      </Form.Item>
+      <>
+      {/* 小程序 */}
+      <Form.Item hidden={type !== PageType.Mini} name="urlMini">
+        <TextArea placeholder="请输入URL: /pages/path" />
+      </Form.Item>
+      <Form.Item hidden={type !== PageType.Mini} name="appId">
+        <Input placeholder="小程序ID，置空为跳转当前小程序" />
+      </Form.Item>
+      </>
     </Form>
   );
 };
