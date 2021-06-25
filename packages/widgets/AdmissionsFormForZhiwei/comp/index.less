@@ -25,4 +25,106 @@
     color: white;
     background: red;
   }
+
+  .modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+  }
+
+  .modal-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 20px;
+  }
+
+  .modal-head {
+    position: relative;
+    line-height: 20px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .grade-container {
+    display: flex;
+  }
+
+  .grade-item {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #eee;
+  }
+
+  .grade-from,
+  .grade-to {
+    text-align: center;
+  }
+
+  .grade-to {
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  .selected {
+    border: 1px solid red;
+  }
+
+  .form {
+    padding: 20px;
+  }
+
+  .form-item {
+    margin: 10px 0;
+  }
+
+  .label {
+    position: relative;
+    padding-left: 10px;
+  }
+
+  .label::after {
+    content: " ";
+    position: absolute;
+    left: 0;
+    width: 5px;
+    height: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 0 2px 2px 0;
+    background: red;
+  }
+
+  .input,
+  .select {
+    background: #eeee;
+    padding: 2px 4px;
+    border-radius: 2px;
+    margin-top: 8px;
+  }
+
+  input {
+    background: transparent;
+  }
+
+  :-ms-input-placeholder {
+    color: #ccc;
+  }
+
+  .school-name {
+    text-align: center;
+    color: white;
+    background: red;
+    padding: 4px 0;
+  }
 }

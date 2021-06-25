@@ -3,6 +3,8 @@ import Taro from '@tarojs/taro';
 import React, { useCallback, useState } from "react";
 import Address from './address';
 import LoginFormWrapper from './DvLoginWrapper';
+import FormComponent from './form';
+
 import "./index.less";
 
 
@@ -12,7 +14,7 @@ import "./index.less";
 interface AdmissionsFormForZhiweiProps {}
 
 const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   const onLogin = useCallback(() => {
     setIsLogin(true);
@@ -36,6 +38,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
           });
         }}
       />}
+    <FormComponent />
     <Address defaultValue={{}} onChange={onAddressChange}/>
     <Button className="submit-btn">立即报名</Button>
   </View>;
