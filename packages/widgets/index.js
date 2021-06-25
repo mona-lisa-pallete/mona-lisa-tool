@@ -8,3 +8,4 @@ export { default as DvText } from "./DvText/comp";
 export { default as DvVideo } from "./DvVideo/comp";
 export { default as DvVideoVertical } from "./DvVideoVertical/comp";
 export { default as LoginModal } from "./LoginModal/comp";
+export { default as AdmissionsFormForZhiwei } from "./AdmissionsFormForZhiwei/comp";
