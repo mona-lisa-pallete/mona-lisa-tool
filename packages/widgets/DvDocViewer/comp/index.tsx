@@ -41,6 +41,21 @@ type docItem = {
   name: string;
   size: number;
 };
+function dvOpenDocument(url: string) {
+  Taro.downloadFile({
+    url,
+    success: function (res) {
+      const filePath = res.tempFilePath;
+      Taro.openDocument({
+        filePath: filePath,
+        showMenu: true, // 提供文件发送与收藏，以代替文件下载
+        success: function (res) {
+          console.log('打开文档成功');
+        },
+      });
+    },
+  });
+}
 
 async function downloadPDF({ url, name }) {
   if (IS_MINI) {
@@ -131,8 +146,7 @@ function DvDocViewer(props: docProps) {
         e_a: "click",
         e_n: "document_preview_expose",
         other: {
-          material_id: "",
-          document_name: previewData.preDocName,
+          material_id: id,
         }
       });
     }
@@ -176,15 +190,7 @@ function DvDocViewer(props: docProps) {
                 console.error(msg);
               }
               if (IS_MINI) {
-                Taro.navigateTo({
-                  url: `/pages/office/index?imm_url=${encodeURIComponent(
-                    PreviewURL
-                  )}&imm_token=${encodeURIComponent(
-                    AccessToken
-                  )}&title=${name}&file_url=${encodeURIComponent(
-                    url
-                  )}&debug=${0}`,
-                });
+                dvOpenDocument(url)
                 return;
               }
               setPreviewData({
