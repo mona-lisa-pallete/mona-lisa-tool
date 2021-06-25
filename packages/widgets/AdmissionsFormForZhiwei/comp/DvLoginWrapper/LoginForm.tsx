@@ -1,7 +1,7 @@
 import * as core from '@gr-davinci/core';
 import { Button, Input, View } from '@tarojs/components';
 import { showToast } from '@tarojs/taro';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import useCountDown from './hooks/useCountDown';
 import useFocus from './hooks/useFocus';
 import './LoginForm.less';

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { useCallback, useState, useRef } from "react";
+import React, { useCallback, useState, useRef } from "react";
 
 const IS_H5 = process.env.TARO_ENV === "h5";
 // const ENV = Taro.getEnv();

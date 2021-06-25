@@ -1,5 +1,5 @@
 import { View } from '@tarojs/components';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import LoginForm from './LoginForm';
 import './index.less';
 
