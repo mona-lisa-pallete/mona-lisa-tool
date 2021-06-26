@@ -48,6 +48,7 @@ const DvText: React.FC<DvTextProps & EventProps> = (props) => {
         fontSize: dvPxTransform(fontSize),
         left: dvPxTransform(style?.left),
         top: dvPxTransform(style?.top),
+        height: dvPxTransform(style?.height),
         color: color,
         fontStyle: font?.fontStyle || "normal",
         letterSpacing: dvPxTransform(font?.letterSpacing) || "normal",
