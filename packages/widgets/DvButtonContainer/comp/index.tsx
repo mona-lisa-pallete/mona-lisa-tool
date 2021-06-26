@@ -33,6 +33,7 @@ const DvButtonContainer = ({ onClick, children, url, edit, style, id }) => {
         width: dvPxTransform(style?.width),
         left: dvPxTransform(style?.left),
         top: dvPxTransform(style?.top),
+        height: dvPxTransform(style?.height),
       }}
       className="dv-btn"
       onClick={onClick}

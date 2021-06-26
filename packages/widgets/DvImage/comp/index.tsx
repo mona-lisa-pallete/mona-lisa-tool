@@ -58,6 +58,7 @@ const DvImage: React.FC<DvImageProps & EventProps> = (props) => {
         width: dvPxTransform(style?.width),
         left: dvPxTransform(style?.left),
         top: dvPxTransform(style?.top),
+        height: dvPxTransform(style?.height),
       }}
       className="dv-image"
       onClick={() => {
