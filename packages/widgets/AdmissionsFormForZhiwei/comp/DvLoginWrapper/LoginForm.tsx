@@ -191,10 +191,7 @@ const LoginForm = (props: CompProps) => {
         icon: 'none',
         title: '获取验证码中..',
       });
-      // TODO: test
-      if (onLoginSuccess) {
-        onLoginSuccess(userInfo);
-      }
+
       const data = await getSignInSms({
         phone: phoneNumber,
       });

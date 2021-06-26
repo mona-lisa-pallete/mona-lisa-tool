@@ -40,7 +40,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       />}
     <FormComponent />
     <Address defaultValue={{}} onChange={onAddressChange}/>
-    <Button className="submit-btn">立即报名</Button>
+    <Button onClick={() => setIsLogin(false)} className="submit-btn">立即报名</Button>
   </View>;
 };
 
