@@ -1,14 +1,14 @@
 {
   "version": "1.0.0",
-  "elementRef": "toast",
+  "elementRef": "navigateToForm",
   "logo": "https://static.guorou.net/course-static/a773da622ecc438ca3470f14977afab0.png",
-  "label": "图片组件",
+  "label": "跳转行为",
   "eventAttr": [{ "alias": "点击", "type": "onClick" }],
   "propFormConfig": {
     "useSystemForm": true,
     "useCustomForm": true,
-    "customFormRef": "DvTextForm",
+    "customFormRef": "navigateToForm",
     "useActionForm": true
   },
-  "classification": "Other"
+  "classification": "Button"
 }
