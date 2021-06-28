@@ -114,7 +114,7 @@ export const DevContainer = ({ selectedDevData }: any) => {
 
   const editorRef = React.createRef<LowCodeEditor>();
 
-  const [showPanel, setShowPanel] = useState(true);
+  const [showPanel, setShowPanel] = useState(false);
 
   useEffect(() => {
     editorRef?.current?.onChange(JSON.stringify(formState));

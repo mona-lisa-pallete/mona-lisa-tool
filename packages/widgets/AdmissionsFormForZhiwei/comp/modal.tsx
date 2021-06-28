@@ -5,6 +5,7 @@ interface ModalProps {
   title: string;
   visiable: boolean;
   emitHide: () => void;
+  foot?: JSX.Element;
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
@@ -18,6 +19,7 @@ const Modal: React.FC<ModalProps> = (props) => {
           </View>
         </View>
         <View className="modal-body">{props.children}</View>
+        {props.foot}
       </View>
     </View>
   );

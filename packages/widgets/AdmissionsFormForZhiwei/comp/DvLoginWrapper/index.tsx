@@ -13,6 +13,7 @@ type CompProps = {
   onLoginSuccess?: Function;
   onInputPhone?: Function;
   onGetVerify?: Function;
+  loginTip: string;
 };
 const LoginFormWrapper = (props: CompProps) => {
   const { onLoginFail, onLoginSuccess, onInputPhone, onGetVerify } = props;
@@ -21,14 +22,14 @@ const LoginFormWrapper = (props: CompProps) => {
   return (
     <View className="login_form_wrapper">
       <View className="login_method_wrap">
-        <View
+        {/* <View
           onClick={() => setCurrentMethod(LOGIN_TYPE.SMS_LOGIN)}
           className={`login_method ${
             currentMethod === LOGIN_TYPE.SMS_LOGIN ? 'active' : ''
           }`}
         >
           验证码登录
-        </View>
+        </View> */}
         {/* <View className='sep_mark'>|</View>
         <View
           onClick={() => setCurrentMethod(LOGIN_TYPE.PASSWORD_LOGIN)}
@@ -41,7 +42,7 @@ const LoginFormWrapper = (props: CompProps) => {
       </View>
 
       <View className="login_tip">
-        为了给您提供更好的服务，请先登录您的手机号
+        {props.loginTip}
       </View>
       <LoginForm
         onGetVerify={onGetVerify}
@@ -49,6 +50,9 @@ const LoginFormWrapper = (props: CompProps) => {
         onLoginFail={onLoginFail}
         onLoginSuccess={onLoginSuccess}
       />
+      <View className="user-agreement">
+        “登录”表示您同意<a href="https://wx.guorou.net/m/policy" target="_blank">用户协议</a>和<a href="https://wx.guorou.net/m/privacy" target="_blank">隐私政策</a>
+      </View>
     </View>
   );
 };

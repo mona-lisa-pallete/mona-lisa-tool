@@ -1,5 +1,5 @@
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
-const genAppInfo = require('./scripts/genAppInfo')
+const genAppInfo = require("./scripts/genAppInfo");
 
 module.exports = {
   paths: {
@@ -34,6 +34,6 @@ module.exports = {
     ],
   },
   preRun: () => {
-    genAppInfo()
-  }
+    genAppInfo();
+  },
 };

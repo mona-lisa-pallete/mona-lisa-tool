@@ -1,6 +1,6 @@
 import * as core from '@gr-davinci/core';
 import { Button, Input, View } from '@tarojs/components';
-import { showToast } from '@tarojs/taro';
+import { showToast, request } from '@tarojs/taro';
 import React, { useState } from 'react';
 import useCountDown from './hooks/useCountDown';
 import useFocus from './hooks/useFocus';
@@ -18,7 +18,7 @@ export const registerLogin = `${sellApiHost}/sellapi/1/auth/register_login`;
 
 export async function signIn(params) {
   try {
-    const { data: res }: any = await Taro.request({
+    const { data: res }: any = await request({
       method: 'POST',
       url: registerLogin,
       data: {
@@ -66,7 +66,7 @@ export async function getSignInSms(
   };
 
   try {
-    const { data: res }: any = await Taro.request({
+    const { data: res }: any = await request({
       method: 'POST',
       url: registerLoginSms,
       data: mergedParams,
