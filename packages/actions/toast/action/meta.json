@@ -1,4 +1,5 @@
 {
+  "elementRef": "toast",
   "type": "toast",
   "label": "toast提示"
 }
