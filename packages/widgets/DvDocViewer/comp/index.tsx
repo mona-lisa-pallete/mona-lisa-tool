@@ -41,19 +41,25 @@ type docItem = {
   name: string;
   size: number;
 };
-function dvOpenDocument(url: string) {
-  Taro.downloadFile({
-    url,
-    success: function (res) {
-      const filePath = res.tempFilePath;
-      Taro.openDocument({
-        filePath: filePath,
-        showMenu: true, // 提供文件发送与收藏，以代替文件下载
-        success: function (res) {
-          console.log('打开文档成功');
-        },
-      });
-    },
+async function dvOpenDocument(url: string) {
+  return new Promise((resolve, reject) => {
+    Taro.downloadFile({
+      url,
+      success: function (res) {
+        const filePath = res.tempFilePath;
+        console.log('下载文档成功');
+        Taro.openDocument({
+          filePath: filePath,
+          showMenu: true, // 提供文件发送与收藏，以代替文件下载
+          success: function (res) {
+            console.log('打开文档成功');
+            resolve(true);
+          },
+          fail: reject,
+        });
+      },
+      fail: reject
+  })
   });
 }
 
@@ -190,7 +196,17 @@ function DvDocViewer(props: docProps) {
                 console.error(msg);
               }
               if (IS_MINI) {
-                dvOpenDocument(url)
+                Taro.showLoading({
+                  title: '文档加载中..',
+                })
+                dvOpenDocument(url).then(() => {
+                  Taro.hideLoading()
+                }, () => {
+                  Taro.hideLoading()
+                  Taro.showToast({
+                    title: '预览失败',
+                  })
+                });
                 return;
               }
               setPreviewData({
