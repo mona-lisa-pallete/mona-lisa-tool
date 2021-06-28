@@ -15,10 +15,10 @@ declare var aliyun: any;
 
 const EntryIcon = `${baseImage}/entry.png`;
 const BackIcon = `${baseImage}/return.png`;
-const PdfIcon = `${baseImage}/pdf.png`;
-const WordIcon = `${baseImage}/word.png`;
-const ExcelIcon = `${baseImage}/excel.png`;
-const PPTIcon = `${baseImage}/ppt.png`;
+const PdfIcon = `${baseImage}/pdf_2x.png`;
+const WordIcon = `${baseImage}/word_2x.png`;
+const ExcelIcon = `${baseImage}/excel_2x.png`;
+const PPTIcon = `${baseImage}/ppt_2x.png`;
 const DownloadIcon = `${baseImage}/download.png`;
 
 const IconDict = {
