@@ -3,11 +3,9 @@ const glob = require("glob");
 const fse = require("fs-extra");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const rootCtx = path.join(__dirname, '..')
+const rootCtx = path.join(__dirname, "..");
 
-const {
-  bundlesPath
-} = require("./config");
+const { bundlesPath } = require("./config");
 
 fse.mkdirp(bundlesPath);
 
@@ -17,15 +15,15 @@ fse.mkdirp(bundlesPath);
 const paths = {
   htmlTemplate: path.join(__dirname, "../.runtime/index.html"),
   sourcePath: path.resolve(__dirname, "../packages"),
-  nodeModulePath: path.resolve(__dirname, "../node_modules")
+  nodeModulePath: path.resolve(__dirname, "../node_modules"),
 };
 
-const makeHtmlEntry = filePath => {
+const makeHtmlEntry = (filePath) => {
   return new HtmlWebpackPlugin({
     template: paths.htmlTemplate,
     chunks: [filePath],
     minify: false,
-    filename: `${filePath}/index.html`
+    filename: `${filePath}/index.html`,
   });
 };
 
@@ -35,16 +33,19 @@ const makeHtmlEntry = filePath => {
 class DevToolMetaHelper {
   metaList = [];
   push(metadata) {
-    this.metaList.push(metadata)
+    this.metaList.push(metadata);
   }
   save(savePath) {
-    fse.writeFileSync(path.join(savePath, `__dev_tool__.json`), JSON.stringify(this.metaList))
+    fse.writeFileSync(
+      path.join(savePath, `__dev_tool__.json`),
+      JSON.stringify(this.metaList)
+    );
   }
 }
 
 module.exports = () => {
   const htmlEntriesPlugins = [];
-  const devToolMetaHelper = new DevToolMetaHelper()
+  const devToolMetaHelper = new DevToolMetaHelper();
   const entries = glob.sync("./packages/**/index.tsx").reduce((acc, _path) => {
     const pathArr = _path.split("/");
 
@@ -61,12 +62,12 @@ module.exports = () => {
       const entryKey = metadata.elementRef || metadata.formRef;
 
       if (metadata.elementRef) {
-        devToolMetaHelper.push(entryKey)
+        devToolMetaHelper.push(entryKey);
       }
 
       // 将 meta 复制到 bundle 中
       fse.copy(metaPath, path.join(bundlesPath, `${entryKey}.json`), {
-        overwrite: true
+        overwrite: true,
       });
 
       // 设置 entryKey 的 key
@@ -79,7 +80,7 @@ module.exports = () => {
     return acc;
   }, {});
 
-  devToolMetaHelper.save(bundlesPath)
+  devToolMetaHelper.save(bundlesPath);
 
   return {
     entry: entries,
@@ -88,7 +89,7 @@ module.exports = () => {
       path: bundlesPath,
       publicPath: "/",
       filename: "[name].js",
-      library: "[name]"
+      library: "[name]",
       // libraryTarget: "umd"
       // libraryExport: "default"
       // library: "DavinciUI",
@@ -101,7 +102,7 @@ module.exports = () => {
       runtimeChunk: false,
       removeAvailableModules: false,
       removeEmptyChunks: false,
-      splitChunks: false
+      splitChunks: false,
     },
     externals: {
       react: "reactVendor.React",
@@ -111,42 +112,55 @@ module.exports = () => {
       "@gr-davinci/core": "davinciCore",
       "@tarojs/components": "taroVendor.components",
       "@tarojs/taro": "taroVendor.taro",
-      "@tarojs/runtime": "taroVendor.runtime"
+      "@tarojs/runtime": "taroVendor.runtime",
     },
     module: {
-      rules: [{
+      rules: [
+        {
           test: /\.tsx?$/,
           include: [paths.sourcePath],
           use: {
             loader: "ts-loader",
             options: {
               transpileOnly: true,
-              onlyCompileBundledFiles: true
-            }
-          }
+              onlyCompileBundledFiles: true,
+            },
+          },
         },
         {
           test: /\.css$/,
-          use: ["style-loader", "css-loader"]
+          use: ["style-loader", "css-loader"],
         },
         {
           test: /\.less$/,
           // include: [paths.sourcePath],
-          use: [{
-              loader: "style-loader" // 把css添加到dom
+          use: [
+            {
+              loader: "style-loader", // 把css添加到dom
             },
             {
-              loader: "css-loader" // 加载css
+              loader: "css-loader", // 加载css
             },
             {
-              loader: 'postcss-loader',
+              loader: "postcss-loader",
             },
             {
-              loader: "less-loader"
-            }
-          ]
-        }
-      ]
+              loader: "less-loader",
+            },
+          ],
+        },
+        {
+          test: /\.(png|jpg|gif)$/,
+          use: [
+            {
+              loader: "url-loader",
+              options: {
+                limit: 8192,
+              },
+            },
+          ],
+        },
+      ],
     },
     resolve: {
       modules: [paths.nodeModulePath],
@@ -171,10 +185,10 @@ module.exports = () => {
       http2: "empty",
       net: "empty",
       tls: "empty",
-      child_process: "empty"
+      child_process: "empty",
     },
     plugins: [
       // ...htmlEntriesPlugins,
-    ]
+    ],
   };
 };

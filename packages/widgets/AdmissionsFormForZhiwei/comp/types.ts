@@ -10,12 +10,14 @@ export interface OfflineData {
   time_seqs: number[];
 }
 
-export type Products = Array<{
+export type Products = subjectItem[];
+
+export interface subjectItem {
   subject_id: number;
   subject_name: string;
   product_list: Array<ProductItem>;
   subjectLimited?: boolean;
-}>;
+}
 
 export interface ProductItem {
   id: number;
@@ -36,7 +38,7 @@ export interface ProductItem {
 
 export interface ICreateAddressData {
   /* 收货地址id */
-  id: string;
+  id?: string;
   /* 联系人姓名 */
   contact_name: string;
   /* 联系人电话 */
@@ -93,4 +95,16 @@ export interface IPostOfflineData {
   clazz?: string;
   /** 关联学校 id */
   schoolId?: string;
+}
+
+export interface IFormData {
+  name: string;
+  grade: number;
+  subject: number;
+  clazz: string;
+  time: number;
+  address: string;
+  contactName: string;
+  contactPhone: string;
+  skuId: number;
 }

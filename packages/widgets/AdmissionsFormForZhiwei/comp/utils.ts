@@ -67,3 +67,5 @@ export const filterProducts: (
     })
     .filter((item) => !!item);
 };
+
+export const isNumber = (val: any) => typeof val === "number";

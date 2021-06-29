@@ -78,8 +78,8 @@ export async function bindUserSchool(studentId: string, schoolId: string): Promi
 export async function getDetailData(grade: number): Promise<any> {
   const res = await request({
     method: 'GET',
-    // url: `${currentApiHost.sell_api}/sellapi/2/mall/get_sell_page`,
-    url: 'http://mock.guorou.local/mock/242/sellapi/2/mall/get_sell_page',
+    url: `${currentApiHost.sell_api}/sellapi/2/mall/get_sell_page`,
+    // url: 'http://mock.guorou.local/mock/242/sellapi/2/mall/get_sell_page',
     data: {
       sell_type: sellType,
       grade,
@@ -123,11 +123,15 @@ export async function createAddress(data: ICreateAddressData) {
     }
   });
   console.log('创建地址', res);
-  return res;
+  // TODO: 对接地址
+  return res.data?.data?.id as string;
 }
 
 /* 创建订单接口 */
-export async function createOrder(skuId: string, addressId: string): Promise<string> {
+export async function createOrder(skuId: number, addressId: string): Promise<{
+  code: number;
+  data: { order_id: number };
+}> {
   const res = await request({
     method: 'POST',
     url: ``,
@@ -142,10 +146,10 @@ export async function createOrder(skuId: string, addressId: string): Promise<str
       source_hash: source_hash,
     }
   });
-  if (res && res.data.data?.order?.order_id) {
-    return res.data.data?.order?.order_id as string;
+  if (res && res.data.code === 0 || res.data.code === 3117) {
+    return res.data;
   } else {
-    throw new Error(res.data.msg || '');
+    throw new Error(res.data.msg || '创建订单失败，请重试');
   }
 }
 

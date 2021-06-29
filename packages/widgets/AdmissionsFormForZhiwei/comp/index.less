@@ -38,7 +38,7 @@
 
   .modal-body {
     max-height: 40vh;
-    padding: 0 40px;
+    padding-left: 40px;
     overflow-y: auto;
   }
 
@@ -51,28 +51,69 @@
   .admissions-form {
     border-radius: 20px;
 
+    .grade-subtitle {
+      // margin-top: 32px;
+      font-size: 32px;
+    }
+
     .grade-container {
       display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
     }
 
     .grade-item {
-      padding: 20px;
-      margin-right: 20px;
-      border: 1px solid #eee;
+      width: 200px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 12px 0;
+      margin: 32px 32px 0 0;
+      border: 1px solid #e5e5e5;
+      box-sizing: border-box;
+      border-radius: 8px;
+      &:nth-child(3n) {
+        margin-right: 0px;
+      }
     }
 
-    .grade-from,
-    .grade-to {
-      text-align: center;
-    }
-
-    .grade-to {
+    .grade-from {
+      line-height: 40px;
       font-size: 28px;
-      color: #ccc;
+      color: #333333;
+    }
+
+    .grade-to {
+      font-size: 24px;
+      line-height: 36px;
+      color: #666666;
     }
 
     .selected {
-      border: 1px solid red;
+      border: 1px solid #f93c11;
+      color: #f73500;
+      position: relative;
+      background: #fdf2f0;
+      .grade-from,
+      .grade-to {
+        color: #f73500;
+      }
+      .time-seq {
+        background: #f93c11;
+        color: #fff;
+      }
+      &::after {
+        content: " ";
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        background-image: url(./imgs/selected-icon.png);
+        background-size: cover;
+        width: 40px;
+        height: 40px;
+      }
     }
 
     .form-item {
@@ -150,8 +191,9 @@
 
   .login-fail-container {
     padding: 40px;
+    width: 630px;
     background: white;
-    border-radius: 20px;
+    border-radius: 12px;
     position: relative;
   }
 
@@ -163,6 +205,9 @@
   .login-fail-content {
     padding: 40px 0 10px;
     text-align: center;
+    a {
+      color: #333333;
+    }
   }
 
   .login-fail-recommend {
@@ -235,6 +280,10 @@
   .subject-container {
     display: flex;
     flex-wrap: wrap;
+    // margin-right: -20px;
+    &::-webkit-scrollbar {
+      display: none; /* Chrome Safari */
+    }
   }
 
   .subject-item {
@@ -247,12 +296,18 @@
     box-sizing: border-box;
   }
 
+  .subject-item:nth-child(3n) {
+    margin-right: 0px;
+  }
+
   .time-item {
+    box-sizing: border-box;
+    width: 665px;
     line-height: 40px;
     padding: 20px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 28px;
   }
 
@@ -287,8 +342,8 @@
       content: "满";
       background: transparent;
       position: absolute;
-      bottom: 0;
-      right: 0;
+      bottom: 5px;
+      right: 5px;
       color: white;
       font-size: 24px;
       transform: scale(0.83);
@@ -342,7 +397,7 @@
   }
 
   .step-bar {
-    margin: 0 16px;
+    margin: 0 16px 32px;
     height: 12px;
     position: relative;
     background: #f8f8f8;
@@ -379,5 +434,10 @@
     padding: 34px 40px;
     color: #444444;
     font-size: 36px;
+  }
+
+  .subject-subtitle,
+  .time-subtitle {
+    margin-bottom: 32px;
   }
 }

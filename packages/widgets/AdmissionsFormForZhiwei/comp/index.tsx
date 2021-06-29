@@ -5,13 +5,15 @@ import * as core from '@gr-davinci/core'
 import Address from './address';
 import LoginFormWrapper from './DvLoginWrapper';
 import FormComponent from './form';
-import { getOfflineData, checkUserQualification, createOrder, bindUserSchool, postToOffline } from "./api";
+import { getOfflineData, checkUserQualification, createOrder, bindUserSchool, postToOffline, createAddress } from "./api";
 import { setLocalCache } from './utils';
 import { orderDetailUrl, source, activity, sellType } from './const';
-import { OfflineData } from './types';
+import { OfflineData, IFormData } from './types';
 import "./index.less";
 import { useEffect } from "react";
 import { UserInfoType } from './DvLoginWrapper/LoginForm';
+import useLocal from './useLocal';
+
 /**
  * props 由自定义的 form 表单传入
  */
@@ -32,7 +34,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     school_id: null,
     institution_type: null,
   });
-  const [formData, _setFormData] = useState({
+  const [formData, _setFormData] = useLocal<IFormData>('dv-localFormData', {
     name: '',
     grade: null,
     subject: null,
@@ -58,9 +60,11 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       }
   }, [userInfo?.userId])
   useEffect(() => {
+    Taro.showLoading();
     const getData = async () => {
       const data = await getOfflineData();
       setOfflineData(data);
+      Taro.hideLoading();
     };
     getData();
   }, []);
@@ -123,7 +127,23 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     if (!canSubmit()) return;
     try {
       Taro.showLoading({ title: '订单提交中' });
-      const orderId = await createOrder(formData.skuId, /* TODO: addreddId */'')
+      /* TODO: 创建地址接口 */
+      const addressId = await createAddress({
+        contact_name: '',
+        contact_phone: '',
+        country: '',
+        province: '',
+        city: '',
+        district: '',
+        street: '',
+        detail: ''
+      });
+      const orderRes = await createOrder(formData.skuId, addressId)
+      if (orderRes.code === 3117) {
+        Taro.showToast({ title: '该时段已报满，请选择新的上课时间或科目', icon: 'none' });
+        return;
+      }
+      const orderId = orderRes.data.order_id;
       await Promise.all([
         /* 将学生跟学校绑定, 仅机构类型为学校时需要 */
         /* TODO: 这里学校类型需要确认 */
@@ -167,7 +187,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
           <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M556.8 512L832 236.8c12.8-12.8 12.8-32 0-44.8-12.8-12.8-32-12.8-44.8 0L512 467.2l-275.2-277.333333c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l275.2 277.333333-277.333333 275.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.933333 8.533333 23.466666 8.533333s17.066667-2.133333 23.466667-8.533333L512 556.8 787.2 832c6.4 6.4 14.933333 8.533333 23.466667 8.533333s17.066667-2.133333 23.466666-8.533333c12.8-12.8 12.8-32 0-44.8L556.8 512z" ></path></svg>
         </View>
         <View className="login-fail-title">提示</View>
-        <View className="login-fail-content">无法报名，请联系客服：<a href="tel:4008009456">400 800 9456</a></View>
+        <View className="login-fail-content">无法报名，请联系客服：<br /><a href="tel:4008009456">400 800 9456</a></View>
       </View>
     </View>}
     {!isLogin &&  <View className="login-container"><LoginFormWrapper
