@@ -1,4 +1,6 @@
 import { request } from '@tarojs/taro';
+import { sellType, source, source_hash } from './const';
+import { ICreateAddressData, IOfflineData, IPostOfflineData } from './types';
 
 const apiHosts = {
   /* 生产环境域名 */
@@ -21,29 +23,11 @@ const apiHosts = {
   }
 };
 
-// TODO: 这里需要从url获取
-const sellType: string = '';
-const source: string = '';
-const source_hash: string = '';
-
 const currentApiHost = apiHosts[window.location.host] || apiHosts.mock;
 
 export const GRADE = [ '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '初一', '初二', '初三', '高一', '高二',];
 
-export interface IOfflineData {
-  institution_name: string;
-  institution_type: number;
-  school_id: number;
-  show_institution_name: boolean;
-  show_clazz: boolean;
-  clazz_necessary: boolean;
-  grades: number[];
-  subjects: number[];
-  time_seqs: number[];
-  clazz_type: number;
-  clazz_type_name: string;
-  year: number;
-}
+
 
 /** 获取线下设置配置 */
 export async function getOfflineData(): Promise<IOfflineData> {
@@ -51,37 +35,14 @@ export async function getOfflineData(): Promise<IOfflineData> {
     method: 'GET',
     url: 'http://mock.guorou.local/mock/242/getData',
     data: {
-      source_hash: 'test souce hash',
+      source_hash,
     }
   });
   console.log('请求回来的数据', data);
   return data.data as IOfflineData;
 }
 
-export interface IPostOfflineData {
-  /** 页面地址 */
-  url: string;
-  /** 手机号 */
-  phone: string;
-  /** 学生名称 */
-  name: string;
-  /** 联系人手机号 */
-  contactPhone: string;
-  /** 联系人姓名 */
-  contactName: string;
-  /** 详细地址 */
-  contactAddress: string;
-  /** 行政省 id */
-  provinceId: number;
-  /** 行政市 id */
-  cityId: number;
-  /** 行政区 id */
-  regionId: number;
-  /** 班级 */
-  clazz?: string;
-  /** 关联学校 id */
-  schoolId?: string;
-}
+
 
 
 /** 将数据提交给线下 */
@@ -117,7 +78,8 @@ export async function bindUserSchool(studentId: string, schoolId: string): Promi
 export async function getDetailData(grade: number): Promise<any> {
   const res = await request({
     method: 'GET',
-    url: `${currentApiHost.sell_api}/sellapi/2/mall/get_sell_page`,
+    // url: `${currentApiHost.sell_api}/sellapi/2/mall/get_sell_page`,
+    url: 'http://mock.guorou.local/mock/242/sellapi/2/mall/get_sell_page',
     data: {
       sell_type: sellType,
       grade,
@@ -147,34 +109,21 @@ export async function checkUserQualification() {
   return true;
 }
 
+
+
 /* 创建订单地址 */
-export async function createAddress() {
+export async function createAddress(data: ICreateAddressData) {
   const res = await request({
     method: 'GET',
     url: `${currentApiHost.sell_api}/api/1/pay/update_order_address`,
     data: {
-      /* 收货地址id */
-      id: '',
-      /* 联系人姓名 */
-      contact_name: '',
-      /* 联系人电话 */
-      contact_phone: '',
-      /* 国家 */
-      country: '',
-      /* 省份 */
-      province: '',
-      /** 城市 */
-      city: '',
-      /* 县区 */
-      district: '',
-      /* 街道 */
-      street: '',
-      /* 详细地址 */
-      detail: '',
+      ...data,
       /* 是否默认 */
       is_default: 0,
     }
-  })
+  });
+  console.log('创建地址', res);
+  return res;
 }
 
 /* 创建订单接口 */

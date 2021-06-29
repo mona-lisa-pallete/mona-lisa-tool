@@ -291,7 +291,7 @@ const LoginForm = (props: CompProps) => {
           display: 'flex',
         }}
       >
-        <View className="input_wrap">
+        <View className="input_wrap verify-code-input">
           <Input
             className="phone_input"
             placeholder="请输入验证码"

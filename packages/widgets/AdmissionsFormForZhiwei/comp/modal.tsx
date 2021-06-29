@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, View, Image, Input } from "@tarojs/components";
 
 interface ModalProps {
-  title: string;
+  title: string | JSX.Element;
   visiable: boolean;
   emitHide: () => void;
   foot?: JSX.Element;
@@ -19,7 +19,7 @@ const Modal: React.FC<ModalProps> = (props) => {
           </View>
         </View>
         <View className="modal-body">{props.children}</View>
-        {props.foot}
+        {props.foot && <View className="modal-foot">{props.foot}</View>}
       </View>
     </View>
   );

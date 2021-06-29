@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, View, Image, Input } from "@tarojs/components";
-import { showToast } from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import Modal from './modal';
 import { useCallback } from "react";
-import { ContentData } from './index';
+import { OfflineData, Products, ProductItem } from './types';
 import { GRADES } from './const';
 import { getDetailData } from './api';
-import { getGradeById } from './utils';
+import { getGradeById, filterProducts } from './utils';
 
 interface FormProps {
   formData: {
@@ -19,24 +19,9 @@ interface FormProps {
     contactName: string;
     contactPhone: string;
   };
-  constData: ContentData;
-  setFormData: (key: string, value: any) => void;
+  offlineData: OfflineData;
+  setFormData: (obj: any) => void;
 }
-
-type Products = Array<{
-  subject_id: number;
-  subject_name: string;
-  product_list: Array<{
-    id: number;
-    name: string;
-    clazz_name: string;
-    type: number;
-    subject_id: number;
-    time_text: string;
-    time_seq: number;
-    [key: string]: any;
-  }>;
-}>;
 
 const FormComponent: React.FC<FormProps> = (props) => {
   const [selectStep, setSelectStep] = useState(1); // 1: 选择年级, 2: 选择课程
@@ -47,21 +32,27 @@ const FormComponent: React.FC<FormProps> = (props) => {
     show_institution_name,
     institution_name,
     grades
-  } = props.constData;
+  } = props.offlineData;
   const isSelected = useCallback((defaultClass: string, selected: boolean) => selected ? `selected ${defaultClass}` : defaultClass, []);
   const setGrade = useCallback((gradeId: number) => {
     if (gradeId !== formData.grade) {
-      setFormData('grade', gradeId);
-      setFormData('subject', null);
-      setFormData('time', null);
+      setFormData({
+        grade: gradeId,
+        time: null,
+        skuId: null,
+        subject: null,
+      });
       setProducts([]);
     }
   }, [formData, setFormData]);
 
   const setSubject = useCallback((subjectId: number) => {
     if (subjectId !== formData.subject) {
-      setFormData('subject', subjectId);
-      setFormData('time', null);
+      setFormData({
+        time: null,
+        skuId: null,
+        subject: subjectId,
+      });
     }
   }, [formData, setFormData]);
 
@@ -71,15 +62,25 @@ const FormComponent: React.FC<FormProps> = (props) => {
 
   const onNext = useCallback(async () => {
     if (formData.grade) {
-      try {
-        const res = await getDetailData(formData.grade);
-        setFormData('subject', 0);
-        setProducts(res.filter(item => item.product_list?.length > 0));
+      if (formData.subject === null) {
+        try {
+          Taro.showLoading();
+          const res = await getDetailData(formData.grade);
+          setFormData({subject: 0});
+          setProducts(filterProducts(res, props.offlineData));
+          setSelectStep(2);
+        } catch(err) {
+          Taro.showToast({
+            title: '获取课程数据失败!',
+            icon: 'none'
+          });
+          console.log('获取页面详情失败', err);
+        }
+        Taro.hideLoading();
+      } else {
+        // 选择的subject未更改，就不需要重复请求了
         setSelectStep(2);
-      } catch(err) {
-        console.log('获取页面详情失败', err);
       }
-      setSelectStep(2);
     }
   }, [formData]);
 
@@ -99,13 +100,21 @@ const FormComponent: React.FC<FormProps> = (props) => {
     return `${gradeInfo.gradeName} ${subjectInfo.subject_name} ${timeInfo?.time_text}`;
   }, [formData, products]);
 
+  const sellLimit = useCallback((productItem: ProductItem) => {
+    if (productItem.sell_info.sell_limit <= productItem.sell_info.sold_num) {
+      return ' oos-status';
+    }
+    // TODO: 这里要去掉这个测试状态
+    return '';
+  }, []);
+
   return (<View className="admissions-form">
     {show_institution_name && <View className="school-name">{institution_name}专属公益课</View>}
     <View className="form-item">
       <View className="label">学生姓名</View>
       <View className="input">
         <Input type="text" placeholder="请输入孩子的姓名" maxlength={15} onInput={(e) => {
-          setFormData('name', e.detail.value);
+          setFormData({name: e.detail.value});
         }}/>
       </View>
     </View>
@@ -117,11 +126,11 @@ const FormComponent: React.FC<FormProps> = (props) => {
         {typeof formData.time === 'number' ? getSelected() : <span className="default-value">请选择报名课程</span>}
       </View>
     </View>
-    {props.constData.show_clazz && <View className="form-item">
-      <View className={`label ${props.constData.clazz_necessary ? '' : 'no-neseccery'}`}>班级</View>
+    {props.offlineData.show_clazz && <View className="form-item">
+      <View className={`label ${props.offlineData.clazz_necessary ? '' : 'no-neseccery'}`}>班级</View>
       <View className="input">
         <Input type="text" placeholder="请输入在校班级" maxlength={15} onInput={(e) => {
-          setFormData('clazz', e.detail.value);
+          setFormData({clazz: e.detail.value});
         }}/>
       </View>
     </View>}
@@ -135,7 +144,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
           maxlength={15}
           value={formData.contactName}
           onInput={(e) => {
-            setFormData('contactName', e.detail.value);
+            setFormData({contactName: e.detail.value});
           }}/>
         <Input
           className="contact-name"
@@ -144,7 +153,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
           maxlength={15}
           value={formData.contactPhone}
           onInput={(e) => {
-            setFormData('contactPhone', e.detail.value);
+            setFormData({contactPhone: e.detail.value});
           }}/>
       </View>
     </View>
@@ -155,8 +164,24 @@ const FormComponent: React.FC<FormProps> = (props) => {
     {/* 弹窗 */}
     <Modal
       visiable={showModal}
-      title="选择报名课程"
+      title={<View>
+        <View className="select-title">选择报名课程</View>
+        <View className="step-progress">
+          <View className="step-name">
+            <View className={selectStep === 2 ? 'step' : 'step-active'}>在读年级</View>
+            <View className={selectStep === 2 ? 'step-active' : 'step'}>科目&上课</View>
+          </View>
+          <View className={`step-bar ${selectStep === 2 ? ' step-end' : ''}`}></View>
+        </View>
+      </View>}
       emitHide={() => setShowModal(false)}
+      foot={selectStep === 1 ?
+        <View className={`modal-nxt-btn ${formData.grade ? '' : 'disable-btn'}`} onClick={onNext}>下一步</View> :
+        <>
+          <View className="modal-bfe-btn" onClick={onBefore}>上一步</View>
+          <View className={`modal-confirm-btn ${typeof formData.subject === 'number' && typeof formData.time === 'number' ? '' : 'disable-btn'}`} onClick={onConfirm}>确认</View>
+        </>
+      }
     >
       {selectStep === 1 ?
         (<View className="grade-edit">
@@ -174,43 +199,43 @@ const FormComponent: React.FC<FormProps> = (props) => {
               ) : null))}
             </View>
           </React.Fragment>))}
-          <View className="modal-foot">
-            <View className={`modal-nxt-btn ${formData.grade ? '' : 'disable-btn'}`} onClick={onNext}>下一步</View>
-          </View>
         </View>) : (<View>
           <View className="subject-edit">
             <View>科目</View>
             <View className="subject-container">
               {products.map((item, index) => {
                 return (<View
-                  className={isSelected('subject-item', formData.subject === index)}
+                  className={isSelected('subject-item', formData.subject === index) + (item.subjectLimited ? ' oos-status': '')}
                   key={index}
                   onClick={() => setSubject(index)}>
                     {item.subject_name}
                   </View>);
               })}
             </View>
-
           </View>
           <View className="time-edit">
             <View>上课时间</View>
             <View className="time-container">
-              {products[formData.subject].product_list?.map((item, index) => {
+              {products[formData.subject]?.product_list?.map((item, index) => {
+                const ossLimited = sellLimit(item);
                 return (
                   <View
-                    className={isSelected('time-item', formData.time === index)}
+                    className={isSelected('time-item', formData.time === index) + ossLimited}
                     key={item.id}
                     onClick={() => {
-                      setFormData('time', index);
+                      if (!ossLimited) {
+                        setFormData({
+                          time: index,
+                          skuId: item.id,
+                        });
+                      } else {
+                        Taro.showToast({ title: '已报满，请选择其他时间', icon: 'none' });
+                      }
                     }}>
-                    {item.time_text}
+                    <span className="time-seq">{item.time_seq}期</span>{item.time_text}{item.material_name ? ` | ${item.material_name}` : ''}
                   </View>
                 );
               })}
-            </View>
-            <View className="modal-foot">
-                <View className="modal-bfe-btn" onClick={onBefore}>上一步</View>
-                <View className={`modal-confirm-btn ${typeof formData.subject === 'number' && typeof formData.time === 'number' ? '' : 'disable-btn'}`} onClick={onConfirm}>确认</View>
             </View>
           </View>
         </View>)

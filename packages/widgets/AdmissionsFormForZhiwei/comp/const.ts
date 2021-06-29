@@ -1,3 +1,21 @@
+import { getQuerysFromUrl } from "./utils";
+
+const query = getQuerysFromUrl();
+console.log("获取到的url参数", query);
+
+// TODO: 这里需要确认
+export const sellType = query.sell_type || "";
+export const source = query.source || "";
+export const source_hash = query.source_hash || "";
+export const activity = query.activity || "";
+
+// 生产
+export const orderDetailUrl = "https://sell.guorou.net/m/order?order_id=";
+// 预发
+// export const orderDetailUrl = "http://sell.test.guorou.net/m/order?order_id="
+// 开发
+// export const orderDetailUrl = "http://sell.dev.guorou.net/m/order?order_id="
+
 export const GRADES = [
   {
     subTitle: "小学阶段",
