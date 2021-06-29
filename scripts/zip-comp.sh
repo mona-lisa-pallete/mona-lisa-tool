@@ -8,7 +8,7 @@ else
   zip_target=$pwd_path"/"$1"_zip" 
 fi
 
-echo "将 $1 目录下的所有文件 zip 到 $zip_target 中"
+echo "将 $1 目录下的所有文件及子孙目录文件 zip 到 $zip_target 中"
 
 if [ ! -d $zip_target ]; then 
   mkdir -p $zip_target 
@@ -19,7 +19,7 @@ function zip_file(){
     do
       if [ -d $1"/"$file ]; then 
       cd $1
-        zip $zip_target"/"$file $file/**/*
+        zip -r $zip_target"/"$file $file/**/*
       cd $pwd_path
       fi
     done

@@ -45,21 +45,21 @@ async function dvOpenDocument(url: string) {
   return new Promise((resolve, reject) => {
     Taro.downloadFile({
       url,
-      success: function (res) {
+      success: function(res) {
         const filePath = res.tempFilePath;
-        console.log('下载文档成功');
+        console.log("下载文档成功");
         Taro.openDocument({
           filePath: filePath,
           showMenu: true, // 提供文件发送与收藏，以代替文件下载
-          success: function (res) {
-            console.log('打开文档成功');
+          success: function(res) {
+            console.log("打开文档成功");
             resolve(true);
           },
           fail: reject,
         });
       },
-      fail: reject
-  })
+      fail: reject,
+    });
   });
 }
 
@@ -140,12 +140,12 @@ function DvDocViewer(props: docProps) {
       e_n: "document_component_click",
       other: {
         component_id: id,
-        component_name: ''
-      }
+        component_name: "",
+      },
     });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (previewData.isPreview) {
       trackLog({
         e_c: "page",
@@ -153,10 +153,10 @@ function DvDocViewer(props: docProps) {
         e_n: "document_preview_expose",
         other: {
           material_id: id,
-        }
+        },
       });
     }
-  },[previewData.isPreview])
+  }, [previewData.isPreview]);
 
   useEffect(() => {
     loadScript(
@@ -171,78 +171,82 @@ function DvDocViewer(props: docProps) {
   return (
     <View id={id} className="dv_doc_viewer" {...p}>
       {Array.isArray(list) &&
-        (list.length > 0 ? list.map(({ url = "", name = "-", size = 0 }, index) => (
-          <View
-            className="doc_item"
-            key={index}
-            onClick={async () => {
-              clickTrack();
-              const ossUrl = url.replace(
-                "https://static.guorou.net",
-                "oss://static-zy-com"
-              );
-              const { data } = await Taro.request({
-                method: "GET",
-                url:
-                  "https://portal.guorou.net/davinciapi/api/1/core/util/office/preview_url",
-                data: {
-                  url: ossUrl,
-                },
-              });
-              let { code = -1, msg, data: res } = data;
-              const { PreviewURL, AccessToken } = res;
-              console.log(data, data.data);
-              if (code === -1) {
-                console.error(msg);
-              }
-              if (IS_MINI) {
-                Taro.showLoading({
-                  title: '文档加载中..',
-                })
-                dvOpenDocument(url).then(() => {
-                  Taro.hideLoading()
-                }, () => {
-                  Taro.hideLoading()
-                  Taro.showToast({
-                    title: '预览失败',
-                  })
+        (list.length > 0 ? (
+          list.map(({ url = "", name = "-", size = 0 }, index) => (
+            <View
+              className="doc_item"
+              key={index}
+              onClick={async () => {
+                clickTrack();
+                const ossUrl = url.replace(
+                  "https://static.guorou.net",
+                  "oss://static-zy-com"
+                );
+                const { data } = await Taro.request({
+                  method: "GET",
+                  url:
+                    "https://portal.guorou.net/davinciapi/api/1/core/util/office/preview_url",
+                  data: {
+                    url: ossUrl,
+                  },
                 });
-                return;
-              }
-              setPreviewData({
-                preSrc: url,
-                preDocName: name,
-                isPreview: true,
-              });
-              let instance = aliyun.config({
-                url: PreviewURL, //设置文档预览U  RL地址。
-                mount: document.querySelector("#aliyun_preview_iframe"),
-              });
-              instance.setToken({
-                token: AccessToken,
-              });
-            }}
-          >
-            <Image
-              className="doc_icon"
-              src={IconDict[(url.match(/.*\.(.*)$/) || ["", ""])[1]]}
-            />
-            <View className="doc_content">
-              <View className="doc_title one-line">{name}</View>
-              <View className="doc_size">{formatKB(size)}</View>
+                let { code = -1, msg, data: res } = data;
+                const { PreviewURL, AccessToken } = res;
+                console.log(data, data.data);
+                if (code === -1) {
+                  console.error(msg);
+                }
+                if (IS_MINI) {
+                  Taro.showLoading({
+                    title: "文档加载中..",
+                  });
+                  dvOpenDocument(url).then(
+                    () => {
+                      Taro.hideLoading();
+                    },
+                    () => {
+                      Taro.hideLoading();
+                      Taro.showToast({
+                        title: "预览失败",
+                      });
+                    }
+                  );
+                  return;
+                }
+                setPreviewData({
+                  preSrc: url,
+                  preDocName: name,
+                  isPreview: true,
+                });
+                let instance = aliyun.config({
+                  url: PreviewURL, //设置文档预览U  RL地址。
+                  mount: document.querySelector("#aliyun_preview_iframe"),
+                });
+                instance.setToken({
+                  token: AccessToken,
+                });
+              }}
+            >
+              <Image
+                className="doc_icon"
+                src={IconDict[(url.match(/.*\.(.*)$/) || ["", ""])[1]]}
+              />
+              <View className="doc_content">
+                <View className="doc_title one-line">{name}</View>
+                <View className="doc_size">{formatKB(size)}</View>
+              </View>
+              <Image className="entry_icon" src={EntryIcon} />
+              <View className="divider_down" />
             </View>
-            <Image className="entry_icon" src={EntryIcon} />
-            <View className="divider_down" />
+          ))
+        ) : (
+          <View className="doc_item default-status">
+            <Image className="doc_icon" src={IconDict.doc} />
+            <View className="doc_content">
+              <View className="doc_title one-line">请选择文件</View>
+            </View>
           </View>
-        ))  : <View className="doc_item default-status">
-          <Image
-              className="doc_icon"
-              src={IconDict.doc}
-            />
-          <View className="doc_content">
-            <View className="doc_title one-line">请选择文件</View>
-          </View>
-        </View>)}
+        ))}
       {isPreview && (
         <View className="doc_preview_modal">
           <View className="doc_preview_header">
@@ -279,7 +283,7 @@ function DvDocViewer(props: docProps) {
                 other: {
                   material_id: "",
                   document_name: preDocName,
-                }
+                },
               });
               if (/\.pdf$/.test(preSrc)) {
                 downloadPDF({ url: preSrc, name: preDocName });

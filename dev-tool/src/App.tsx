@@ -3,6 +3,7 @@ import "./App.css";
 import AppInfoComp from "./components/Version";
 import { DevContainer } from "./DevContainer";
 import { getJSON } from "./utils";
+import qs from 'querystring';
 
 declare global {
   interface Window {
@@ -31,8 +32,13 @@ const useDevData = (): null | any[] => {
 window.OnLuanched();
 
 function App() {
+  let selected = '';
+  if (window.location.search) {
+    const { select } = qs.parse(window.location.search.substr(1));
+    selected = select as string;
+  }
   const devData = useDevData();
-  const [selectedDevData, selectDevData] = useState<any>(null);
+  const [selectedDevData, selectDevData] = useState<any>(selected);
   return (
     <div className="App w-full">
       <header className="p-4 bg-white shadow-md relative z-10 flex items-center">
@@ -59,6 +65,7 @@ function App() {
                     }`}
                     key={idx}
                     onClick={() => {
+                      window.history.pushState({}, '', window.location.origin + '/?select=' + devMetaData);
                       selectDevData(devMetaData);
                     }}
                   >

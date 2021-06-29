@@ -72,7 +72,10 @@ const ToastActionForm: React.FC<ToastActionFormProps> = (props) => {
         </Form.Item>
       )} */}
 
-      <Form.Item hidden={type !== PageType.H5} name="urlH5">
+      <Form.Item hidden={type !== PageType.H5} name="urlH5" shouldUpdate={(prevValues, curValues) => {
+          console.log('shouldUpdate===>', prevValues, curValues);
+          return true;
+        }}>
         <TextArea placeholder="请输入页面url: https://path" />
       </Form.Item>
       <>
