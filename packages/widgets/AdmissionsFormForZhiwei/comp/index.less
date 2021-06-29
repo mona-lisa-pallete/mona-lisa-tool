@@ -1,0 +1,276 @@
+.admissions-form-for-zhiwei {
+  font-size: 18px;
+  min-height: 400px;
+  padding: 20px;
+
+  .submit-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    line-height: 40px;
+    color: white;
+    background: red;
+  }
+
+  .modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+  }
+
+  .modal-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 20px;
+  }
+
+  .modal-head {
+    position: relative;
+    line-height: 20px;
+  }
+
+  .modal-body {
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .admissions-form {
+    border-radius: 10px;
+
+    .grade-container {
+      display: flex;
+    }
+
+    .grade-item {
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #eee;
+    }
+
+    .grade-from,
+    .grade-to {
+      text-align: center;
+    }
+
+    .grade-to {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .selected {
+      border: 1px solid red;
+    }
+
+    .form-item {
+      margin: 10px 0;
+    }
+
+    .label {
+      position: relative;
+      padding-left: 10px;
+    }
+
+    .label::after {
+      content: " ";
+      position: absolute;
+      left: 0;
+      width: 5px;
+      height: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 0 2px 2px 0;
+      background: red;
+    }
+
+    .no-neseccery::after {
+      display: none;
+    }
+
+    .input,
+    .select {
+      background: #eeee;
+      padding: 2px 4px;
+      border-radius: 2px;
+      margin-top: 8px;
+    }
+
+    input {
+      background: transparent;
+      width: 100%;
+      outline: none;
+      border: none;
+    }
+
+    :-ms-input-placeholder {
+      color: #ccc;
+    }
+
+    .school-name {
+      text-align: center;
+      color: white;
+      background: #f73500;
+      padding: 4px 0;
+      position: relative;
+      line-height: 45px;
+      border-radius: 10px 10px 0 0;
+    }
+  }
+
+  .login-fail-tip,
+  .login-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .login-fail-tip {
+    z-index: 1001;
+  }
+
+  .login-fail-container {
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+  }
+
+  .login-fail-title {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .login-fail-content {
+    padding: 20px 0 5px;
+    text-align: center;
+  }
+
+  .login-fail-recommend {
+    text-align: center;
+  }
+
+  .login-fail-btn {
+    display: block;
+    line-height: 44px;
+    background-image: linear-gradient(135deg, #fd5330 0%, #f9390d 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 22px;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .modal-foot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-bfe-btn,
+  .modal-nxt-btn,
+  .modal-confirm-btn {
+    line-height: 44px;
+    background-image: linear-gradient(135deg, #fd5330 0%, #f9390d 100%);
+    text-align: center;
+    color: white;
+    border-radius: 22px;
+  }
+
+  .modal-confirm-btn {
+    width: 45%;
+    margin-left: 10%;
+  }
+
+  .modal-bfe-btn {
+    background: #ccc;
+    color: black;
+    width: 45%;
+  }
+
+  .modal-nxt-btn {
+    width: 100%;
+  }
+
+  .disable-btn {
+    opacity: 0.6;
+  }
+
+  .parent-contact {
+    display: flex;
+    margin-top: 8px;
+
+    input {
+      line-height: 44px;
+      width: 144px;
+      padding: 0 12px;
+      background: #f4f5f6;
+      border-radius: 2px;
+      &:first-child {
+        margin-right: 15px;
+      }
+    }
+  }
+
+  .subject-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .subject-item {
+    width: 100px;
+    line-height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    margin: 0 10px 10px 0;
+    text-align: center;
+  }
+
+  .time-item {
+    line-height: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+  }
+
+  .select-over {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-right: 30px !important;
+    position: relative;
+
+    &::after {
+      content: " ";
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+      width: 10px;
+      height: 10px;
+      border: 2px solid #ccc;
+      border-top-color: transparent;
+      border-left-color: transparent;
+    }
+  }
+}

@@ -4,8 +4,9 @@ const path = require("path");
 const fse = require("fs-extra");
 const webpack = require("webpack");
 const express = require("express");
+const prettier = require("prettier");
 const cors = require("cors");
-const WebpackDevServer = require("webpack-dev-server");
+// const WebpackDevServer = require("webpack-dev-server");
 
 // const handler = require("serve-handler");
 // const http = require("http");
@@ -35,7 +36,14 @@ const startDevServer = () => {
 
   compiler.watch({}, (err, stats) => {
     if (stats.hasErrors()) {
-      console.log(stats.toJson());
+      const compileStats = stats.toJson()
+      console.log(compileStats.errors);
+      fse.writeFileSync(path.join(__dirname, '.compile.log'),
+        prettier.format(JSON.stringify(compileStats.errors), {
+          parser: "json",
+        }), {
+          encoding: 'utf-8'
+        })
     }
     // Stats Object
     // ...

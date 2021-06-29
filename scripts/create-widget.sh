@@ -1,7 +1,7 @@
 pwd=$PWD
 
 # 模板目录
-tmpl_dir=$pwd/packages/tmpl/widget
+tmpl_dir=$pwd/tmpl/widget
 
 # 组件工作目录
 work_dir=$pwd/packages/widgets

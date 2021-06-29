@@ -1,5 +1,6 @@
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
-const genAppInfo = require('./scripts/genAppInfo')
+const path = require("path");
+const genAppInfo = require("./scripts/genAppInfo");
 
 module.exports = {
   paths: {
@@ -15,6 +16,7 @@ module.exports = {
     output: {
       publicPath: "./",
     },
+    // context: __dirname,
     externals: {
       react: "reactVendor.React",
       "react-dom": "reactVendor.ReactDOM",
@@ -25,7 +27,41 @@ module.exports = {
       "@tarojs/runtime": "taroVendor.runtime",
       "@gr-davinci/core": "davinciCore",
     },
-
+    module: {
+      // rules: [{
+      //   test: /\.less$/,
+      //   use: [{
+      //       loader: "style-loader", // 把css添加到dom
+      //     },
+      //     {
+      //       loader: "css-loader", // 加载css
+      //     },
+      //     {
+      //       loader: "postcss-loader",
+      //       options: {
+      //         plugins: [
+      //           require("postcss-pxtorem")({
+      //             rootValue: 46.875,
+      //             propList: ["*"],
+      //             exclude: /form/i,
+      //             selectorBlackList: [
+      //               "dv-action-item",
+      //               /.dv-form/,
+      //               /.ant-form/,
+      //             ],
+      //           }),
+      //         ],
+      //       },
+      //     },
+      //     // {
+      //     //   loader: "less-loader", // 加载less   less 转 css
+      //     //   options: {
+      //     //     include: path.join(__dirname, './src'),
+      //     //   }
+      //     // },
+      //   ],
+      // }, ],
+    },
     plugins: [
       new MonacoWebpackPlugin({
         // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
@@ -34,6 +70,6 @@ module.exports = {
     ],
   },
   preRun: () => {
-    genAppInfo()
-  }
+    genAppInfo();
+  },
 };

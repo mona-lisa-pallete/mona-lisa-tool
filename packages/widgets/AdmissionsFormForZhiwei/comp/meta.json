@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "elementRef": "AdmissionsFormForZhiwei",
+  "logo": "https://static-zy-com.oss-cn-hangzhou.aliyuncs.com/kbase/portallandingpage/assets/rc-upload-1624613694263-2.png?x-oss-process=image/format,jpg/interlace,1",
+  "label": "入校需求组件",
+  "eventAttr": [{ "alias": "点击", "type": "onClick" }],
+  "propFormConfig": {
+    "useSystemForm": true,
+    "useCustomForm": true,
+    "customFormRef": "AdmissionsFormForZhiweiForm",
+    "useActionForm": true
+  },
+  "classification": "Other"
+}
