@@ -249,6 +249,7 @@ const LoginForm = (props: CompProps) => {
         });
         if (onLoginSuccess) {
           onLoginSuccess(userInfo);
+          core.setUserInfoFromStorage(userInfo)
         }
       } else {
         failLogin();
