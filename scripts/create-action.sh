@@ -1,7 +1,7 @@
 pwd=$PWD
 
 # 模板目录
-tmpl_dir=$pwd/packages/tmpl/actions
+tmpl_dir=$pwd/tmpl/actions
 
 # 组件工作目录
 work_dir=$pwd/packages/actions

@@ -23,3 +23,5 @@ widgets_zip
 src_zip
 
 __app_info__.json
+
+.compile.log

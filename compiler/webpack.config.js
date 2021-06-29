@@ -2,6 +2,9 @@ const path = require("path");
 const glob = require("glob");
 const fse = require("fs-extra");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+const rootCtx = path.join(__dirname, '..')
+
 const {
   bundlesPath
 } = require("./config");
@@ -128,6 +131,7 @@ module.exports = () => {
         },
         {
           test: /\.less$/,
+          // include: [paths.sourcePath],
           use: [{
               loader: "style-loader" // 把css添加到dom
             },
@@ -135,24 +139,10 @@ module.exports = () => {
               loader: "css-loader" // 加载css
             },
             {
-              loader: "postcss-loader",
-              options: {
-                plugins: [
-                  require("postcss-pxtorem")({
-                    rootValue: 46.875,
-                    propList: ["*"],
-                    exclude: /form/i,
-                    selectorBlackList: [
-                      "dv-action-item",
-                      /.dv-form/,
-                      /.ant-form/,
-                    ],
-                  })
-                ]
-              }
+              loader: 'postcss-loader',
             },
             {
-              loader: "less-loader" // 加载less   less 转 css
+              loader: "less-loader"
             }
           ]
         }
@@ -170,7 +160,7 @@ module.exports = () => {
     //   },
     // },
     // devtool: "cheap-source-map",
-    // context: paths.sourcePath,
+    context: rootCtx,
     target: "web",
     stats: "errors-only",
     node: {
