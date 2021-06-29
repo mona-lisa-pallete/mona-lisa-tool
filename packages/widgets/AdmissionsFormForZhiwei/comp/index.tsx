@@ -1,6 +1,7 @@
 import { Button, View } from "@tarojs/components";
 import Taro from '@tarojs/taro';
 import React, { useCallback, useState } from "react";
+import * as core from '@gr-davinci/core'
 import Address from './address';
 import LoginFormWrapper from './DvLoginWrapper';
 import FormComponent from './form';
@@ -11,17 +12,15 @@ import { OfflineData } from './types';
 import "./index.less";
 import { useEffect } from "react";
 import { UserInfoType } from './DvLoginWrapper/LoginForm';
-
 /**
  * props 由自定义的 form 表单传入
  */
 interface AdmissionsFormForZhiweiProps {}
 
 const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) => {
-  const [isLogin, setIsLogin] = useState(true); // TODO: 需要打开登录
+  const [isLogin, setIsLogin] = useState(false);
   const [qualificationTip, setQualificationTip] = useState(null);
   const [confirmFail, setConfirmFail] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserInfoType>({});
   const [offlineData, setOfflineData] = useState<OfflineData>({
     institution_name: '',
     show_institution_name: false,
@@ -44,7 +43,20 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     contactPhone: '',
     skuId: null,
   });
-
+  const { state } = core.getAppContext() ;
+  const userInfo = state.userInfo as UserInfoType;
+  useEffect(() => {
+      if (userInfo?.userId) {
+        Taro.showToast({title: '已登录'})
+        setIsLogin(true);
+      } else {
+        Taro.showToast({
+          title: '未登录',
+          icon: 'none'
+        })
+        setIsLogin(false);
+      }
+  }, [userInfo?.userId])
   useEffect(() => {
     const getData = async () => {
       const data = await getOfflineData();
@@ -59,13 +71,12 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
   }, [formData]);
 
   const onLogin = useCallback(async (userInfo: UserInfoType) => {
-    setUserInfo(userInfo);
+
     try {
       await checkUserQualification();
     } catch (err) {
       setQualificationTip(err.message || '抱歉，您暂时没有该活动的体验资格～');
     }
-    setIsLogin(true);
   }, []);
 
   const onAddressChange = useCallback(() => {
