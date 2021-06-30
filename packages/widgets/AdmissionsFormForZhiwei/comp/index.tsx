@@ -22,7 +22,7 @@ interface AdmissionsFormForZhiweiProps {
 }
 
 const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) => {
-  const [isLogin, setIsLogin] = useState(true));
+  const [isLogin, setIsLogin] = useState(true);
   const [qualificationTip, setQualificationTip] = useState(null);
   const [confirmFail, setConfirmFail] = useState(false);
   const [errorTip, setErrorTip] = useState<IErrorTip>({});
