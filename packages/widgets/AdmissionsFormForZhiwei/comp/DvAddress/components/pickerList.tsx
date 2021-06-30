@@ -23,7 +23,6 @@ function List<T extends region>(props: Props<T>) {
 
   const compareActive = useCallback(
     (item: region) => {
-      // console.log(item.code, activeCode);
       return item.code === activeCode;
     },
     [data, activeCode],
@@ -31,7 +30,6 @@ function List<T extends region>(props: Props<T>) {
 
   const onClick = useCallback(
     (item) => {
-      console.log(onChange, item);
       return onChange(item);
     },
     [onChange],

@@ -16,7 +16,6 @@ function useCacheService() {
       const data = await fetchRegion({
         code: cityId,
       });
-      // console.log(data.data);
       districtMaps.current.set(cityId, data);
 
       resolve(data.data);
@@ -46,7 +45,6 @@ function useCacheService() {
       }
 
       const citys = await fetchRegion({ code: provinceId });
-      console.log('cityListData,', citys);
       cityMaps.current.set(provinceId, citys.data);
       resolve(citys.data);
     });
