@@ -20,8 +20,8 @@ const hosts = {
     /* 预发 */
     "offline": "http://sale.test.guorou.net",
     "school_api": "http://schoolapi.vpctest.uae.shensz.cn",
-    // "sell_api": "http://sellapi.test.guorou.net", // TODO 确认一下这个域名
-    "sell_api": "",
+    "sell_api": "http://sellapi.test.guorou.net", // TODO 确认一下这个域名
+    // "sell_api": "",
     "order_detail": "http://sell.test.guorou.net/m/order?order_id=",
   },
   /* 开发环境域名 */

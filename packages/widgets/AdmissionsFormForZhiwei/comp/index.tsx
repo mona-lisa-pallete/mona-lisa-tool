@@ -22,7 +22,7 @@ interface AdmissionsFormForZhiweiProps {
 }
 
 const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const [qualificationTip, setQualificationTip] = useState(null);
   const [confirmFail, setConfirmFail] = useState(false);
   const [errorTip, setErrorTip] = useState<IErrorTip>({});
@@ -43,14 +43,13 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     subject: null,
     clazz: '',
     time: null,
-    address: '',
     contactName: '',
     contactPhone: '',
     skuId: null,
     product: '',
   });
   const { state } = core.getAppContext() ;
-  const userInfo = state.userInfo as UserInfoType;
+  const userInfo = state.userInfo as UserInfoType || {};
   useEffect(() => {
     console.log('全局用户数据', userInfo);
     if (userInfo?.userId) {
@@ -89,7 +88,12 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     getData();
   }, []);
 
-  const onLogin = useCallback(async (userInfo: UserInfoType) => {}, []);
+  const onLogin = useCallback(async (_userInfo: UserInfoType) => {
+    console.log('userInfo', _userInfo);
+    userInfo.userId = _userInfo.userId;
+    userInfo.phoneNumber = _userInfo.phoneNumber;
+    setIsLogin(true);
+  }, []);
 
   const onAddressChange = useCallback(() => {
     console.log('地址变动');
@@ -134,14 +138,18 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       hasError = true;
       _errorTip.contactPhone = '请填写联系方式';
     }
-    // if (!formData.address) {
-    //   /* 地址必填 */
-    //   hasError = true;
-    //   _errorTip.address = '请填写地址';
-    // }
+    if (!formData.districtName || !formData.addressDetail) {
+      /* 地址必填 */
+      hasError = true;
+      _errorTip.address = '请填写地址';
+    }
     setErrorTip(_errorTip);
     return !hasError;
   }, [formData, offlineData]);
+
+  useEffect(() => {
+    console.log('查看formData', formData);
+  }, [formData]);
 
   const disableSubmit = useCallback(() => {
     if ((offlineData.show_clazz && offlineData.clazz_necessary && !formData.clazz) ||
@@ -165,11 +173,11 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         contact_name: formData.contactName,
         contact_phone: formData.contactPhone,
         country: '中国', /* TODO: 创建地址接口 */
-        province: '广东省',
-        city: '广州市',
-        district: '越秀区',
-        street: '光塔街道',
-        detail: '详细地址'
+        province: formData.provinceName,
+        city: formData.cityName,
+        district: formData.districtName,
+        street: '',
+        detail: formData.addressDetail,
       });
       const orderRes = await createOrder(formData.skuId, addressId)
       if (orderRes.code === 3117) {
@@ -179,7 +187,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       const orderId = orderRes.data.order_id;
       await Promise.all([
         /* 将学生跟学校绑定, 仅机构类型为学校时需要 */
-        /* TODO: 这里学校类型需要确认 */
+        /* 1. 学校， 2. 企业， 3. 机构 */
         offlineData.institution_type === 1 ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
         /* 将数据保存到线下 */
         postToOffline({
@@ -188,17 +196,17 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
           name: formData.name,
           contactName: formData.contactName,
           contactPhone: formData.contactPhone,
-          contactAddress: /* TODO: 地址 */'广东省广州市越秀区光塔街道中旅商业城',
-          provinceId: /* TODO: 省份id */110011,
-          cityId: /* TODO: 城市id */110011,
-          regionId: /* TODO: 区县id */110011,
+          contactAddress: formData.addressDetail,
+          provinceId: formData.provinceId,
+          cityId: formData.cityId,
+          regionId: formData.districtId,
           clazz: formData.clazz || '', /* 班级 */
           schoolId: offlineData.school_id,
         }),
         /* TODO: 将数据提交到达芬奇 */
       ]);
       /* 创建订单成功，跳转到订单页面 */
-      window.location.href = /* TODO: 跳转订单详情, 这里获取跳转链接需要做环境判断 */currentApiHost.order_detail + orderId;
+      window.location.href = currentApiHost.order_detail + orderId;
     } catch {
       setConfirmFail(true);
     }

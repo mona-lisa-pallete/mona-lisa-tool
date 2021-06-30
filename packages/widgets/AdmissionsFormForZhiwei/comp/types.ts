@@ -106,11 +106,17 @@ export interface IFormData {
   subject: number;
   clazz: string;
   time: number;
-  address: string;
   contactName: string;
   contactPhone: string;
   skuId: number;
   product: string;
+  districtName?: string;
+  cityName?: string;
+  provinceName?: string;
+  addressDetail?: string;
+  cityId?: number;
+  districtId?: number;
+  provinceId?: number;
 }
 
 export interface IErrorTip {
