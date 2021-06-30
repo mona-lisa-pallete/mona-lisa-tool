@@ -70,6 +70,9 @@ export interface IOfflineData {
   clazz_type: number;
   clazz_type_name: string;
   year: number;
+  province_id: number;
+  city_id: number;
+  region_id: number;
 }
 
 export interface IPostOfflineData {
@@ -107,4 +110,14 @@ export interface IFormData {
   contactName: string;
   contactPhone: string;
   skuId: number;
+  product: string;
+}
+
+export interface IErrorTip {
+  name?: string;
+  selectTime?: string;
+  clazz?: string;
+  contactName?: string;
+  contactPhone?: string;
+  address?: string;
 }

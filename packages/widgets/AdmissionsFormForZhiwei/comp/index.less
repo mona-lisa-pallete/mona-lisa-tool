@@ -1,10 +1,20 @@
+.env-dev {
+  .modal,
+  .modal-container,
+  .login-fail-tip,
+  .login-container,
+  .submit-btn {
+    position: absolute !important;
+  }
+}
+
 .admissions-form-for-zhiwei {
   font-size: 36px;
   min-height: 800px;
   padding: 40px;
 
   .submit-btn {
-    position: absolute;
+    position: fixed;
     bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
@@ -15,7 +25,7 @@
   }
 
   .modal {
-    position: absolute /* TODO: fixed */;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
@@ -25,7 +35,7 @@
   }
 
   .modal-container {
-    position: absolute /* TODO: fixed*/;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
@@ -137,8 +147,16 @@
       background: red;
     }
 
-    .no-neseccery::after {
-      display: none;
+    // .no-neseccery::after {
+    // display: none;
+    // }
+
+    .error-tip {
+      border: 1px solid red;
+      color: red;
+      input::placeholder {
+        color: red;
+      }
     }
 
     .input,
@@ -173,7 +191,7 @@
 
   .login-fail-tip,
   .login-container {
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
@@ -265,7 +283,7 @@
     display: flex;
     margin-top: 16px;
 
-    input {
+    .contact-name {
       line-height: 88px;
       width: 288px;
       padding: 0 24px;

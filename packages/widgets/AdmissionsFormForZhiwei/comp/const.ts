@@ -16,6 +16,22 @@ export const orderDetailUrl = "https://sell.guorou.net/m/order?order_id=";
 // 开发
 // export const orderDetailUrl = "http://sell.dev.guorou.net/m/order?order_id="
 
+export const gradesMap = {
+  "0A,0B": 0,
+  "1A,1B": 1,
+  "2A,2B": 2,
+  "3A,3B": 3,
+  "4A,4B": 4,
+  "5A,5B": 5,
+  "6A,6B": 6,
+  "7A,7B": 7,
+  "8A,8B": 8,
+  "9A,9B": 9,
+  "10A,10B": 10,
+  "11A,11B": 11,
+  "12A,12B": 12,
+};
+
 export const GRADES = [
   {
     subTitle: "小学阶段",

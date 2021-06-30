@@ -12,17 +12,6 @@ export function getGradeById(id: number) {
   }
 }
 
-export const setLocalCache = (function() {
-  let timeoutKey = null;
-  return function(key: string, data: object) {
-    if (timeoutKey) clearTimeout(timeoutKey);
-    timeoutKey = setTimeout(() => {
-      timeoutKey = null;
-      window.localStorage.setItem(key, JSON.stringify(data));
-    }, 100);
-  };
-})();
-
 export const getQuerysFromUrl = () => {
   const param = location.search ? location.search.substr(1) : "";
   return param ? qs.parse(param) : {};

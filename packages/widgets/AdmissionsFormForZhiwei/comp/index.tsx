@@ -1,14 +1,14 @@
 import { Button, View } from "@tarojs/components";
 import Taro from '@tarojs/taro';
 import React, { useCallback, useState } from "react";
-import * as core from '@gr-davinci/core'
+// @ts-ignore
+import * as core from '@gr-davinci/core';
 import Address from './address';
 import LoginFormWrapper from './DvLoginWrapper';
 import FormComponent from './form';
-import { getOfflineData, checkUserQualification, createOrder, bindUserSchool, postToOffline, createAddress } from "./api";
-import { setLocalCache } from './utils';
-import { orderDetailUrl, source, activity, sellType } from './const';
-import { OfflineData, IFormData } from './types';
+import { getOfflineData, checkUserQualification, createOrder, bindUserSchool, postToOffline, createAddress, currentApiHost } from "./api";
+import { orderDetailUrl, source, activity, sellType, gradesMap } from './const';
+import { OfflineData, IFormData, IErrorTip } from './types';
 import "./index.less";
 import { useEffect } from "react";
 import { UserInfoType } from './DvLoginWrapper/LoginForm';
@@ -17,12 +17,15 @@ import useLocal from './useLocal';
 /**
  * props 由自定义的 form 表单传入
  */
-interface AdmissionsFormForZhiweiProps {}
+interface AdmissionsFormForZhiweiProps {
+  edit?: boolean;
+}
 
 const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) => {
   const [isLogin, setIsLogin] = useState(false);
   const [qualificationTip, setQualificationTip] = useState(null);
   const [confirmFail, setConfirmFail] = useState(false);
+  const [errorTip, setErrorTip] = useState<IErrorTip>({});
   const [offlineData, setOfflineData] = useState<OfflineData>({
     institution_name: '',
     show_institution_name: false,
@@ -44,6 +47,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     contactName: '',
     contactPhone: '',
     skuId: null,
+    product: '',
   });
   const { state } = core.getAppContext() ;
   const userInfo = state.userInfo as UserInfoType;
@@ -51,37 +55,40 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       if (userInfo?.userId) {
         Taro.showToast({title: '已登录'})
         setIsLogin(true);
+        const checkFn = async () => {
+          try {
+            await checkUserQualification();
+          } catch (err) {
+            setQualificationTip(err.message || '抱歉，您暂时没有该活动的体验资格～');
+          }
+        };
+        checkFn();
       } else {
-        Taro.showToast({
-          title: '未登录',
-          icon: 'none'
-        })
-        setIsLogin(false);
+        // Taro.showToast({
+        //   title: '未登录',
+        //   icon: 'none'
+        // })
+        // FIXME
+        // setIsLogin(false);
       }
   }, [userInfo?.userId])
   useEffect(() => {
     Taro.showLoading();
     const getData = async () => {
-      const data = await getOfflineData();
-      setOfflineData(data);
+      try {
+        const data = await getOfflineData();
+        const oldGrades = data.grades;
+        data.grades = oldGrades.map(grade => gradesMap[grade]);
+        setOfflineData(data);
+      } catch {
+        Taro.showToast({ title: '获取页面数据失败，请刷新页面', icon: 'none' });
+      }
       Taro.hideLoading();
     };
     getData();
   }, []);
 
-  /* 将表单数据缓存，下次进入直接使用 */
-  useEffect(() => {
-    setLocalCache('local-form-data', formData);
-  }, [formData]);
-
-  const onLogin = useCallback(async (userInfo: UserInfoType) => {
-
-    try {
-      await checkUserQualification();
-    } catch (err) {
-      setQualificationTip(err.message || '抱歉，您暂时没有该活动的体验资格～');
-    }
-  }, []);
+  const onLogin = useCallback(async (userInfo: UserInfoType) => {}, []);
 
   const onAddressChange = useCallback(() => {
     console.log('地址变动');
@@ -100,43 +107,68 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
   }, [formData]);
 
   const canSubmit = useCallback(() => {
+    let hasError = false;
+    let _errorTip: IErrorTip = {};
     if (offlineData.show_clazz && offlineData.clazz_necessary && !formData.clazz) {
       /* 班级必填 */
-      return false;
+      hasError = true;
+      _errorTip.clazz = '请填写班级';
     }
     if (!formData.name) {
       /* 名字必填 */
-      return false;
+      hasError = true;
+      _errorTip.name = '请填写学生姓名';
     }
     if (!formData.skuId) {
       /* 选课必填 */
-      return false;
+      hasError = true;
+      _errorTip.selectTime = '请选择课程';
     }
-    if (!formData.contactName || !formData.contactPhone) {
+    if (!formData.contactName) {
       /* 联系人必填 */
-      return false;
+      hasError = true;
+      _errorTip.contactName = '请填写联系人';
     }
-    if (!formData.address) {
-      /* 地址必填 */
-      return false;
+    if (!formData.contactPhone) {
+      hasError = true;
+      _errorTip.contactPhone = '请填写联系方式';
     }
-    return true;
+    // if (!formData.address) {
+    //   /* 地址必填 */
+    //   hasError = true;
+    //   _errorTip.address = '请填写地址';
+    // }
+    setErrorTip(_errorTip);
+    return !hasError;
+  }, [formData, offlineData]);
+
+  const disableSubmit = useCallback(() => {
+    if ((offlineData.show_clazz && offlineData.clazz_necessary && !formData.clazz) ||
+      !formData.name||
+      !formData.skuId ||
+      !formData.contactName ||
+      !formData.contactPhone
+      // !formData.address
+    ) {
+      return false;
+    } else {
+      return true;
+    }
   }, [formData, offlineData]);
 
   const onSubmit = useCallback(async () => {
     if (!canSubmit()) return;
     try {
       Taro.showLoading({ title: '订单提交中' });
-      /* TODO: 创建地址接口 */
       const addressId = await createAddress({
-        contact_name: '',
-        contact_phone: '',
-        country: '',
-        province: '',
-        city: '',
-        district: '',
-        street: '',
-        detail: ''
+        contact_name: formData.contactName,
+        contact_phone: formData.contactPhone,
+        country: '中国', /* TODO: 创建地址接口 */
+        province: '广东省',
+        city: '广州市',
+        district: '越秀区',
+        street: '光塔街道',
+        detail: '详细地址'
       });
       const orderRes = await createOrder(formData.skuId, addressId)
       if (orderRes.code === 3117) {
@@ -147,7 +179,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       await Promise.all([
         /* 将学生跟学校绑定, 仅机构类型为学校时需要 */
         /* TODO: 这里学校类型需要确认 */
-        offlineData.institution_type === '1' ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
+        offlineData.institution_type === 1 ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
         /* 将数据保存到线下 */
         postToOffline({
           url: window.location.href,
@@ -155,24 +187,24 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
           name: formData.name,
           contactName: formData.contactName,
           contactPhone: formData.contactPhone,
-          contactAddress: /* TODO: 地址 */'',
-          provinceId: /* TODO: 省份id */'',
-          cityId: /* TODO: 城市id */'',
-          regionId: /* TODO: 区县id */'',
+          contactAddress: /* TODO: 地址 */'广东省广州市越秀区光塔街道中旅商业城',
+          provinceId: /* TODO: 省份id */110011,
+          cityId: /* TODO: 城市id */110011,
+          regionId: /* TODO: 区县id */110011,
           clazz: formData.clazz || '', /* 班级 */
           schoolId: offlineData.school_id,
         }),
         /* TODO: 将数据提交到达芬奇 */
       ]);
       /* 创建订单成功，跳转到订单页面 */
-      window.location.href = /* TODO: 跳转订单详情, 这里获取跳转链接需要做环境判断 */orderDetailUrl + orderId;
+      window.location.href = /* TODO: 跳转订单详情, 这里获取跳转链接需要做环境判断 */currentApiHost.order_detail + orderId;
     } catch {
       setConfirmFail(true);
     }
     Taro.hideLoading();
   }, [formData, offlineData, userInfo]);
 
-  return <View className="admissions-form-for-zhiwei">
+  return <View className={`admissions-form-for-zhiwei ${props.edit ? 'env-dev' : ''}`}>
     {qualificationTip && <View className="login-fail-tip">
         <View className="login-fail-container">
           <View className="login-fail-title">提示</View>
@@ -202,12 +234,14 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         }}
       /></View>}
     <FormComponent
+      errorTip={errorTip}
+      setErrorTip={data => setErrorTip(data)}
       formData={formData}
       offlineData={offlineData}
       setFormData={setFormData}
     />
     <Address defaultValue={{}} onChange={onAddressChange}/>
-    <Button onClick={onSubmit} className={`submit-btn ${canSubmit() ? '' : 'disable-btn'}`}>立即报名</Button>
+    <Button onClick={onSubmit} className={`submit-btn ${disableSubmit() ? '' : 'disable-btn'}`}>立即报名</Button>
   </View>;
 };
 

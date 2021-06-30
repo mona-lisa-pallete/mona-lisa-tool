@@ -1,3 +1,4 @@
+// @ts-ignore
 import * as core from '@gr-davinci/core';
 import { Button, Input, View } from '@tarojs/components';
 import { showToast, request } from '@tarojs/taro';
@@ -5,6 +6,7 @@ import React, { useState } from 'react';
 import useCountDown from './hooks/useCountDown';
 import useFocus from './hooks/useFocus';
 import './LoginForm.less';
+import { currentApiHost } from '../api';
 
 type CompProps = {
   onLoginFail?: Function;
@@ -12,7 +14,7 @@ type CompProps = {
   onInputPhone?: Function;
   onGetVerify?: Function;
 };
-const sellApiHost = 'https://sellapi.guorou.net';
+const sellApiHost = currentApiHost.sell_api; // 'https://sellapi.guorou.net';
 export const registerLoginSms = `${sellApiHost}/sellapi/1/auth/register_login_sms`;
 export const registerLogin = `${sellApiHost}/sellapi/1/auth/register_login`;
 
@@ -53,8 +55,8 @@ export async function signIn(params) {
 export async function getSignInSms(
   params: {
     phone: string;
-    register_activity: string;
-    register_source: string;
+    register_activity?: string;
+    register_source?: string;
   },
   isByPhoneCall = false,
 ) {
@@ -203,7 +205,7 @@ const LoginForm = (props: CompProps) => {
       }
 
       setTimeout(() => {
-        setVerifyCodeInputFocus();
+        (setVerifyCodeInputFocus as Function)();
       }, 200);
     } catch (message) {
       setBtnDisabled(false);
