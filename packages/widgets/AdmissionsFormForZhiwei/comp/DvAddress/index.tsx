@@ -19,8 +19,8 @@ const DvAddress: React.FC<{
     'provinceName',
     'cityName',
   ]);
-  const districtValue = pick(value, ['districtId', 'districtName']);
-  const addressDetail = pick(value, ['addressDetail']);
+  const districtValue = pick(value, ['regionId', 'regionName']);
+  const contactAddress = pick(value, ['contactAddress']);
 
   const onChange = (_v) => {
     propsOnChange({
@@ -50,11 +50,11 @@ const DvAddress: React.FC<{
             onChange={onChange}
           />
           <AddressDetailTextarea
-            value={addressDetail?.addressDetail}
+            value={contactAddress?.contactAddress}
             onChange={(e) => {
               const val = e.target.value;
               onChange({
-                addressDetail: val,
+                contactAddress: val,
               });
             }}
           />
