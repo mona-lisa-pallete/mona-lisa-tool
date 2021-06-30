@@ -58,7 +58,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         try {
           await checkUserQualification();
         } catch (err) {
-          setQualificationTip(err.message || '抱歉，您暂时没有该活动的体验资格～');
+          setQualificationTip('抱歉，您暂时没有该活动的体验资格～');
         }
       };
       checkFn();
@@ -89,18 +89,15 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
 
   const onLogin = useCallback(async (_userInfo: UserInfoType) => {
     // console.log('userInfo', _userInfo);
-    // userInfo.userId = _userInfo.userId;
-    // userInfo.phoneNumber = _userInfo.phoneNumber;
+    // // userInfo.userId = _userInfo.userId;
+    // // userInfo.phoneNumber = _userInfo.phoneNumber;
+    // setUserInfo(_userInfo);
     // try {
-    //   // await checkUserQualification();
+    //   await checkUserQualification();
     // } catch (err) {
     //   setQualificationTip(err.message || '抱歉，您暂时没有该活动的体验资格～');
     // }
     // setIsLogin(true);
-  }, []);
-
-  const onAddressChange = useCallback(() => {
-    console.log('地址变动');
   }, []);
 
   const getLoginTip = useCallback(() => {
@@ -142,7 +139,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       hasError = true;
       _errorTip.contactPhone = '请填写联系方式';
     }
-    if (!formData.districtName || !formData.addressDetail) {
+    if (!formData.regionName || !formData.contactAddress) {
       /* 地址必填 */
       hasError = true;
       _errorTip.address = '请填写地址';
@@ -179,9 +176,9 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         country: '中国', /* TODO: 创建地址接口 */
         province: formData.provinceName,
         city: formData.cityName,
-        district: formData.districtName,
+        district: formData.regionName,
         street: '',
-        detail: formData.addressDetail,
+        detail: formData.contactAddress,
       });
       const orderRes = await createOrder(formData.skuId, addressId)
       if (orderRes.code === 3117) {
@@ -204,7 +201,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       //     contactAddress: formData.addressDetail,
       //     provinceId: formData.provinceId,
       //     cityId: formData.cityId,
-      //     regionId: formData.districtId,
+      //     regionId: formData.regionId,
       //     clazz: formData.clazz || '', /* 班级 */
       //     schoolId: offlineData.school_id,
       //   }),
@@ -213,7 +210,8 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       /* 创建订单成功，跳转到订单页面 */
       console.log('订单创建成功,订单id', orderId);
       window.location.href = currentApiHost.order_detail + orderId;
-    } catch {
+    } catch(err) {
+      console.log('错误', err)
       setConfirmFail(true);
     }
     Taro.hideLoading();
