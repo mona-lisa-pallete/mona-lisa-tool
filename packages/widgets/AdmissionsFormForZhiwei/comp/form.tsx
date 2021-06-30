@@ -7,6 +7,7 @@ import { OfflineData, Products, ProductItem, subjectItem, IFormData, IErrorTip }
 import { GRADES } from './const';
 import { getDetailData } from './api';
 import { getGradeById, filterProducts, isNumber } from './utils';
+import DvAddress from './DvAddress/index'
 
 interface FormProps {
   formData: IFormData;
@@ -214,7 +215,9 @@ const FormComponent: React.FC<FormProps> = (props) => {
     </View>
     <View className="form-item">
       <View className="label">选择所在地址</View>
-      <View className="select">暂不支持</View>
+      <View className="select">
+        <DvAddress value={formData} onChange={setFormData} />
+      </View>
     </View>
     {/* 弹窗 */}
     <Modal
