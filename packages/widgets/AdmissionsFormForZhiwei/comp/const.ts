@@ -53,7 +53,7 @@ export const GRADES = [
     ],
     canShow: (grades) => {
       for (let i = 1; i < 7; i++) {
-        if (grades.includes(i)) {
+        if (grades?.includes(i)) {
           return true;
         }
       }
@@ -81,7 +81,7 @@ export const GRADES = [
     ],
     canShow: (grades) => {
       for (let i = 7; i < 10; i++) {
-        if (grades.includes(i)) {
+        if (grades?.includes(i)) {
           return true;
         }
       }
@@ -104,7 +104,7 @@ export const GRADES = [
     ],
     canShow: (grades) => {
       for (let i = 10; i < 12; i++) {
-        if (grades.includes(i)) {
+        if (grades?.includes(i)) {
           return true;
         }
       }
