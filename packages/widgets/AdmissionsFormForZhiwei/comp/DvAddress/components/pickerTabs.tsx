@@ -42,6 +42,7 @@ function Tabs(props: Props) {
               'dv_address_picker_tab--active': activeKey === i,
             })}
             onClick={() => onChange(i)}
+            key={i}
           >
             {key.name}
             <View

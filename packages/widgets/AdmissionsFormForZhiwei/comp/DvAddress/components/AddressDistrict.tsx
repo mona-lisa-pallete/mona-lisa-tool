@@ -133,6 +133,7 @@ function AddressDistrict(props: Props) {
                   activeCode={value?.districtId!}
                   loading={(item?.list?.length || 0) === 0}
                   hide={false}
+                  key={i}
                 />
               );
             })}

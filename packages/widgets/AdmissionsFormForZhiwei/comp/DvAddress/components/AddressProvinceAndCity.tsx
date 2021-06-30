@@ -258,6 +258,7 @@ function AddressProvinceAndCity(props: Props) {
               const active = i === tabIndex;
               return (
                 <PickerList
+                  key={i}
                   data={item.list}
                   hide={!active}
                   onChange={item.onChange}
