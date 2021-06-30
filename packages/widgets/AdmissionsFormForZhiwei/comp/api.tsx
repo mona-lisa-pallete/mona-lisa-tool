@@ -1,5 +1,5 @@
 import { request } from '@tarojs/taro';
-import { sellType, source, source_hash } from './const';
+import { sellType, source, source_hash, activity } from './const';
 import { ICreateAddressData, IOfflineData, IPostOfflineData } from './types';
 
 // export const orderDetailUrl = "https://sell.guorou.net/m/order?order_id=";
@@ -10,25 +10,24 @@ import { ICreateAddressData, IOfflineData, IPostOfflineData } from './types';
 
 const hosts = {
   /* 生产环境域名 */
-  "portal.guorou.net": {
-    "offline": "http://sale.guorou.net",
-    "school_api": "http://schoolapi.vpcalh.uae.shensz.cn",
-    "sell_api": "https://sell.guorou.net",
-    "order_detail": "https://sell.guorou.net/m/order?order_id=",
-  },
+  // "portal.guorou.net": {
+  //   "offline": "http://sale.guorou.net",
+  //   "school_api": "http://schoolapi.vpcalh.uae.shensz.cn",
+  //   "sell_api": "https://sell.guorou.net",
+  //   "order_detail": "https://sell.guorou.net/m/order?order_id=",
+  // },
   "pre": {
     /* 预发 */
     "offline": "http://sale.test.guorou.net",
     "school_api": "http://schoolapi.vpctest.uae.shensz.cn",
-    "sell_api": "http://sellapi.test.guorou.net", // TODO 确认一下这个域名
-    // "sell_api": "",
+    "sell_api": "http://sellapi.test.guorou.net",
     "order_detail": "http://sell.test.guorou.net/m/order?order_id=",
   },
   /* 开发环境域名 */
   "dev": {
     "offline": "http://saleapi.uae.shensz.local", // 线下
     "school_api": "http://schoolapi.uae.shensz.local",
-    "sell_api": "http://sell.dev.guorou.net", // TODO 确认一下这个域名
+    "sell_api": "http://sell.dev.guorou.net",
     "order_detail": "http://sell.dev.guorou.net/m/order?order_id=",
   },
   "mock": {
@@ -53,7 +52,7 @@ export async function getOfflineData(): Promise<IOfflineData> {
       source_hash,
     }
   });
-  console.log('请求回来的数据', res);
+  // console.log('请求回来的数据', res);
   if (res.data?.data && res.data.code === 0) {
     return res.data.data as IOfflineData;
   } else {
@@ -71,7 +70,7 @@ export async function postToOffline(data: IPostOfflineData): Promise<any> {
     url: `${currentApiHost.offline}/sale/api/2/toker/form_submit`,
     data,
   });
-  console.log('post回来的数据', res, data);
+  // console.log('post回来的数据', res, data);
   return res;
 }
 
@@ -121,6 +120,7 @@ export async function checkUserQualification() {
   const res = await request({
     method: 'POST',
     url: `${currentApiHost.sell_api}/sellapi/1/mall/check_user_qualification`,
+    credentials: 'include',
     data: {
       sell_type: sellType,
       source,
@@ -139,36 +139,40 @@ export async function createAddress(data: ICreateAddressData) {
   const res = await request({
     method: 'POST',
     url: `${currentApiHost.sell_api}/sellapi/1/pay/create_order_address`,
+    credentials: 'include',
     data: {
       ...data,
       /* 是否默认 */
       is_default: 0,
     }
   });
-  console.log('创建地址', res);
+  // console.log('创建地址', res, res.data?.data?.order_address_id);
   // TODO: 对接地址
-  return res.data?.data?.id as string;
+  return res.data?.data?.order_address_id as string;
 }
 
 /* 创建订单接口 */
 export async function createOrder(skuId: number, addressId: string): Promise<{
   code: number;
-  data: { order_id: number };
+  data: { order: { order_id: number } };
 }> {
   const res = await request({
     method: 'POST',
     url: `${currentApiHost.sell_api}/sellapi/1/pay/create_order`,
+    credentials: 'include',
     data: {
       /* 商品ids */
-      sku_ids: skuId,
+      sku_ids: '' + skuId,
       /* 地址ids */
       order_address_id: addressId,
       /* 来源 */
       source,
+      activity,
       /* 来源哈希(2021-06-18添加 ) */
       source_hash: source_hash,
     }
   });
+  console.log('创建订单', res);
   if (res && res.data.code === 0 || res.data.code === 3117) {
     return res.data;
   } else {

@@ -3,11 +3,10 @@ import Taro from '@tarojs/taro';
 import React, { useCallback, useState } from "react";
 // @ts-ignore
 import * as core from '@gr-davinci/core';
-import Address from './address';
 import LoginFormWrapper from './DvLoginWrapper';
 import FormComponent from './form';
 import { getOfflineData, checkUserQualification, createOrder, bindUserSchool, postToOffline, createAddress, currentApiHost } from "./api";
-import { orderDetailUrl, source, activity, sellType, gradesMap } from './const';
+import { source, activity, sellType, gradesMap } from './const';
 import { OfflineData, IFormData, IErrorTip } from './types';
 import "./index.less";
 import { useEffect } from "react";
@@ -89,10 +88,15 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
   }, []);
 
   const onLogin = useCallback(async (_userInfo: UserInfoType) => {
-    console.log('userInfo', _userInfo);
-    userInfo.userId = _userInfo.userId;
-    userInfo.phoneNumber = _userInfo.phoneNumber;
-    setIsLogin(true);
+    // console.log('userInfo', _userInfo);
+    // userInfo.userId = _userInfo.userId;
+    // userInfo.phoneNumber = _userInfo.phoneNumber;
+    // try {
+    //   // await checkUserQualification();
+    // } catch (err) {
+    //   setQualificationTip(err.message || '抱歉，您暂时没有该活动的体验资格～');
+    // }
+    // setIsLogin(true);
   }, []);
 
   const onAddressChange = useCallback(() => {
@@ -184,28 +188,30 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         Taro.showToast({ title: '该时段已报满，请选择新的上课时间或科目', icon: 'none' });
         return;
       }
-      const orderId = orderRes.data.order_id;
-      await Promise.all([
-        /* 将学生跟学校绑定, 仅机构类型为学校时需要 */
-        /* 1. 学校， 2. 企业， 3. 机构 */
-        offlineData.institution_type === 1 ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
-        /* 将数据保存到线下 */
-        postToOffline({
-          url: window.location.href,
-          phone: userInfo.phoneNumber,
-          name: formData.name,
-          contactName: formData.contactName,
-          contactPhone: formData.contactPhone,
-          contactAddress: formData.addressDetail,
-          provinceId: formData.provinceId,
-          cityId: formData.cityId,
-          regionId: formData.districtId,
-          clazz: formData.clazz || '', /* 班级 */
-          schoolId: offlineData.school_id,
-        }),
-        /* TODO: 将数据提交到达芬奇 */
-      ]);
+      const orderId = orderRes.data.order.order_id;
+      // await Promise.all([
+      //   /* 将学生跟学校绑定, 仅机构类型为学校时需要 */
+      //   /* 1. 学校， 2. 企业， 3. 机构 */
+      //   // offlineData.institution_type === 1 ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
+      //   bindUserSchool(userInfo.userId, offlineData.school_id),
+      //   /* 将数据保存到线下 */
+      //   postToOffline({
+      //     url: window.location.href,
+      //     phone: userInfo.phoneNumber,
+      //     name: formData.name,
+      //     contactName: formData.contactName,
+      //     contactPhone: formData.contactPhone,
+      //     contactAddress: formData.addressDetail,
+      //     provinceId: formData.provinceId,
+      //     cityId: formData.cityId,
+      //     regionId: formData.districtId,
+      //     clazz: formData.clazz || '', /* 班级 */
+      //     schoolId: offlineData.school_id,
+      //   }),
+      //   /* TODO: 将数据提交到达芬奇 */
+      // ]);
       /* 创建订单成功，跳转到订单页面 */
+      console.log('订单创建成功,订单id', orderId);
       window.location.href = currentApiHost.order_detail + orderId;
     } catch {
       setConfirmFail(true);
@@ -249,7 +255,6 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       offlineData={offlineData}
       setFormData={setFormData}
     />
-    <Address defaultValue={{}} onChange={onAddressChange}/>
     <Button onClick={onSubmit} className={`submit-btn ${disableSubmit() ? '' : 'disable-btn'}`}>立即报名</Button>
   </View>;
 };

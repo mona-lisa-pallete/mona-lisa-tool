@@ -49,7 +49,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
         const products = filterProducts(res, offlineData);
         const targetSubject = products[formData.subject];
         const targetTime = targetSubject?.product_list[formData.time];
-        if (isNumber(formData.skuId) && targetTime?.id === formData.skuId) {
+        if (isNumber(formData.skuId) && targetTime?.sell_info.sku_id === formData.skuId) {
           const { sell_limit, sold_num } = targetTime.sell_info;
           if (sell_limit <= sold_num || !sold_num) {
             // 没有库存则取消选中课程
@@ -285,7 +285,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
                         setLocalClazzData({
                           ...localClazzData,
                           time: index,
-                          skuId: item.id,
+                          skuId: item.sell_info.sku_id,
                         });
                       } else {
                         Taro.showToast({ title: '已报满，请选择其他时间', icon: 'none' });
