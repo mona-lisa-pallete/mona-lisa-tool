@@ -1,98 +1,77 @@
 import { request } from '@tarojs/taro';
+import { sellType, source, source_hash, activity } from './const';
+import { ICreateAddressData, IOfflineData, IPostOfflineData } from './types';
 
-const apiHosts = {
+// export const orderDetailUrl = "https://sell.guorou.net/m/order?order_id=";
+// 预发
+// export const orderDetailUrl = "http://sell.test.guorou.net/m/order?order_id="
+// 开发
+// export const orderDetailUrl = "http://sell.dev.guorou.net/m/order?order_id="
+
+const hosts = {
   /* 生产环境域名 */
-  "portal.guorou.net": {
-    "post_offline_data": "http://saleapi.vpcalh.uae.shensz.cn",
-    "school_api": "http://schoolapi.vpcalh.uae.shensz.cn",
-    "sell_api": "http://sellapi.dev.guorou.net",
+  // "portal.guorou.net": {
+  //   "offline": "http://sale.guorou.net",
+  //   "school_api": "http://schoolapi.vpcalh.uae.shensz.cn",
+  //   "sell_api": "https://sell.guorou.net",
+  //   "order_detail": "https://sell.guorou.net/m/order?order_id=",
+  // },
+  "pre": {
+    /* 预发 */
+    "offline": "http://sale.test.guorou.net",
+    "school_api": "http://schoolapi.vpctest.uae.shensz.cn",
+    "sell_api": "http://sellapi.test.guorou.net",
+    "order_detail": "http://sell.test.guorou.net/m/order?order_id=",
   },
   /* 开发环境域名 */
   "dev": {
-    "post_offline_data": "http://saleapi.uae.shensz.local",
+    "offline": "http://saleapi.uae.shensz.local", // 线下
     "school_api": "http://schoolapi.uae.shensz.local",
-    "sell_api": "http://mock.guorou.local", // 需要确定一下这个接口
+    "sell_api": "http://sell.dev.guorou.net",
+    "order_detail": "http://sell.dev.guorou.net/m/order?order_id=",
   },
   "mock": {
-    "get_offline_data": "http://mock.guorou.local",
-    "post_offline_data": "http://saleapi.uae.shensz.local",
+    "offline": "http://mock.guorou.local/mock/242",
     "school_api": "http://mock.guorou.local/mock/234",
     "sell_api": "http://mock.guorou.local/mock/11",
   }
 };
 
-// TODO: 这里需要从url获取
-const sellType: string = '';
-const source: string = '';
-const source_hash: string = '';
+export const currentApiHost = hosts[window.location.host] || hosts.pre;
 
-const currentApiHost = apiHosts[window.location.host] || apiHosts.mock;
+// export const GRADE = [ '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '初一', '初二', '初三', '高一', '高二',];
 
-export const GRADE = [ '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '初一', '初二', '初三', '高一', '高二',];
 
-export interface IOfflineData {
-  institution_name: string;
-  institution_type: number;
-  school_id: number;
-  show_institution_name: boolean;
-  show_clazz: boolean;
-  clazz_necessary: boolean;
-  grades: number[];
-  subjects: number[];
-  time_seqs: number[];
-  clazz_type: number;
-  clazz_type_name: string;
-  year: number;
-}
 
 /** 获取线下设置配置 */
 export async function getOfflineData(): Promise<IOfflineData> {
-  const data = await request({
+  const res = await request({
     method: 'GET',
-    url: 'http://mock.guorou.local/mock/242/getData',
+    url: `${currentApiHost.offline}/sale/api/1/toker/source_info`,
     data: {
-      source_hash: 'test souce hash',
+      source_hash,
     }
   });
-  console.log('请求回来的数据', data);
-  return data.data as IOfflineData;
+  // console.log('请求回来的数据', res);
+  if (res.data?.data && res.data.code === 0) {
+    return res.data.data as IOfflineData;
+  } else {
+    throw new Error('获取配置信息失败');
+  }
 }
 
-export interface IPostOfflineData {
-  /** 页面地址 */
-  url: string;
-  /** 手机号 */
-  phone: string;
-  /** 学生名称 */
-  name: string;
-  /** 联系人手机号 */
-  contactPhone: string;
-  /** 联系人姓名 */
-  contactName: string;
-  /** 详细地址 */
-  contactAddress: string;
-  /** 行政省 id */
-  provinceId: number;
-  /** 行政市 id */
-  cityId: number;
-  /** 行政区 id */
-  regionId: number;
-  /** 班级 */
-  clazz?: string;
-  /** 关联学校 id */
-  schoolId?: string;
-}
+
 
 
 /** 将数据提交给线下 */
 export async function postToOffline(data: IPostOfflineData): Promise<any> {
   const res = await request({
     method: 'POST',
-    url: `${currentApiHost.post_offline_data}/sale/api/2/toker/form_submit`,
+    url: `${currentApiHost.offline}/sale/api/2/toker/form_submit`,
     data,
   });
-  console.log('post回来的数据', data);
-  return data;
+  // console.log('post回来的数据', res, data);
+  return res;
 }
 
 /** 将用户跟学校绑定 */
@@ -110,7 +89,12 @@ export async function bindUserSchool(studentId: string, schoolId: string): Promi
       },
       studentId
     }
-  })
+  });
+  if (res.data?.code === 0) {
+    return true;
+  } else {
+    throw new Error(res.data.message || '学生与学校关联失败');
+  }
 }
 
 /* 从电商获取详细课程信息 */
@@ -136,6 +120,7 @@ export async function checkUserQualification() {
   const res = await request({
     method: 'POST',
     url: `${currentApiHost.sell_api}/sellapi/1/mall/check_user_qualification`,
+    credentials: 'include',
     data: {
       sell_type: sellType,
       source,
@@ -147,56 +132,51 @@ export async function checkUserQualification() {
   return true;
 }
 
+
+
 /* 创建订单地址 */
-export async function createAddress() {
+export async function createAddress(data: ICreateAddressData) {
   const res = await request({
-    method: 'GET',
-    url: `${currentApiHost.sell_api}/api/1/pay/update_order_address`,
+    method: 'POST',
+    url: `${currentApiHost.sell_api}/sellapi/1/pay/create_order_address`,
+    credentials: 'include',
     data: {
-      /* 收货地址id */
-      id: '',
-      /* 联系人姓名 */
-      contact_name: '',
-      /* 联系人电话 */
-      contact_phone: '',
-      /* 国家 */
-      country: '',
-      /* 省份 */
-      province: '',
-      /** 城市 */
-      city: '',
-      /* 县区 */
-      district: '',
-      /* 街道 */
-      street: '',
-      /* 详细地址 */
-      detail: '',
+      ...data,
       /* 是否默认 */
       is_default: 0,
     }
-  })
+  });
+  // console.log('创建地址', res, res.data?.data?.order_address_id);
+  // TODO: 对接地址
+  return res.data?.data?.order_address_id as string;
 }
 
 /* 创建订单接口 */
-export async function createOrder(skuId: string, addressId: string): Promise<string> {
+export async function createOrder(skuId: number, addressId: string): Promise<{
+  code: number;
+  data: { order: { order_id: number } };
+}> {
   const res = await request({
     method: 'POST',
-    url: ``,
+    url: `${currentApiHost.sell_api}/sellapi/1/pay/create_order`,
+    credentials: 'include',
     data: {
       /* 商品ids */
-      sku_ids: skuId,
+      sku_ids: '' + skuId,
       /* 地址ids */
       order_address_id: addressId,
       /* 来源 */
       source,
+      activity,
       /* 来源哈希(2021-06-18添加 ) */
       source_hash: source_hash,
     }
   });
-  if (res && res.data.data?.order?.order_id) {
-    return res.data.data?.order?.order_id as string;
+  console.log('创建订单', res);
+  if (res && res.data.code === 0 || res.data.code === 3117) {
+    return res.data;
   } else {
-    throw new Error(res.data.msg || '');
+    throw new Error(res.data.msg || '创建订单失败，请重试');
   }
 }
 

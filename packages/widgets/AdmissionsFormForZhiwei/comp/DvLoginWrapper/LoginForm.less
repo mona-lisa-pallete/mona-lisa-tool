@@ -12,8 +12,15 @@
     font-weight: bold;
     color: #fff;
   }
+  .verify-code-input {
+    flex-shrink: 1;
+    flex-grow: 1;
+  }
   .verification_btn {
-    width: 250px;
+    // width: 250px;
+    width: auto;
+    flex-shrink: 0;
+    flex-grow: 0;
     height: 88px;
     line-height: 88px;
     margin-left: 30px;
@@ -47,12 +54,16 @@
       }
       input {
         width: 100%;
+        background: transparent;
+        outline: none;
       }
     }
     .input_right {
-      height: 32px;
+      // height: 32px;
       position: absolute;
-      bottom: 28px;
+      // bottom: 28px;
+      top: 50%;
+      transform: translateY(-50%);
       right: 20px;
       display: flex;
       justify-content: space-between;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { DvProvider } from '@gr-davinci/core';
 import "./App.css";
 import AppInfoComp from "./components/Version";
 import { DevContainer } from "./DevContainer";
@@ -78,7 +79,7 @@ function App() {
         </div>
         {selectedDevData && (
           <div className="content flex-1">
-            <DevContainer selectedDevData={selectedDevData} />
+            <DvProvider><DevContainer selectedDevData={selectedDevData} /></DvProvider>
           </div>
         )}
       </div>

@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "vite --port 33222",
-    "start": "PORT=33222 minictl start",
+    "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true PORT=80 minictl start ",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
   "dependencies": {
+    "@gr-davinci/core": "^0.0.21",
     "dayjs": "^1.10.5",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",

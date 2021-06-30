@@ -132,7 +132,7 @@ export const DevContainer = ({ selectedDevData }: any) => {
                 height: `627px`,
               }}
             >
-              {Widget && <Widget {...(formState || {})} />}
+              {Widget && <Widget {...(formState || {})} edit />}
             </div>
           </div>
         </div>

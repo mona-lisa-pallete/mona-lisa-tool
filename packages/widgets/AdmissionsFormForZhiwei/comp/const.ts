@@ -1,3 +1,37 @@
+import { getQuerysFromUrl } from "./utils";
+
+const query = getQuerysFromUrl();
+console.log("获取到的url参数", query);
+
+// TODO: 这里需要确认
+export const sellType = query.sell_type || "";
+export const source = query.source || "";
+export const source_hash = query.source_hash || "";
+export const activity = query.activity || "";
+
+// 生产
+export const orderDetailUrl = "https://sell.guorou.net/m/order?order_id=";
+// 预发
+// export const orderDetailUrl = "http://sell.test.guorou.net/m/order?order_id="
+// 开发
+// export const orderDetailUrl = "http://sell.dev.guorou.net/m/order?order_id="
+
+export const gradesMap = {
+  "0A,0B": 0,
+  "1A,1B": 1,
+  "2A,2B": 2,
+  "3A,3B": 3,
+  "4A,4B": 4,
+  "5A,5B": 5,
+  "6A,6B": 6,
+  "7A,7B": 7,
+  "8A,8B": 8,
+  "9A,9B": 9,
+  "10A,10B": 10,
+  "11A,11B": 11,
+  "12A,12B": 12,
+};
+
 export const GRADES = [
   {
     subTitle: "小学阶段",
@@ -35,7 +69,7 @@ export const GRADES = [
     ],
     canShow: (grades) => {
       for (let i = 1; i < 7; i++) {
-        if (grades.includes(i)) {
+        if (grades?.includes(i)) {
           return true;
         }
       }
@@ -63,7 +97,7 @@ export const GRADES = [
     ],
     canShow: (grades) => {
       for (let i = 7; i < 10; i++) {
-        if (grades.includes(i)) {
+        if (grades?.includes(i)) {
           return true;
         }
       }
@@ -86,7 +120,7 @@ export const GRADES = [
     ],
     canShow: (grades) => {
       for (let i = 10; i < 12; i++) {
-        if (grades.includes(i)) {
+        if (grades?.includes(i)) {
           return true;
         }
       }
