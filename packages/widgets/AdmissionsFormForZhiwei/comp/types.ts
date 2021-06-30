@@ -110,12 +110,12 @@ export interface IFormData {
   contactPhone: string;
   skuId: number;
   product: string;
-  districtName?: string;
+  regionName?: string;
   cityName?: string;
   provinceName?: string;
-  addressDetail?: string;
+  contactAddress?: string;
   cityId?: number;
-  districtId?: number;
+  regionId?: number;
   provinceId?: number;
 }
 

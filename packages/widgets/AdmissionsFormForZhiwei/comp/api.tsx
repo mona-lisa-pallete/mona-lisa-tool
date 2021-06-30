@@ -126,8 +126,8 @@ export async function checkUserQualification() {
       source,
     }
   });
-  if (res.data.check_status !== 1) {
-    throw new Error(res.data.check_arr?.description || res.data.check_description);
+  if (res.data.data.check_status !== 1) {
+    throw new Error(res.data.data.check_arr?.description || res.data.data.check_description);
   }
   return true;
 }
