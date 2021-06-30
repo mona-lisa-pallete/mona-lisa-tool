@@ -23,13 +23,13 @@ type selectedData = {
   connectAddress?: string;
   provinceName: string;
   cityName: string;
-  districtName?: string;
-  districtId?: number;
+  regionName?: string;
+  regionId?: number;
 
   /**
    * 详细地址
    */
-  addressDetail?: string;
+  contactAddress?: string;
 };
 
 type Props = {

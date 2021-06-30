@@ -13,9 +13,9 @@ import './AddressDistrict.less';
 
 interface Props {
   // show?: boolean;
-  districtId?: number;
+  regionId?: number;
   cityId?: number;
-  districtName?: string;
+  regionName?: string;
   onChange: (value: any) => void;
   actionRef?: any;
 
@@ -24,8 +24,8 @@ interface Props {
 
 function AddressDistrict(props: Props) {
   const {
-    // districtId,
-    // districtName,
+    // regionId,
+    // regionName,
     value,
     cityId,
     onChange: propsOnChange,
@@ -48,8 +48,8 @@ function AddressDistrict(props: Props) {
         // console.log(cityId);
         setDistrictList([]);
         propsOnChange({
-          districtId: 0,
-          districtName: '',
+          regionId: 0,
+          regionName: '',
         });
         const districtList = await fetchDistrict(cityId);
         setDistrictList(districtList);
@@ -60,12 +60,12 @@ function AddressDistrict(props: Props) {
 
   const tabKeys = [
     {
-      name: value?.districtName || '请选择区县',
+      name: value?.regionName || '请选择区县',
       list: districtList,
       onChange: (nextCity) => {
         propsOnChange({
-          districtId: nextCity.code,
-          districtName: nextCity.name,
+          regionId: nextCity.code,
+          regionName: nextCity.name,
         });
       },
     },
@@ -86,10 +86,10 @@ function AddressDistrict(props: Props) {
       <View className="district_input" onClick={onClick}>
         <View
           className={cls('district_input__text', {
-            'district_input__text--placeholder': !value?.districtName,
+            'district_input__text--placeholder': !value?.regionName,
           })}
         >
-          {value?.districtName || '区/县'}
+          {value?.regionName || '区/县'}
         </View>
         <View className="district_input__icon" />
       </View>
@@ -130,7 +130,7 @@ function AddressDistrict(props: Props) {
                 <PickerList
                   data={item.list}
                   onChange={item.onChange}
-                  activeCode={value?.districtId!}
+                  activeCode={value?.regionId!}
                   loading={(item?.list?.length || 0) === 0}
                   hide={false}
                   key={i}
