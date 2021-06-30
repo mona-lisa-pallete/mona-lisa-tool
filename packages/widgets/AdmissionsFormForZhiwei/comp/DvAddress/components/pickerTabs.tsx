@@ -32,7 +32,6 @@ type Props = {
 };
 
 function Tabs(props: Props) {
-  console.log(props, 'props');
   const { keys, activeKey, onChange } = props;
   return (
     <View className={cls('dv_address_picker_tabs')}>

@@ -64,7 +64,6 @@ type Props = {
 };
 
 function AddressProvinceAndCity(props: Props) {
-  console.log(props, 'AddressProvinceAndCity props');
   const { onChange, value, actionRef } = props;
   const { fetchCity, fetchProvince } = useContext(ServiceContext);
   const [showPicker, setShowPicker] = useState(false);
@@ -182,7 +181,6 @@ function AddressProvinceAndCity(props: Props) {
         setCityList(cityListData);
         const initialCityName =
           cityListData.find((o) => {
-            console.log(o, value?.cityId, 'props??');
             return o.code === value?.cityId;
           })?.name || '';
 
@@ -192,7 +190,6 @@ function AddressProvinceAndCity(props: Props) {
       }
       // onChange(params);
       if (Object.keys(params).length > 0) {
-        console.log('执行', Math.random(), JSON.parse(JSON.stringify(value)));
 
         onChange(params);
       }
