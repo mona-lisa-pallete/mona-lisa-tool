@@ -247,7 +247,7 @@ const LoginForm = (props: CompProps) => {
 
       if (userInfo && checkIsLogin(userInfo)) {
         setAppData({
-          user: userInfo,
+          userInfo,
         });
         if (onLoginSuccess) {
           onLoginSuccess(userInfo);
