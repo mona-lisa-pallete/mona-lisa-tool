@@ -22,7 +22,7 @@ interface AdmissionsFormForZhiweiProps {
 }
 
 const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true));
   const [qualificationTip, setQualificationTip] = useState(null);
   const [confirmFail, setConfirmFail] = useState(false);
   const [errorTip, setErrorTip] = useState<IErrorTip>({});
@@ -52,25 +52,26 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
   const { state } = core.getAppContext() ;
   const userInfo = state.userInfo as UserInfoType;
   useEffect(() => {
-      if (userInfo?.userId) {
-        Taro.showToast({title: '已登录'})
-        setIsLogin(true);
-        const checkFn = async () => {
-          try {
-            await checkUserQualification();
-          } catch (err) {
-            setQualificationTip(err.message || '抱歉，您暂时没有该活动的体验资格～');
-          }
-        };
-        checkFn();
-      } else {
-        // Taro.showToast({
-        //   title: '未登录',
-        //   icon: 'none'
-        // })
-        // FIXME
-        // setIsLogin(false);
-      }
+    console.log('全局用户数据', userInfo);
+    if (userInfo?.userId) {
+      Taro.showToast({title: '已登录'})
+      setIsLogin(true);
+      const checkFn = async () => {
+        try {
+          await checkUserQualification();
+        } catch (err) {
+          setQualificationTip(err.message || '抱歉，您暂时没有该活动的体验资格～');
+        }
+      };
+      checkFn();
+    } else {
+      // Taro.showToast({
+      //   title: '未登录',
+      //   icon: 'none'
+      // })
+      // FIXME
+      // setIsLogin(false);
+    }
   }, [userInfo?.userId])
   useEffect(() => {
     Taro.showLoading();
