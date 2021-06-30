@@ -23,6 +23,7 @@ export async function signIn(params) {
     const { data: res }: any = await request({
       method: 'POST',
       url: registerLogin,
+      credentials: 'include',
       data: {
         username: '',
         role: 3,
