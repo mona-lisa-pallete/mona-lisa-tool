@@ -147,12 +147,13 @@ const FormComponent: React.FC<FormProps> = (props) => {
   }, []);
   // 清除错误信息
   const clearErrorTip = useCallback((key: string) => {
-    errorTip[key] = null;
-    setErrorTip({ ...errorTip });
+    if (errorTip) {
+      setErrorTip({ ...errorTip, [key]: null });
+    }
   }, [errorTip, setErrorTip]);
 
   const showModalHandle = useCallback(async () => {
-    if (errorTip.selectTime) clearErrorTip('selectTime');
+    if (errorTip?.selectTime) clearErrorTip('selectTime');
     // 如果数据选择的年级不一致，则需要重新获取课程数据
     if (isNumber(formData.grade) && isNumber(localClazzData.grade) && formData.grade !== localClazzData.grade) {
       try {
@@ -171,7 +172,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
     <View className="school-name"><span className="text-over">{show_name && institution_name ? `${institution_name}专属公益课` : '填写报读信息'}</span></View>
     <View className="form-item">
       <View className="label">学生姓名</View>
-      <View className={`input ${errorTip.name ? 'error-tip' : ''}`} onClick={() => errorTip.name && clearErrorTip('name')}>
+      <View className={`input ${errorTip?.name ? 'error-tip' : ''}`} onClick={() => errorTip?.name && clearErrorTip('name')}>
         <Input type="text" placeholder="请输入孩子的姓名" maxlength={15} value={formData.name} onInput={(e) => {
           setFormData({name: e.detail.value});
         }}/>
@@ -179,13 +180,13 @@ const FormComponent: React.FC<FormProps> = (props) => {
     </View>
     <View className="form-item">
       <View className="label">选课</View>
-      <View className={`select select-over ${errorTip.selectTime ? 'error-tip' : ''}`} onClick={showModalHandle}>
-        <View className="text-over">{formData.product || <span className="default-value">请选择报名课程</span>}</View>
+      <View className={`select select-over ${errorTip?.selectTime ? 'error-tip' : ''}`} onClick={showModalHandle}>
+        <View className="text-over">{formData.product || <span className="default-value placeholder">请选择报名课程</span>}</View>
       </View>
     </View>
     {offlineData.show_clazz && <View className="form-item">
       <View className={`label ${offlineData.clazz_necessary ? '' : 'no-neseccery'}`}>班级</View>
-      <View className={`input ${errorTip.clazz ? 'error-tip' : ''}`} onClick={() => errorTip.clazz && clearErrorTip('clazz')}>
+      <View className={`input ${errorTip?.clazz ? 'error-tip' : ''}`} onClick={() => errorTip?.clazz && clearErrorTip('clazz')}>
         <Input type="text" placeholder="请输入在校班级" value={formData.clazz} maxlength={15} onInput={(e) => {
           setFormData({clazz: e.detail.value});
         }}/>
@@ -195,8 +196,8 @@ const FormComponent: React.FC<FormProps> = (props) => {
       <View className="label">家长联系方式(用于接收“课程材料礼盒”)</View>
       <View className="parent-contact">
         <Input
-          className={`contact-name ${errorTip.contactName ? 'error-tip' : ''}`}
-          onClick={() => errorTip.contactName && clearErrorTip('contactName')}
+          className={`contact-name ${errorTip?.contactName ? 'error-tip' : ''}`}
+          onClick={() => errorTip?.contactName && clearErrorTip('contactName')}
           type="text"
           placeholder="请输入家长姓名"
           maxlength={15}
@@ -206,8 +207,8 @@ const FormComponent: React.FC<FormProps> = (props) => {
             setFormData({contactName: e.detail.value});
           }}/>
         <Input
-          className={`contact-name ${errorTip.contactPhone ? 'error-tip' : ''}`}
-          onClick={() => errorTip.contactPhone && clearErrorTip('contactPhone')}
+          className={`contact-name ${errorTip?.contactPhone ? 'error-tip' : ''}`}
+          onClick={() => errorTip?.contactPhone && clearErrorTip('contactPhone')}
           type="number"
           placeholder="请输入手机号"
           maxlength={15}
@@ -220,7 +221,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
     <View className="form-item">
       <View className="label">选择所在地址</View>
       <View className="">
-        <DvAddress value={formData} onChange={setFormData} />
+        <DvAddress value={formData} onChange={setFormData} errorTip={errorTip} setErrorTip={setErrorTip} />
       </View>
     </View>
     {/* 弹窗 */}

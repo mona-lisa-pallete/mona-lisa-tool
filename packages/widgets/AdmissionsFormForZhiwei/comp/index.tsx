@@ -14,6 +14,7 @@ import { UserInfoType } from './DvLoginWrapper/LoginForm';
 import useLocal from './useLocal';
 import DvTipModal from './DvTipModal';
 import * as trackerAdmissions from './utils/admissionsTracker'
+import { checkPhone } from './DvLoginWrapper/LoginForm';
 /**
  * props 由自定义的 form 表单传入
  */
@@ -23,7 +24,7 @@ interface AdmissionsFormForZhiweiProps {
 
 const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) => {
 
-  const { state, setAppData } = core.getAppContext();
+  const { state } = core.getAppContext();
   const userInfo = state.userInfo as UserInfoType || {};
   const [isLogin, setIsLogin] = useState(userInfo?.userId ? true : false);
   const [qualificationTip, setQualificationTip] = useState(null);
@@ -50,8 +51,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     skuId: null,
     product: '',
   });
-  const errorTip = state.errorTip as IErrorTip || {};
-  const setErrorTip = (data) => setAppData({ errorTip: data });
+  const [errorTip, setErrorTip] = useState<IErrorTip>({});
   const setFormData = useCallback((obj: any) => {
     _setFormData({ ...formData, ...obj });
   }, [formData]);
@@ -120,9 +120,10 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       toastText = _errorTip.province = '请选择省市';
       trackerAdmissions.track_toast_province_error();
     }
-    if (!formData.contactPhone) {
+    const errorPhoneTip = checkPhone(formData.contactPhone, '请填写联系方式');
+    if (errorPhoneTip) {
       hasError = true;
-      toastText = _errorTip.contactPhone = '请填写联系方式';
+      toastText = _errorTip.contactPhone = errorPhoneTip;
     }
     if (!formData.contactName) {
       /* 联系人必填 */

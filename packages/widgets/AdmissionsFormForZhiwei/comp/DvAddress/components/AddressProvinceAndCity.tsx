@@ -1,5 +1,3 @@
-// @ts-ignore
-import * as core from '@gr-davinci/core';
 import { View } from '@tarojs/components';
 import React, {
   useContext,
@@ -67,19 +65,19 @@ type Props = {
   actionRef?: any;
   // 打开县区选择
   showDistrictModal: () => void;
+  errorTip: IErrorTip;
+  setErrorTip: (e: IErrorTip) => void;
 };
 
 function AddressProvinceAndCity(props: Props) {
-  const { state, setAppData } = core.getAppContext();
-  const errorTip = state.errorTip as IErrorTip || {};
-  const { onChange, value, actionRef, showDistrictModal } = props;
+  const { onChange, value, actionRef, showDistrictModal, errorTip, setErrorTip } = props;
   const { fetchCity, fetchProvince } = useContext(ServiceContext);
   const [showPicker, setShowPicker] = useState(false);
 
   const [provinceList, setProvinceList] = useState([]);
   const [cityList, setCityList] = useState([]);
 
-  const [provinceId, setProvinceId] = useState(0);
+  const [provinceId, setProvinceId] = useState(null);
   const [cityId, setCityId] = useState(0);
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -110,8 +108,13 @@ function AddressProvinceAndCity(props: Props) {
   const onCityChange = useCallback(
     async (nextCity: { code: number; name: string }) => {
       // setLoading(true);
+      let region = {};
       if (nextCity.code !== cityId) {
         setCityId(nextCity.code);
+        region = {
+          regionId: 0,
+          regionName: '',
+        };
       }
 
       // 更新外部值
@@ -121,6 +124,7 @@ function AddressProvinceAndCity(props: Props) {
         cityName: nextCity.name,
         provinceId,
         provinceName,
+        ...region,
       });
 
       setShowPicker(false);
@@ -211,8 +215,13 @@ function AddressProvinceAndCity(props: Props) {
     async function fetch() {
       const provinceListData = await fetchProvince();
       setProvinceList(provinceListData);
+      if (typeof value?.provinceId === 'number') {
+        const citys = await fetchCity(value?.provinceId);
+        setCityList(citys);
+      }
     }
     fetch();
+
   }, []);
 
   const connectAddressCopy = useMemo(() => {
@@ -222,10 +231,10 @@ function AddressProvinceAndCity(props: Props) {
   return (
     <>
       <View
-        className={`address_input ${errorTip.province ? 'error-tip' : ''}`}
+        className={`address_input ${errorTip?.province ? 'error-tip' : ''}`}
         onClick={() => {
           setShowPicker((prev) => !prev);
-          errorTip.province && setAppData({ errorTip: {...errorTip, province: null} });
+          errorTip?.province && setErrorTip({...errorTip, province: null});
         }}
       >
         <View className="address_input__text">

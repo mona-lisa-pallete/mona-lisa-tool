@@ -1,26 +1,21 @@
-//@ts-ignore
-import * as core from '@gr-davinci/core';
 import { Textarea } from '@tarojs/components';
 import './AddressDetailTextarea.less';
 import React from 'react'
-import { IErrorTip } from '../../types';
 import * as trackerAdmissions from '../../utils/admissionsTracker'
 
 function AddressDetailTextarea(props) {
-  const { state, setAppData } = core.getAppContext();
-  const errorTip = state.errorTip as IErrorTip || {};
-  const { value, onChange, placeholder } = props;
+  const { value, onChange, placeholder, errorTip, setErrorTip } = props;
 
   return (
     <Textarea
-      className={`address_detail_text ${errorTip.contactAddress ? 'error-tip' : ''}`}
+      className={`address_detail_text ${errorTip?.contactAddress ? 'error-tip' : ''}`}
       value={value}
       placeholder={placeholder || "请输入详细地址"}
       onInput={onChange}
       maxlength={150}
       onClick={() => {
         trackerAdmissions.track_address_input_focus();
-        errorTip.contactAddress && setAppData({ errorTip: {...errorTip, contactAddress: null}});
+        errorTip?.contactAddress && setErrorTip({...errorTip, contactAddress: null});
       }}
     />
   );

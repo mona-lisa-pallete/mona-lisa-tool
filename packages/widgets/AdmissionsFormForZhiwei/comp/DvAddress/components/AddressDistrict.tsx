@@ -1,5 +1,3 @@
-// @ts-ignore
-import * as core from '@gr-davinci/core';
 import { ServiceContext } from '../hooks/CacheService';
 import { View } from '@tarojs/components';
 import React, { useContext, useEffect, useImperativeHandle, useState } from 'react';
@@ -20,7 +18,8 @@ interface Props {
   cityId?: number;
   regionName?: string;
   onChange: (value: any) => void;
-
+  errorTip: IErrorTip;
+  setErrorTip: (e: IErrorTip) => void;
   value: any;
 }
 
@@ -29,9 +28,9 @@ function AddressDistrict(props: Props, ref: any) {
     value,
     cityId,
     onChange: propsOnChange,
+    errorTip,
+    setErrorTip
   } = props;
-  const { state, setAppData } = core.getAppContext();
-  const errorTip = state.errorTip as IErrorTip || {};
   const { fetchDistrict } = useContext(ServiceContext);
   const [districtList, setDistrictList] = useState([]);
   const [tabIndex, setTabIndex] = useState(0);
@@ -49,16 +48,15 @@ function AddressDistrict(props: Props, ref: any) {
   useEffect(() => {
     async function fetch() {
       if (cityId) {
+        setDistrictList([]);
         const districtList = await fetchDistrict(cityId);
         const index = districtList.findIndex(item => item.code === value?.regionId && item.name === value?.regionName);
         if (index === -1) {
-          setDistrictList([]);
           propsOnChange({
             regionId: 0,
             regionName: '',
           });
         }
-
         setDistrictList(districtList);
       }
     }
@@ -80,7 +78,7 @@ function AddressDistrict(props: Props, ref: any) {
   ];
 
   const onClick = (e) => {
-    errorTip.district && setAppData({ errorTip: {...errorTip, district: null} });
+    errorTip?.district && setErrorTip({...errorTip, district: null});
     if (!cityId) {
       Taro.showToast({
         title: '请确保先选择省市',
@@ -92,7 +90,7 @@ function AddressDistrict(props: Props, ref: any) {
   };
   return (
     <View>
-      <View className={`district_input ${errorTip.province ? 'error-tip' : ''}`} onClick={onClick}>
+      <View className={`district_input ${errorTip?.province ? 'error-tip' : ''}`} onClick={onClick}>
         <View
           className={cls('district_input__text', {
             'district_input__text--placeholder': !value?.regionName,
