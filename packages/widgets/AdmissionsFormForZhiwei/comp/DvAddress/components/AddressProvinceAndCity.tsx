@@ -61,10 +61,12 @@ type Props = {
    * 暴露方法
    */
   actionRef?: any;
+  // 打开县区选择
+  showDistrictModal: () => void;
 };
 
 function AddressProvinceAndCity(props: Props) {
-  const { onChange, value, actionRef } = props;
+  const { onChange, value, actionRef, showDistrictModal } = props;
   const { fetchCity, fetchProvince } = useContext(ServiceContext);
   const [showPicker, setShowPicker] = useState(false);
 
@@ -116,8 +118,9 @@ function AddressProvinceAndCity(props: Props) {
       });
 
       setShowPicker(false);
+      showDistrictModal();
     },
-    [onChange, setShowPicker, setCityId, provinceName, provinceId],
+    [onChange, setShowPicker, setCityId, provinceName, provinceId, showDistrictModal],
   );
 
   // 渲染控制

@@ -1,5 +1,5 @@
 import { Image, View } from '@tarojs/components';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import AddressProvinceAndCity from './components/AddressProvinceAndCity';
 import { Provider } from './hooks/CacheService';
 import AddressDistrict from './components/AddressDistrict';
@@ -28,6 +28,10 @@ const DvAddress: React.FC<{
       ..._v,
     });
   };
+  const districtRef = useRef();
+  const showDistrictModal = () => {
+    (districtRef as any).current?.showDistrict();
+  };
   return (
     <View
       className="address_wrapper"
@@ -43,10 +47,15 @@ const DvAddress: React.FC<{
             boxSizing: 'border-box',
           }}
         >
-          <AddressProvinceAndCity onChange={onChange} value={provinceAndCity} />
+          <AddressProvinceAndCity
+            onChange={onChange}
+            value={provinceAndCity}
+            showDistrictModal={showDistrictModal}
+          />
           <AddressDistrict
             cityId={provinceAndCity.cityId}
             value={districtValue}
+            ref={districtRef}
             onChange={onChange}
           />
           <AddressDetailTextarea

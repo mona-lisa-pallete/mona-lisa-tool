@@ -17,41 +17,43 @@ interface Props {
   cityId?: number;
   regionName?: string;
   onChange: (value: any) => void;
-  actionRef?: any;
 
   value: any;
 }
 
-function AddressDistrict(props: Props) {
+function AddressDistrict(props: Props, ref: any) {
   const {
-    // regionId,
-    // regionName,
     value,
     cityId,
     onChange: propsOnChange,
-    actionRef,
   } = props;
   const { fetchDistrict } = useContext(ServiceContext);
   const [districtList, setDistrictList] = useState([]);
   const [tabIndex, setTabIndex] = useState(0);
   const [show, setShow] = useState(false);
 
-  useImperativeHandle(actionRef, () => {
+  useImperativeHandle(ref, () => {
     return {
       validate: () => {},
+      showDistrict: () => {
+        setShow(true);
+      }
     };
-  });
+  }, [setShow]);
 
   useEffect(() => {
     async function fetch() {
       if (cityId) {
-        // console.log(cityId);
-        setDistrictList([]);
-        propsOnChange({
-          regionId: 0,
-          regionName: '',
-        });
         const districtList = await fetchDistrict(cityId);
+        const index = districtList.findIndex(item => item.code === value?.regionId && item.name === value?.regionName);
+        if (index === -1) {
+          setDistrictList([]);
+          propsOnChange({
+            regionId: 0,
+            regionName: '',
+          });
+        }
+
         setDistrictList(districtList);
       }
     }
@@ -67,6 +69,7 @@ function AddressDistrict(props: Props) {
           regionId: nextCity.code,
           regionName: nextCity.name,
         });
+        setShow(false);
       },
     },
   ];
@@ -143,4 +146,4 @@ function AddressDistrict(props: Props) {
     </View>
   );
 }
-export default AddressDistrict;
+export default React.forwardRef(AddressDistrict);

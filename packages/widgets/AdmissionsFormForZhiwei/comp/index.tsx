@@ -47,7 +47,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     skuId: null,
     product: '',
   });
-  const { state } = core.getAppContext() ;
+  const { state } = core.getAppContext();
   const userInfo = state.userInfo as UserInfoType || {};
   useEffect(() => {
     console.log('全局用户数据', userInfo);
@@ -70,7 +70,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       // FIXME
       // setIsLogin(false);
     }
-  }, [userInfo?.userId])
+  }, [userInfo])
   useEffect(() => {
     Taro.showLoading();
     const getData = async () => {
@@ -91,7 +91,8 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     // console.log('userInfo', _userInfo);
     // // userInfo.userId = _userInfo.userId;
     // // userInfo.phoneNumber = _userInfo.phoneNumber;
-    // setUserInfo(_userInfo);
+    // // setUserInfo(_userInfo);
+    // setAppData()
     // try {
     //   await checkUserQualification();
     // } catch (err) {
@@ -186,27 +187,27 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         return;
       }
       const orderId = orderRes.data.order.order_id;
-      // await Promise.all([
-      //   /* 将学生跟学校绑定, 仅机构类型为学校时需要 */
-      //   /* 1. 学校， 2. 企业， 3. 机构 */
-      //   // offlineData.institution_type === 1 ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
-      //   bindUserSchool(userInfo.userId, offlineData.school_id),
-      //   /* 将数据保存到线下 */
-      //   postToOffline({
-      //     url: window.location.href,
-      //     phone: userInfo.phoneNumber,
-      //     name: formData.name,
-      //     contactName: formData.contactName,
-      //     contactPhone: formData.contactPhone,
-      //     contactAddress: formData.addressDetail,
-      //     provinceId: formData.provinceId,
-      //     cityId: formData.cityId,
-      //     regionId: formData.regionId,
-      //     clazz: formData.clazz || '', /* 班级 */
-      //     schoolId: offlineData.school_id,
-      //   }),
-      //   /* TODO: 将数据提交到达芬奇 */
-      // ]);
+      await Promise.all([
+        /* 将学生跟学校绑定, 仅机构类型为学校时需要 */
+        /* 1. 学校， 2. 企业， 3. 机构 */
+        // offlineData.institution_type === 1 ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
+        offlineData.institution_type === 1 ? Promise.resolve() : Promise.resolve(),
+        /* 将数据保存到线下 */
+        postToOffline({
+          url: window.location.href,
+          phone: userInfo.phoneNumber,
+          name: formData.name,
+          contactName: formData.contactName,
+          contactPhone: formData.contactPhone,
+          contactAddress: formData.contactAddress,
+          provinceId: formData.provinceId,
+          cityId: formData.cityId,
+          regionId: formData.regionId,
+          clazz: formData.clazz || '', /* 班级 */
+          schoolId: offlineData.school_id,
+        }),
+        /* TODO: 将数据提交到达芬奇 */
+      ]);
       /* 创建订单成功，跳转到订单页面 */
       console.log('订单创建成功,订单id', orderId);
       window.location.href = currentApiHost.order_detail + orderId;

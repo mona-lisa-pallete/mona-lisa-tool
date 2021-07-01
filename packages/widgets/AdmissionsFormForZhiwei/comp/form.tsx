@@ -215,7 +215,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
     </View>
     <View className="form-item">
       <View className="label">选择所在地址</View>
-      <View className="select">
+      <View className="">
         <DvAddress value={formData} onChange={setFormData} />
       </View>
     </View>
