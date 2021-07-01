@@ -4,6 +4,7 @@ import { Textarea } from '@tarojs/components';
 import './AddressDetailTextarea.less';
 import React from 'react'
 import { IErrorTip } from '../../types';
+import * as trackerAdmissions from '../../utils/admissionsTracker'
 
 function AddressDetailTextarea(props) {
   const { state, setAppData } = core.getAppContext();
@@ -18,6 +19,7 @@ function AddressDetailTextarea(props) {
       onInput={onChange}
       maxlength={150}
       onClick={() => {
+        trackerAdmissions.track_address_input_focus();
         errorTip.contactAddress && setAppData({ errorTip: {...errorTip, contactAddress: null}});
       }}
     />

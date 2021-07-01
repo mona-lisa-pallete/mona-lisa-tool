@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { UserInfoType } from './DvLoginWrapper/LoginForm';
 import useLocal from './useLocal';
 import DvTipModal from './DvTipModal';
-
+import * as trackerAdmissions from './utils/admissionsTracker'
 /**
  * props 由自定义的 form 表单传入
  */
@@ -67,6 +67,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
           await checkUserQualification();
         } catch (err) {
           setQualificationTip('抱歉，您暂时没有该活动的体验资格～');
+          trackerAdmissions.track_popup_originalclass();
         }
       };
       checkFn();
@@ -105,15 +106,19 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     if (!formData.contactAddress) {
       hasError = true;
       toastText = _errorTip.contactAddress = '请填写地址';
+      trackerAdmissions.track_address_input_fail();
     }
 
     if (!formData.regionName) {
       hasError = true;
       toastText = _errorTip.district = '请选择区县';
+      trackerAdmissions.track_toast_city_error();
+
     }
     if (!formData.cityName) {
       hasError = true;
       toastText = _errorTip.province = '请选择省市';
+      trackerAdmissions.track_toast_province_error();
     }
     if (!formData.contactPhone) {
       hasError = true;
@@ -123,16 +128,19 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       /* 联系人必填 */
       hasError = true;
       toastText = _errorTip.contactName = '请填写联系人';
+      trackerAdmissions.track_username_input_fail();
     }
     if (offlineData.show_clazz && offlineData.clazz_necessary && !formData.clazz) {
       /* 班级必填 */
       hasError = true;
       toastText = _errorTip.clazz = '请填写班级';
+      trackerAdmissions.track_clazz_select_fail();
     }
     if (!formData.skuId) {
       /* 选课必填 */
       hasError = true;
       toastText = _errorTip.selectTime = '请选择课程';
+      trackerAdmissions.track_toast_pickcourses_error();
     }
     if (!formData.name) {
       /* 名字必填 */
@@ -163,6 +171,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
   }, [formData, offlineData]);
 
   const onSubmit = useCallback(async () => {
+    trackerAdmissions.track_course_submit()
     if (!canSubmit()) return;
     try {
       Taro.showLoading({ title: '订单提交中' });
@@ -204,8 +213,12 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       ]);
       /* 创建订单成功，跳转到订单页面 */
       console.log('订单创建成功,订单id', orderId);
-      window.location.href = currentApiHost.order_detail + orderId;
+      trackerAdmissions.track_course_submit_success();
+      setTimeout(() => {
+        window.location.href = currentApiHost.order_detail + orderId;
+      }, 100);
     } catch(err) {
+      trackerAdmissions.track_course_submit_fail();
       console.log('错误', err)
       setConfirmFail(true);
     }
@@ -214,7 +227,14 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
 
   return <View className={`admissions-form-for-zhiwei ${props.edit ? 'env-dev' : ''}`}>
     {qualificationTip && <DvTipModal
-      foot={<a className="login-fail-btn" href={`https://sell.guorou.net/m/multiple-subject?sell_type=${sellType}&activity=${activity}&source=${source}`}>去看看</a>}
+      foot={<View onClick={() => {
+        trackerAdmissions.track_popup_originalclass_click();
+        const href=`https://sell.guorou.net/m/multiple-subject?sell_type=${sellType}&activity=${activity}&source=${source}`;
+        setTimeout(() => {
+          window.location.href = href;
+        }, 100);
+
+      }} className="login-fail-btn" >去看看</View>}
     >
       <View className="login-fail-content">
         <View>{qualificationTip}</View>

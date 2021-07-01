@@ -8,6 +8,7 @@ import Taro from '@tarojs/taro';
 import cls from 'classnames';
 import PickerList from './pickerList';
 import { IErrorTip } from '../../types';
+import * as trackerAdmissions from '../../utils/admissionsTracker'
 
 
 import './AddressProvinceAndCity.less';
@@ -118,6 +119,7 @@ function AddressDistrict(props: Props, ref: any) {
           <PickerTabs
             keys={tabKeys}
             onChange={(nextTabIndex) => {
+              trackerAdmissions.track_click_address_city();
               setTabIndex(nextTabIndex);
             }}
             activeKey={tabIndex}
