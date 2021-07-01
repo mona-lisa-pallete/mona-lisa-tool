@@ -23,9 +23,15 @@ target_zip="$work_dir/$ACTION.zip"
 
 method=POST
 
-api=https://portal.guorou.net/davinciapi/api/1/platform/action
-# api=http://localhost:5400/davinciapi/api/1/platform/component
-# api=http://portalhome.uae.shensz.local/davinciapi/api/1/platform/action
+if [ $ENV == "dev" ]; then
+  api=http://portalhome.uae.shensz.local/davinciapi/api/1/platform/action
+elif [ $ENV == "local" ]; then
+  api=http://localhost:5400/davinciapi/api/1/platform/action
+elif [ $ENV == "prod" ]; then
+  api=https://portal.guorou.net/davinciapi/api/1/platform/action
+else
+  api=http://portalhome.uae.shensz.local/davinciapi/api/1/platform/action
+fi
 
 request_info="发布新action"
 
