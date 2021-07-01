@@ -152,7 +152,7 @@ function DvDocViewer(props: docProps) {
         e_a: "click",
         e_n: "document_preview_expose",
         other: {
-          material_id: id,
+          material_id: previewData?.preSrc,
         },
       });
     }
@@ -281,8 +281,7 @@ function DvDocViewer(props: docProps) {
                 e_a: "click",
                 e_n: "click_document_download",
                 other: {
-                  material_id: "",
-                  document_name: preDocName,
+                  material_id: preSrc,
                 },
               });
               if (/\.pdf$/.test(preSrc)) {

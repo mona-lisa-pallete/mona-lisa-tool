@@ -17,8 +17,9 @@ function DvVideo(props: {
   style: any;
   type: "horizontal" | "vertical";
   id: string;
+  src: string;
 }) {
-  const { style, type = "horizontal", id } = props;
+  const { style, type = "horizontal", id, src } = props;
   const time = useRef(0);
   const playTimer = useRef<any>();
 
@@ -53,9 +54,7 @@ function DvVideo(props: {
           e_n: "click_play_video",
           other: {
             component_id: id,
-            component_name: "",
-            video_material_id: "",
-            video_material_name: "",
+            material_id: src,
           },
         });
         playTimer.current = setInterval(() => {
@@ -65,9 +64,7 @@ function DvVideo(props: {
             e_n: type === "horizontal" ? "watch_video" : "watch_video2",
             other: {
               component_id: id,
-              component_name: "",
-              video_material_id: "",
-              video_material_name: "",
+              material_id: src,
             },
           });
         }, 5000);
@@ -82,9 +79,7 @@ function DvVideo(props: {
           e_n: e.detail.fullScreen ? "click_full_screen" : "cancel_full_screen",
           other: {
             component_id: id,
-            component_name: "",
-            video_material_id: "",
-            video_material_name: "",
+            material_id: src,
           },
         });
       }}
@@ -98,9 +93,7 @@ function DvVideo(props: {
           e_n: type === "horizontal" ? "click_stop_video" : "stop_play_video",
           other: {
             component_id: id,
-            component_name: "",
-            video_material_id: "",
-            video_material_name: "",
+            material_id: src,
             time: time.current,
           },
         });
