@@ -24,9 +24,9 @@ if [ $ENV == "dev" ]; then
 elif [ $ENV == "local" ]; then
   api=http://localhost:5400/davinciapi/api/1/platform/component
 elif [ $ENV == "prod" ]; then
-  api=http://localhost:5400/davinciapi/api/1/platform/component
-else
   api=https://portal.guorou.net/davinciapi/api/1/platform/component
+else
+  api=http://portalhome.uae.shensz.local/davinciapi/api/1/platform/component
 fi
 
 request_info=发布新组件
