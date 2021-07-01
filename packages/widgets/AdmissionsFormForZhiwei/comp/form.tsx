@@ -8,6 +8,7 @@ import { GRADES } from './const';
 import { getDetailData } from './api';
 import { getGradeById, filterProducts, isNumber } from './utils';
 import DvAddress from './DvAddress/index'
+import * as trackerAdmissions from './utils/admissionsTracker'
 
 interface FormProps {
   formData: IFormData;
@@ -32,6 +33,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
   const isSelected = useCallback((defaultClass: string, selected: boolean) => selected ? `selected ${defaultClass}` : defaultClass, []);
   const setGrade = useCallback((gradeId: number) => {
     if (gradeId !== localClazzData.grade) {
+      trackerAdmissions.track_grade_select();
       setLocalClazzData({
         grade: gradeId,
         time: null,
@@ -77,6 +79,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
 
   const setSubject = useCallback((subjectIndex: number, subjectItem: subjectItem) => {
     if (subjectIndex !== localClazzData.subject) {
+      trackerAdmissions.track_clazz_select();
       if (!subjectItem.subjectLimited) {
         setLocalClazzData({ ...localClazzData, subject: subjectIndex, time: null, skuId: null });
       } else {
@@ -198,6 +201,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
           placeholder="请输入家长姓名"
           maxlength={15}
           value={formData.contactName}
+          onFocus={() => trackerAdmissions.track_username_input_focus()}
           onInput={(e) => {
             setFormData({contactName: e.detail.value});
           }}/>
@@ -282,6 +286,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
                     key={item.id}
                     onClick={() => {
                       if (!ossLimited) {
+                        trackerAdmissions.track_click_courses_time()
                         setLocalClazzData({
                           ...localClazzData,
                           time: index,

@@ -14,6 +14,7 @@ import cls from 'classnames';
 import PickerTabs from './pickerTabs';
 import PickerList from './pickerList';
 import { IErrorTip } from '../../types';
+import * as trackerAdmissions from '../../utils/admissionsTracker'
 
 import './AddressProvinceAndCity.less';
 
@@ -250,6 +251,7 @@ function AddressProvinceAndCity(props: Props) {
             keys={tabsKeys}
             activeKey={tabIndex}
             onChange={(next) => {
+              trackerAdmissions.track_click_address_province();
               setTabIndex(next);
             }}
           />
