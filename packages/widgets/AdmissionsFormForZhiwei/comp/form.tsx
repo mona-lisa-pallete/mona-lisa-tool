@@ -165,7 +165,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
   }, [formData, localClazzData, offlineData, clearErrorTip]);
 
   return (<View className="admissions-form">
-    <View className="school-name">{show_institution_name && institution_name ? `${institution_name}专属公益课` : '填写报读信息'}</View>
+    <View className="school-name"><span className="text-over">{show_institution_name && institution_name ? `${institution_name}专属公益课` : '填写报读信息'}</span></View>
     <View className="form-item">
       <View className="label">学生姓名</View>
       <View className={`input ${errorTip.name ? 'error-tip' : ''}`} onClick={() => errorTip.name && clearErrorTip('name')}>
@@ -177,7 +177,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
     <View className="form-item">
       <View className="label">选课</View>
       <View className={`select select-over ${errorTip.selectTime ? 'error-tip' : ''}`} onClick={showModalHandle}>
-        {formData.product || <span className="default-value">请选择报名课程</span>}
+        <View className="text-over">{formData.product || <span className="default-value">请选择报名课程</span>}</View>
       </View>
     </View>
     {offlineData.show_clazz && <View className="form-item">

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --port 33222",
-    "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true PORT=80 minictl start ",
+    "start": "DANGEROUSLY_DISABLE_HOST_CHECK=true PORT=33222 minictl start ",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },

@@ -190,8 +190,8 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       await Promise.all([
         /* 将学生跟学校绑定, 仅机构类型为学校时需要 */
         /* 1. 学校， 2. 企业， 3. 机构 */
-        // offlineData.institution_type === 1 ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
-        offlineData.institution_type === 1 ? Promise.resolve() : Promise.resolve(),
+        offlineData.institution_type === 1 ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
+        // offlineData.institution_type === 1 ? Promise.resolve() : Promise.resolve(),
         /* 将数据保存到线下 */
         postToOffline({
           url: window.location.href,
