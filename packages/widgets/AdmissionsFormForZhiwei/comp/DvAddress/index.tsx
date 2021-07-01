@@ -60,6 +60,7 @@ const DvAddress: React.FC<{
           />
           <AddressDetailTextarea
             value={contactAddress?.contactAddress}
+            placeholder="请输入详细收货地址"
             onChange={(e) => {
               const val = e.target.value;
               onChange({

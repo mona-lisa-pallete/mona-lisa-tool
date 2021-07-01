@@ -1,3 +1,5 @@
+// @ts-ignore
+import * as core from '@gr-davinci/core';
 import { View } from '@tarojs/components';
 import React, {
   useContext,
@@ -11,6 +13,7 @@ import { ServiceContext } from '../hooks/CacheService';
 import cls from 'classnames';
 import PickerTabs from './pickerTabs';
 import PickerList from './pickerList';
+import { IErrorTip } from '../../types';
 
 import './AddressProvinceAndCity.less';
 
@@ -66,6 +69,8 @@ type Props = {
 };
 
 function AddressProvinceAndCity(props: Props) {
+  const { state, setAppData } = core.getAppContext();
+  const errorTip = state.errorTip as IErrorTip || {};
   const { onChange, value, actionRef, showDistrictModal } = props;
   const { fetchCity, fetchProvince } = useContext(ServiceContext);
   const [showPicker, setShowPicker] = useState(false);
@@ -153,7 +158,7 @@ function AddressProvinceAndCity(props: Props) {
 
   useEffect(() => {
     async function fetch() {
-      if (provinceId) {
+      if (typeof provinceId === 'number') {
         const citys = await fetchCity(provinceId);
         setCityList(citys);
       }
@@ -165,7 +170,7 @@ function AddressProvinceAndCity(props: Props) {
   useEffect(() => {
     async function fetchName() {
       let params = {};
-      if (!value?.provinceName && value?.provinceId) {
+      if (!value?.provinceName && typeof value?.provinceId === 'number') {
         const provinceListData = await fetchProvince();
         setProvinceList(provinceListData);
 
@@ -178,7 +183,7 @@ function AddressProvinceAndCity(props: Props) {
           params['provinceName'] = initialProvinceName;
         }
       }
-      if (!value?.cityName && value?.cityId) {
+      if (!value?.cityName && typeof value?.cityId === 'number') {
         const cityListData = await fetchCity(value?.provinceId);
 
         setCityList(cityListData);
@@ -216,11 +221,14 @@ function AddressProvinceAndCity(props: Props) {
   return (
     <>
       <View
-        className="address_input"
-        onClick={() => setShowPicker((prev) => !prev)}
+        className={`address_input ${errorTip.province ? 'error-tip' : ''}`}
+        onClick={() => {
+          setShowPicker((prev) => !prev);
+          errorTip.province && setAppData({ errorTip: {...errorTip, province: null} });
+        }}
       >
         <View className="address_input__text">
-          {connectAddressCopy || '请选择省市'}
+          {connectAddressCopy || <span style={{color: '#999999'}}>请选择省市</span>}
         </View>
         <View className="address_input__icon" />
       </View>
@@ -231,14 +239,12 @@ function AddressProvinceAndCity(props: Props) {
       >
         <View className="picker_container">
           <View
-            className="icon"
+            className="close-btn"
             onClick={(e) => {
               e.stopPropagation();
               setShowPicker(false);
             }}
-          >
-            x
-          </View>
+          ></View>
           <View className="picker__title">请选择所在地区</View>
           <PickerTabs
             keys={tabsKeys}

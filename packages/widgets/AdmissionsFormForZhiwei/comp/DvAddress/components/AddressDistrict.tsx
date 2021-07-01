@@ -1,3 +1,5 @@
+// @ts-ignore
+import * as core from '@gr-davinci/core';
 import { ServiceContext } from '../hooks/CacheService';
 import { View } from '@tarojs/components';
 import React, { useContext, useEffect, useImperativeHandle, useState } from 'react';
@@ -5,7 +7,7 @@ import PickerTabs from './pickerTabs';
 import Taro from '@tarojs/taro';
 import cls from 'classnames';
 import PickerList from './pickerList';
-
+import { IErrorTip } from '../../types';
 
 
 import './AddressProvinceAndCity.less';
@@ -27,6 +29,8 @@ function AddressDistrict(props: Props, ref: any) {
     cityId,
     onChange: propsOnChange,
   } = props;
+  const { state, setAppData } = core.getAppContext();
+  const errorTip = state.errorTip as IErrorTip || {};
   const { fetchDistrict } = useContext(ServiceContext);
   const [districtList, setDistrictList] = useState([]);
   const [tabIndex, setTabIndex] = useState(0);
@@ -75,6 +79,7 @@ function AddressDistrict(props: Props, ref: any) {
   ];
 
   const onClick = (e) => {
+    errorTip.district && setAppData({ errorTip: {...errorTip, district: null} });
     if (!cityId) {
       Taro.showToast({
         title: '请确保先选择省市',
@@ -86,7 +91,7 @@ function AddressDistrict(props: Props, ref: any) {
   };
   return (
     <View>
-      <View className="district_input" onClick={onClick}>
+      <View className={`district_input ${errorTip.province ? 'error-tip' : ''}`} onClick={onClick}>
         <View
           className={cls('district_input__text', {
             'district_input__text--placeholder': !value?.regionName,
@@ -103,14 +108,12 @@ function AddressDistrict(props: Props, ref: any) {
       >
         <View className="picker_container">
           <View
-            className="icon"
+            className="close-btn"
             onClick={(e) => {
               e.stopPropagation();
               setShow(false);
             }}
-          >
-            x
-          </View>
+          ></View>
           <View className="picker__title">请选择所在区县</View>
           <PickerTabs
             keys={tabKeys}

@@ -22,10 +22,12 @@ interface AdmissionsFormForZhiweiProps {
 }
 
 const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) => {
-  const [isLogin, setIsLogin] = useState(false);
+
+  const { state, setAppData } = core.getAppContext();
+  const userInfo = state.userInfo as UserInfoType || {};
+  const [isLogin, setIsLogin] = useState(userInfo?.userId ? true : false);
   const [qualificationTip, setQualificationTip] = useState(null);
   const [confirmFail, setConfirmFail] = useState(false);
-  const [errorTip, setErrorTip] = useState<IErrorTip>({});
   const [offlineData, setOfflineData] = useState<OfflineData>({
     institution_name: '',
     show_name: false,
@@ -44,17 +46,22 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     clazz: '',
     time: null,
     contactName: '',
-    contactPhone: '',
+    contactPhone: userInfo.phoneNumber || null,
     skuId: null,
     product: '',
   });
-  const { state } = core.getAppContext();
-  const userInfo = state.userInfo as UserInfoType || {};
+  const errorTip = state.errorTip as IErrorTip || {};
+  const setErrorTip = (data) => setAppData({ errorTip: data });
+  const setFormData = useCallback((obj: any) => {
+    _setFormData({ ...formData, ...obj });
+  }, [formData]);
   useEffect(() => {
-    // console.log('全局用户数据', userInfo);
     if (userInfo?.userId) {
       Taro.showToast({title: '已登录'})
       setIsLogin(true);
+      if (!formData.contactPhone) {
+        setFormData({ contactPhone: userInfo?.phoneNumber });
+      }
       const checkFn = async () => {
         try {
           await checkUserQualification();
@@ -91,42 +98,48 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     }
   }, [offlineData]);
 
-  const setFormData = useCallback((obj: any) => {
-      _setFormData({ ...formData, ...obj });
-  }, [formData]);
-
   const canSubmit = useCallback(() => {
     let hasError = false;
     let _errorTip: IErrorTip = {};
-    if (offlineData.show_clazz && offlineData.clazz_necessary && !formData.clazz) {
-      /* 班级必填 */
+    let toastText = '';
+    if (!formData.contactAddress) {
       hasError = true;
-      _errorTip.clazz = '请填写班级';
+      toastText = _errorTip.contactAddress = '请填写地址';
     }
-    if (!formData.name) {
-      /* 名字必填 */
+
+    if (!formData.regionName) {
       hasError = true;
-      _errorTip.name = '请填写学生姓名';
+      toastText = _errorTip.district = '请选择区县';
     }
-    if (!formData.skuId) {
-      /* 选课必填 */
+    if (!formData.cityName) {
       hasError = true;
-      _errorTip.selectTime = '请选择课程';
+      toastText = _errorTip.province = '请选择省市';
+    }
+    if (!formData.contactPhone) {
+      hasError = true;
+      toastText = _errorTip.contactPhone = '请填写联系方式';
     }
     if (!formData.contactName) {
       /* 联系人必填 */
       hasError = true;
-      _errorTip.contactName = '请填写联系人';
+      toastText = _errorTip.contactName = '请填写联系人';
     }
-    if (!formData.contactPhone) {
+    if (offlineData.show_clazz && offlineData.clazz_necessary && !formData.clazz) {
+      /* 班级必填 */
       hasError = true;
-      _errorTip.contactPhone = '请填写联系方式';
+      toastText = _errorTip.clazz = '请填写班级';
     }
-    if (!formData.regionName || !formData.contactAddress) {
-      /* 地址必填 */
+    if (!formData.skuId) {
+      /* 选课必填 */
       hasError = true;
-      _errorTip.address = '请填写地址';
+      toastText = _errorTip.selectTime = '请选择课程';
     }
+    if (!formData.name) {
+      /* 名字必填 */
+      hasError = true;
+      toastText = _errorTip.name = '请填写学生姓名';
+    }
+    toastText && Taro.showToast({ title: toastText, icon: 'none' });
     setErrorTip(_errorTip);
     return !hasError;
   }, [formData, offlineData]);

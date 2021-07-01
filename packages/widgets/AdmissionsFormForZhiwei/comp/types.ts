@@ -125,5 +125,7 @@ export interface IErrorTip {
   clazz?: string;
   contactName?: string;
   contactPhone?: string;
-  address?: string;
+  contactAddress?: string;
+  province?: string;
+  district?: string;
 }

@@ -21,7 +21,9 @@
     bottom: 0;
     display: flex;
     flex-direction: column;
-
+    border-radius: 10px 10px 0 0;
+    padding-top: 20px;
+    overflow: hidden;
     .inner-scroll {
       flex: 1;
     }
@@ -29,6 +31,16 @@
 
   &--hide {
     display: none;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-image: url(../../imgs/btn_close@2x.png);
+    background-size: cover;
+    width: 56px;
+    height: 56px;
   }
 }
 
@@ -64,30 +76,14 @@
   }
 }
 
-.icon {
-  width: 28px;
-  height: 28px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  font-size: 0;
-  background-color: #333;
-}
-
 .picker__title {
-  // width: 216px;
-  // height: 32px;
   font-family: PingFangSC-Semibold;
   font-size: 36px;
   color: #444444;
   letter-spacing: 0;
-  line-height: 32px;
-
   width: 100%;
   line-height: 100px;
-
   padding-left: 40px;
-
   border-bottom: 1px solid #e5e5e5;
 }
 
