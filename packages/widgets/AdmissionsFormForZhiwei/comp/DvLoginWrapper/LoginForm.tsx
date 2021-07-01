@@ -7,6 +7,7 @@ import useCountDown from './hooks/useCountDown';
 import useFocus from './hooks/useFocus';
 import './LoginForm.less';
 import { currentApiHost } from '../api';
+import { source, activity } from '../const';
 
 type CompProps = {
   onLoginFail?: Function;
@@ -27,7 +28,8 @@ export async function signIn(params) {
       data: {
         username: '',
         role: 3,
-        register_source: 'test',
+        register_source: source,
+        register_activity: activity,
         ...params,
       },
     });
@@ -64,7 +66,8 @@ export async function getSignInSms(
   const mergedParams = {
     role: 3,
     type: isByPhoneCall ? 1 : 0,
-    register_source: 'test',
+    register_source: source,
+    register_activity: activity,
     ...params, // 邀请有奖活动会设置覆盖 activity 场景
   };
 

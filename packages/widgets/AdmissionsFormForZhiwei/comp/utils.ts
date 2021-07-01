@@ -58,3 +58,6 @@ export const filterProducts: (
 };
 
 export const isNumber = (val: any) => typeof val === "number";
+
+export const preventDefault = (e) => e.preventDefault();
+export const stopPropagation = (e) => e.stopPropagation();

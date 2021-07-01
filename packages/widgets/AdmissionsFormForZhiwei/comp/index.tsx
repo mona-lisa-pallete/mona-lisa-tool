@@ -12,6 +12,7 @@ import "./index.less";
 import { useEffect } from "react";
 import { UserInfoType } from './DvLoginWrapper/LoginForm';
 import useLocal from './useLocal';
+import DvTipModal from './DvTipModal';
 
 /**
  * props 由自定义的 form 表单传入
@@ -27,7 +28,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
   const [errorTip, setErrorTip] = useState<IErrorTip>({});
   const [offlineData, setOfflineData] = useState<OfflineData>({
     institution_name: '',
-    show_institution_name: false,
+    show_name: false,
     show_clazz: false,
     clazz_necessary: false,
     grades: [],
@@ -50,7 +51,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
   const { state } = core.getAppContext();
   const userInfo = state.userInfo as UserInfoType || {};
   useEffect(() => {
-    console.log('全局用户数据', userInfo);
+    // console.log('全局用户数据', userInfo);
     if (userInfo?.userId) {
       Taro.showToast({title: '已登录'})
       setIsLogin(true);
@@ -62,14 +63,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         }
       };
       checkFn();
-    } else {
-      // Taro.showToast({
-      //   title: '未登录',
-      //   icon: 'none'
-      // })
-      // FIXME
-      // setIsLogin(false);
-    }
+    } else {}
   }, [userInfo])
   useEffect(() => {
     Taro.showLoading();
@@ -87,22 +81,10 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     getData();
   }, []);
 
-  const onLogin = useCallback(async (_userInfo: UserInfoType) => {
-    // console.log('userInfo', _userInfo);
-    // // userInfo.userId = _userInfo.userId;
-    // // userInfo.phoneNumber = _userInfo.phoneNumber;
-    // // setUserInfo(_userInfo);
-    // setAppData()
-    // try {
-    //   await checkUserQualification();
-    // } catch (err) {
-    //   setQualificationTip(err.message || '抱歉，您暂时没有该活动的体验资格～');
-    // }
-    // setIsLogin(true);
-  }, []);
+  const onLogin = useCallback(async (_userInfo: UserInfoType) => {}, []);
 
   const getLoginTip = useCallback(() => {
-    if (offlineData.show_institution_name) {
+    if (offlineData.show_name) {
       return `${offlineData.institution_name}邀请您登录，获得果肉公益课`;
     } else {
       return '亲爱的家长，为了给您提供更好的服务，请先登录您的手机号';
@@ -158,8 +140,8 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       !formData.name||
       !formData.skuId ||
       !formData.contactName ||
-      !formData.contactPhone
-      // !formData.address
+      !formData.contactPhone ||
+      !formData.contactAddress
     ) {
       return false;
     } else {
@@ -174,7 +156,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       const addressId = await createAddress({
         contact_name: formData.contactName,
         contact_phone: formData.contactPhone,
-        country: '中国', /* TODO: 创建地址接口 */
+        country: '中国',
         province: formData.provinceName,
         city: formData.cityName,
         district: formData.regionName,
@@ -191,7 +173,6 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         /* 将学生跟学校绑定, 仅机构类型为学校时需要 */
         /* 1. 学校， 2. 企业， 3. 机构 */
         offlineData.institution_type === 1 ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
-        // offlineData.institution_type === 1 ? Promise.resolve() : Promise.resolve(),
         /* 将数据保存到线下 */
         postToOffline({
           url: window.location.href,
@@ -219,24 +200,18 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
   }, [formData, offlineData, userInfo]);
 
   return <View className={`admissions-form-for-zhiwei ${props.edit ? 'env-dev' : ''}`}>
-    {qualificationTip && <View className="login-fail-tip">
-        <View className="login-fail-container">
-          <View className="login-fail-title">提示</View>
-          <View className="login-fail-content">{qualificationTip}</View>
-          <View className="login-fail-recommend">其他活动正在进行中，快去看看吧</View>
-          <a className="login-fail-btn" href={`https://sell.guorou.net/m/multiple-subject?sell_type=${sellType}&activity=${activity}&source=${source}`}>去看看</a>
-        </View>
-      </View>}
-    {confirmFail && <View className="login-fail-tip">
-      <View className="login-fail-container">
-        <View className="close-btn" onClick={() => setConfirmFail(false)}>
-          <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M556.8 512L832 236.8c12.8-12.8 12.8-32 0-44.8-12.8-12.8-32-12.8-44.8 0L512 467.2l-275.2-277.333333c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l275.2 277.333333-277.333333 275.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.933333 8.533333 23.466666 8.533333s17.066667-2.133333 23.466667-8.533333L512 556.8 787.2 832c6.4 6.4 14.933333 8.533333 23.466667 8.533333s17.066667-2.133333 23.466666-8.533333c12.8-12.8 12.8-32 0-44.8L556.8 512z" ></path></svg>
-        </View>
-        <View className="login-fail-title">提示</View>
-        <View className="login-fail-content">无法报名，请联系客服：<br /><a href="tel:4008009456">400 800 9456</a></View>
+    {qualificationTip && <DvTipModal
+      foot={<a className="login-fail-btn" href={`https://sell.guorou.net/m/multiple-subject?sell_type=${sellType}&activity=${activity}&source=${source}`}>去看看</a>}
+    >
+      <View className="login-fail-content">
+        <View>{qualificationTip}</View>
+        <View>其他活动正在进行中，快去看看吧</View>
       </View>
-    </View>}
-    {!isLogin &&  <View className="login-container"><LoginFormWrapper
+    </DvTipModal>}
+    {confirmFail && <DvTipModal closeHandle={() => setConfirmFail(false)}>
+    <View className="login-fail-content">无法报名，请联系客服：<br /><a href="tel:4008009456">400 800 9456</a></View>
+    </DvTipModal>}
+    {!isLogin &&  <View className="login-container dv-modal"><LoginFormWrapper
         loginTip={getLoginTip()}
         onLoginSuccess={onLogin}
         onLoginFail={() => {
@@ -254,7 +229,9 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       offlineData={offlineData}
       setFormData={setFormData}
     />
-    <Button onClick={onSubmit} className={`submit-btn ${disableSubmit() ? '' : 'disable-btn'}`}>立即报名</Button>
+    <View className="fixed-bottom-btn">
+      <Button onClick={onSubmit} className={`submit-btn ${disableSubmit() ? '' : 'disable-btn'}`}>立即报名</Button>
+    </View>
   </View>;
 };
 

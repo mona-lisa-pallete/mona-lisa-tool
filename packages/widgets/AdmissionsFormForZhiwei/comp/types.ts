@@ -1,6 +1,6 @@
 export interface OfflineData {
   institution_name: string;
-  show_institution_name: boolean;
+  show_name: boolean;
   show_clazz: boolean;
   clazz_necessary: boolean;
   grades: number[];
@@ -61,7 +61,7 @@ export interface IOfflineData {
   institution_name: string;
   institution_type: number;
   school_id: number;
-  show_institution_name: boolean;
+  show_name: boolean;
   show_clazz: boolean;
   clazz_necessary: boolean;
   grades: number[];

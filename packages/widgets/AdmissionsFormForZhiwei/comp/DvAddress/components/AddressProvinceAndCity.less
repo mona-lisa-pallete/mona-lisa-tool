@@ -1,5 +1,5 @@
 .picker {
-  z-index: 3;
+  z-index: 103;
   position: fixed;
   margin: auto;
   bottom: 0;
@@ -12,7 +12,7 @@
   box-sizing: border-box;
 
   .picker_container {
-    height: 600px;
+    height: 60vh;
     background: #fff;
 
     position: absolute;
@@ -33,36 +33,31 @@
 }
 
 .address_input {
-  height: 44px;
   font-family: PingFangSC-Regular;
   font-size: 32px;
   color: #333333;
   letter-spacing: 0;
-
   width: 410px;
-  height: 88px;
   background: #f4f5f6;
-  border-radius: 4px;
-
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
+  border-radius: 8px;
   padding-left: 20px;
+  padding-right: 60px;
   box-sizing: border-box;
+  position: relative;
 
   .address_input__icon {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
     width: 28px;
     height: 28px;
-    background-color: #333;
-    flex: 0;
-    flex-basis: 28px;
-    margin-left: 20px;
-    margin-right: 20px;
+    background-image: url(../../imgs/line_direction-skip@2x.png);
+    background-size: cover;
   }
   .address_input__text {
-    flex: 1;
-    max-width: 8em;
+    line-height: 88px;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

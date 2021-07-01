@@ -1,0 +1,47 @@
+.dv-modal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 101;
+
+  .dv-modal-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+  }
+
+  .dv-modal-head {
+    position: relative;
+    padding-top: 20px;
+  }
+
+  .dv-modal-body {
+    max-height: 40vh;
+    padding-left: 40px;
+    overflow-y: auto;
+  }
+
+  .dv-modal-foot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px;
+  }
+
+  .dv-modal-close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-image: url(../imgs/btn_close@2x.png);
+    background-size: cover;
+    width: 56px;
+    height: 56px;
+  }
+}

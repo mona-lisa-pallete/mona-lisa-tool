@@ -1,5 +1,5 @@
 .address_picker {
-  z-index: 3;
+  z-index: 103;
   position: absolute;
   margin: auto;
   height: 100vh;
@@ -8,7 +8,7 @@
   background-color: rgba(0, 0, 0, 0.4);
 
   .address_container {
-    height: 600px;
+    height: 60vh;
     background: #fff;
 
     position: absolute;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, View, Image, Input } from "@tarojs/components";
 import Taro from '@tarojs/taro';
-import Modal from './modal';
+import Modal from './DvModal/modal';
 import { useCallback } from "react";
 import { OfflineData, Products, ProductItem, subjectItem, IFormData, IErrorTip } from './types';
 import { GRADES } from './const';
@@ -25,7 +25,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
   const [localClazzData, setLocalClazzData] = useState({ grade: null, subject: null, time: null, skuId: null });
   const { formData, setFormData, offlineData, errorTip, setErrorTip } = props;
   const {
-    show_institution_name,
+    show_name,
     institution_name,
     grades
   } = offlineData;
@@ -165,7 +165,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
   }, [formData, localClazzData, offlineData, clearErrorTip]);
 
   return (<View className="admissions-form">
-    <View className="school-name"><span className="text-over">{show_institution_name && institution_name ? `${institution_name}专属公益课` : '填写报读信息'}</span></View>
+    <View className="school-name"><span className="text-over">{show_name && institution_name ? `${institution_name}专属公益课` : '填写报读信息'}</span></View>
     <View className="form-item">
       <View className="label">学生姓名</View>
       <View className={`input ${errorTip.name ? 'error-tip' : ''}`} onClick={() => errorTip.name && clearErrorTip('name')}>
