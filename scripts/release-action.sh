@@ -1,5 +1,8 @@
 pwd=$PWD
 
+# 引入参数解析器
+. $pwd/scripts/parse-params.sh
+
 # 清除工作区中原有的 zip
 # rm -rf $target_zip
 
@@ -11,12 +14,12 @@ work_dir="$pwd/$zip_target"_zip
 # 压缩文件
 . ./scripts/zip-comp.sh $zip_target
 
-element_ref=$1
+# ACTION=$1
 
 # 组件 id，如果传入，则通过 PUT 更新组件
-comp_id=$2
+# comp_id=$2
 
-target_zip="$work_dir/$element_ref.zip"
+target_zip="$work_dir/$ACTION.zip"
 
 method=POST
 
@@ -31,9 +34,9 @@ if [ ! -f $target_zip ]; then
   exit 1
 fi
 
-if [ $2 != "" ]; then
+if [ $ID != "" ]; then
   method=PUT
-  api=$api/$comp_id
+  api=$api/$ID
   request_info="更新action"
 fi
 

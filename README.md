@@ -150,62 +150,57 @@ import * from '../../xx' //这是不生效的
 
 ---
 
-## 4. 发布
+## 4. 发布组件
 
-### 4.1. zip 组件源代码
-
-通过脚本 `npm run zip:src` 将 `./src` 目录下的所有组件分别 zip，输出目录为 `./src_zip`。
-
-### 4.2. 通过自动化脚本发布
+### 4.1. 通过自动化脚本发布
 
 ```shell
-sh ./scripts/upload-widget-2-oss.sh {widgetName} {widgetID}
+sh ./scripts/upload-widget-2-oss.sh -c AdmissionsFormForZhiwei -i 15 -e dev
 ```
 
-注意：
+sh 参数说明：
 
-- {widgetName} 必填
-- {widgetID} 选填（目前需要手动从数据库查询后填入）
+- -c --comp: 组件名，对应 `./packages/widgets/{comp}`
+- -i --id: 组件 id
   - 如果没填，则认为是新增组件，通过 POST 上传
   - 如果填了，则认为是更新组件，通过 PUT 上传
+- -e --env: 环境
+  - dev 默认
+  - prod
+  - local
 
-### 4.3. 深入了解
-
-#### 4.3.1. 通过 Da Vinci API 发布
-
-首次发布：
-
-```shell
-url: http://portalhome.uae.shensz.local/davinciapi/api/1/platform/component
-method: POST
-form: {
-    data: ${widgetName}.zip // 业务组件
-}
-```
-
-更新组件：
-
-```shell
-url: http://portalhome.uae.shensz.local/davinciapi/api/1/platform/component/:id
-method: PUT
-form: {
-    data: ${widgetName}.zip // 业务组件
-}
-```
-
-通过 `postman` 来上传组件，这里已经准备好了 `postman` 配置文件，查看 `./postman/Davinci.postman_collection.json`。
+### 4.2. API
 
 详情查看 [yapi](http://mock.guorou.local/project/206/interface/api/19017)
 
 ---
 
-## 5. 时序图
+## 5. 发布 action
+
+### 5.1. 通过自动化脚本发布
+
+```shell
+sh ./scripts/release-action.sh -a toast -e dev
+```
+
+sh 参数说明：
+
+- -a --action: action 名，对应 `./packages/actions/{action}`
+- -i --id: 组件 id
+  - 如果没填，则认为是新增组件，通过 POST 上传
+  - 如果填了，则认为是更新组件，通过 PUT 上传
+- -e --env: 环境
+  - dev 默认
+  - prod
+  - local
+
+## 6. 时序图
 
 ![](./docs/asserts/组件开发工具.jpg)
 
 ---
 
-## 6. 未来 TODO
+## 7. 未来 TODO
 
 1. 工具集成组件管理功能（平台化二期），实现自动 zip、上传、版本管理
    1. 组件版本管理
