@@ -83,7 +83,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         setOfflineData(data);
 
         const { province_id, city_id } = data || {};
-        if(province_id && city_id && formData?.provinceId && formData?.cityId) {
+        if(province_id && city_id && !formData?.provinceId && !formData?.cityId) {
           setFormData({ provinceId: province_id, cityId: city_id });
         }
       } catch {
