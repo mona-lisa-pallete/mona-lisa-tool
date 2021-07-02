@@ -89,6 +89,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
   }, [localClazzData]);
 
   const onNext = useCallback(async () => {
+    if (selectStep === 2) return;
     if (localClazzData.grade) {
       if (localClazzData.subject === null) {
         try {
@@ -114,7 +115,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
         setSelectStep(2);
       }
     }
-  }, [localClazzData]);
+  }, [localClazzData, selectStep]);
 
   const onBefore = useCallback(() => {
     setSelectStep(1);
@@ -173,7 +174,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
     <View className="form-item">
       <View className="label">学生姓名</View>
       <View className={`input ${errorTip.name ? 'error-tip' : ''}`} onClick={() => errorTip.name && clearErrorTip('name')}>
-        <Input 
+        <Input
           onFocus={() => { trackerAdmissions.track_username_input_focus(); }}
           type="text" placeholder="请输入孩子的姓名" maxlength={15} value={formData.name} onInput={(e) => {
             setFormData({name: e.detail.value});
@@ -184,13 +185,13 @@ const FormComponent: React.FC<FormProps> = (props) => {
     <View className="form-item">
       <View className="label">选课</View>
       <View className={`select select-over ${errorTip.selectTime ? 'error-tip' : ''}`} onClick={showModalHandle}>
-        <View onClick={() => { trackerAdmissions.track_pickcourses(); }} className="text-over">{formData.product || <span className="default-value">请选择报名课程</span>}</View>
+        <View onClick={() => { trackerAdmissions.track_pickcourses(); }} className="text-over">{formData.product || <span className="placeholder">请选择报名课程</span>}</View>
       </View>
     </View>
     {offlineData.show_clazz && <View className="form-item">
       <View className={`label ${offlineData.clazz_necessary ? '' : 'no-neseccery'}`}>班级</View>
       <View className={`input ${errorTip.clazz ? 'error-tip' : ''}`} onClick={() => errorTip.clazz && clearErrorTip('clazz')}>
-        <Input 
+        <Input
           onFocus={() => { trackerAdmissions.track_clazz_input_focus(); }}
           type="text" placeholder="请输入在校班级" value={formData.clazz} maxlength={15} onInput={(e) => {
             setFormData({clazz: e.detail.value});
@@ -236,8 +237,8 @@ const FormComponent: React.FC<FormProps> = (props) => {
         <View className="select-title">选择报名课程</View>
         <View className="step-progress">
           <View className="step-name">
-            <View className={selectStep === 2 ? 'step' : 'step-active'}>在读年级</View>
-            <View className={selectStep === 2 ? 'step-active' : 'step'}>科目&上课</View>
+            <View className={selectStep === 2 ? 'step' : 'step-active'} onClick={onBefore}>在读年级</View>
+            <View className={selectStep === 2 ? 'step-active' : 'step'} onClick={onNext}>科目&上课</View>
           </View>
           <View className={`step-bar ${selectStep === 2 ? ' step-end' : ''}`}></View>
         </View>
@@ -253,7 +254,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
     >
       {selectStep === 1 ?
         (<View className="grade-edit">
-          {GRADES.map((item) => (item.canShow(grades) && <React.Fragment key={item.subTitle}>
+          {GRADES.map((item) => (item.canShow(grades) && <View className="grade-wrap" key={item.subTitle}>
             <View className="grade-subtitle">{item.subTitle}</View>
             <View className="grade-container">
               {item.subItem.map((gradeItem) => (grades.includes(gradeItem.id) ? (
@@ -266,7 +267,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
                 </View>
               ) : null))}
             </View>
-          </React.Fragment>))}
+          </View>))}
         </View>) : (<View>
           <View className="subject-edit">
             <View className="subject-subtitle">科目</View>

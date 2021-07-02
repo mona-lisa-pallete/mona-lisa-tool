@@ -14,9 +14,11 @@
   min-height: 800px;
   padding: 40px;
   background: rgb(250, 251, 251);
+  textarea::placeholder,
   input::placeholder,
   .placeholder {
     color: #999999;
+    font-size: 28px;
   }
 
   .fixed-bottom-btn {
@@ -48,14 +50,19 @@
     overflow: hidden;
 
     .grade-subtitle {
-      // margin-top: 32px;
       font-size: 32px;
+    }
+
+    .grade-wrap {
+      margin-bottom: 40px;
+      &:last-child {
+        margin-bottom: 20px;
+      }
     }
 
     .grade-container {
       display: flex;
       flex-wrap: wrap;
-      margin-bottom: 32px;
     }
 
     .grade-item {
@@ -105,7 +112,8 @@
         position: absolute;
         bottom: -1px;
         right: -1px;
-        background-image: url(./imgs/selected-icon.png);
+        background-image: url(./imgs/selected-icon.png),
+          linear-gradient(-45deg, #f93c11 50%, transparent 50%);
         background-size: cover;
         width: 40px;
         height: 40px;

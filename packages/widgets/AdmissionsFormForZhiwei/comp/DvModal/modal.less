@@ -15,6 +15,10 @@
     background: white;
     border-radius: 12px 12px 0 0;
     overflow: hidden;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .dv-modal-head {
@@ -23,9 +27,9 @@
   }
 
   .dv-modal-body {
-    max-height: 40vh;
     padding-left: 40px;
     overflow-y: auto;
+    flex-grow: 1;
   }
 
   .dv-modal-foot {

@@ -266,7 +266,7 @@ function AddressProvinceAndCity(props: Props) {
             <View className="address_input__city">{showCityName}</View>
           )}
           {!value?.provinceName && !value.cityName && (
-            <span style={{ color: '#999999' }}>请选择省市</span>
+            <span className="placeholder">请选择省市</span>
           )}
         </View>
         <View className="address_input__icon" />
