@@ -136,7 +136,6 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       /* 联系人必填 */
       hasError = true;
       toastText = _errorTip.contactName = '请填写联系人';
-      trackerAdmissions.track_username_input_fail();
     }
     if (offlineData.show_clazz && offlineData.clazz_necessary && !formData.clazz) {
       /* 班级必填 */
@@ -157,7 +156,6 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       trackerAdmissions.track_username_input_fail();
     }
     if(toastText) {
-      trackerAdmissions.track_course_submit_fail();
       Taro.showToast({ title: toastText, icon: 'none' });
     }
 
