@@ -269,7 +269,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       setFormData={setFormData}
     />
     <View className="fixed-bottom-btn">
-      <Button onClick={onSubmit} className={`submit-btn ${disableSubmit() ? '' : 'disable-btn'}`}>立即报名</Button>
+      <Button onClick={onSubmit} className="submit-btn">立即报名</Button>
     </View>
   </View>;
 };

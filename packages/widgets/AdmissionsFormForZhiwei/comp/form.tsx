@@ -165,6 +165,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
         Taro.showToast({ title: '获取课程数据失败', icon: 'none' });
       }
     }
+    setSelectStep(1);
     setLocalClazzData({ time: formData.time, grade: formData.grade, subject: formData.subject, skuId: formData.skuId });
     setShowModal(true);
   }, [formData, localClazzData, offlineData, clearErrorTip]);
