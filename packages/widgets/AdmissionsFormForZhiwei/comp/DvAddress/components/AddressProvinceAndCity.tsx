@@ -7,12 +7,13 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
+import { unstable_batchedUpdates } from 'react-dom';
 import { ServiceContext } from '../hooks/CacheService';
 import cls from 'classnames';
 import PickerTabs from './pickerTabs';
 import PickerList from './pickerList';
 import { IErrorTip } from '../../types';
-import * as trackerAdmissions from '../../utils/admissionsTracker'
+import * as trackerAdmissions from '../../utils/admissionsTracker';
 
 import './AddressProvinceAndCity.less';
 
@@ -22,7 +23,6 @@ type selectedData = {
    */
   provinceId: number;
   cityId: number;
-  connectAddress?: string;
   provinceName: string;
   cityName: string;
   regionName?: string;
@@ -35,14 +35,6 @@ type selectedData = {
 };
 
 type Props = {
-  /**
-   * 初始化省code id
-   */
-  // initialProvinceId: number;
-  /**
-   * 初始化城市code id
-   */
-  // initialCityId: number;
   /**
    * 与外部通信
    */
@@ -59,10 +51,6 @@ type Props = {
    * 因为小程序内 textarea 是原生组件，placeholder 会遮盖 modal
    */
   showAddressDetail?: boolean;
-  /**
-   * 暴露方法
-   */
-  actionRef?: any;
   // 打开县区选择
   showDistrictModal: () => void;
   errorTip: IErrorTip;
@@ -70,7 +58,10 @@ type Props = {
 };
 
 function AddressProvinceAndCity(props: Props) {
-  const { onChange, value, actionRef, showDistrictModal, errorTip, setErrorTip } = props;
+  const { onChange, value, showDistrictModal, errorTip, setErrorTip } = props;
+  // const { state, setAppData } = core.getAppContext();
+  // const errorTip = (state.errorTip as IErrorTip) || {};
+  // const { onChange, value, actionRef, showDistrictModal } = props;
   const { fetchCity, fetchProvince } = useContext(ServiceContext);
   const [showPicker, setShowPicker] = useState(false);
 
@@ -83,12 +74,7 @@ function AddressProvinceAndCity(props: Props) {
   const [tabIndex, setTabIndex] = useState(0);
   const [provinceName, setProvinceName] = useState('');
 
-  useImperativeHandle(actionRef, () => {
-    return {
-      a: () => console.log('xixi'),
-      validate: () => {},
-    };
-  });
+  // fixme: 依赖关系太冗杂了
 
   // 更改省份
   const onProvinceChange = useCallback(
@@ -101,7 +87,14 @@ function AddressProvinceAndCity(props: Props) {
       setCityList([]);
       setTabIndex(1);
     },
-    [setProvinceId, setProvinceName, setCityId, setCityList, setTabIndex],
+    [
+      setProvinceId,
+      setProvinceName,
+      setCityId,
+      setCityList,
+      setTabIndex,
+      provinceId,
+    ],
   );
 
   // 更改城市
@@ -130,7 +123,16 @@ function AddressProvinceAndCity(props: Props) {
       setShowPicker(false);
       showDistrictModal();
     },
-    [onChange, setShowPicker, setCityId, provinceName, provinceId, showDistrictModal],
+    [
+      onChange,
+      setShowPicker,
+      setCityId,
+      provinceName,
+      provinceId,
+      cityId,
+      showDistrictModal,
+      value,
+    ],
   );
 
   // 渲染控制
@@ -139,11 +141,11 @@ function AddressProvinceAndCity(props: Props) {
       {
         name: provinceName || value?.provinceName || '请选择省份',
         list: provinceList,
-        activeCode: value?.provinceId,
+        activeCode: provinceId,
         onChange: onProvinceChange,
       },
       {
-        name: value?.cityName || '请选择市',
+        name: provinceId === value?.provinceId ? value?.cityName : '请选择市',
         list: cityList,
         activeCode: value?.cityId,
         onChange: onCityChange,
@@ -152,9 +154,10 @@ function AddressProvinceAndCity(props: Props) {
   }, [
     cityList,
     provinceList,
-    value,
+    value?.provinceName,
     value?.provinceId,
     value?.cityId,
+    value?.cityName,
     onCityChange,
     onProvinceChange,
     provinceId,
@@ -180,7 +183,7 @@ function AddressProvinceAndCity(props: Props) {
         setProvinceList(provinceListData);
 
         const initialProvinceName =
-          provinceListData.find((o) => {
+          provinceListData.find(o => {
             return o.code === value?.provinceId;
           })?.name || '';
 
@@ -193,7 +196,7 @@ function AddressProvinceAndCity(props: Props) {
 
         setCityList(cityListData);
         const initialCityName =
-          cityListData.find((o) => {
+          cityListData.find(o => {
             return o.code === value?.cityId;
           })?.name || '';
 
@@ -203,7 +206,6 @@ function AddressProvinceAndCity(props: Props) {
       }
       // onChange(params);
       if (Object.keys(params).length > 0) {
-
         onChange(params);
       }
     }
@@ -221,24 +223,32 @@ function AddressProvinceAndCity(props: Props) {
       }
     }
     fetch();
-
   }, []);
 
   const connectAddressCopy = useMemo(() => {
     return `${value?.provinceName || ''}${value?.cityName || ''}`;
   }, [value?.provinceName, value?.cityName]);
 
+  const onInputClick = () => {
+    unstable_batchedUpdates(() => {
+      // 初始化tab
+      setProvinceId(value?.provinceId);
+      setProvinceName(value?.provinceName);
+      setShowPicker(true);
+    });
+    errorTip.province && setErrorTip({ ...errorTip, province: null });
+  };
+
   return (
     <>
       <View
         className={`address_input ${errorTip?.province ? 'error-tip' : ''}`}
-        onClick={() => {
-          setShowPicker((prev) => !prev);
-          errorTip?.province && setErrorTip({...errorTip, province: null});
-        }}
+        onClick={onInputClick}
       >
         <View className="address_input__text">
-          {connectAddressCopy || <span style={{color: '#999999'}}>请选择省市</span>}
+          {connectAddressCopy || (
+            <span style={{ color: '#999999' }}>请选择省市</span>
+          )}
         </View>
         <View className="address_input__icon" />
       </View>
@@ -250,16 +260,16 @@ function AddressProvinceAndCity(props: Props) {
         <View className="picker_container">
           <View
             className="close-btn"
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
               setShowPicker(false);
             }}
-          ></View>
+          />
           <View className="picker__title">请选择所在地区</View>
           <PickerTabs
             keys={tabsKeys}
             activeKey={tabIndex}
-            onChange={(next) => {
+            onChange={next => {
               trackerAdmissions.track_click_address_province();
               setTabIndex(next);
             }}
