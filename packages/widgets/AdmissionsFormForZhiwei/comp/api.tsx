@@ -10,11 +10,12 @@ import { ICreateAddressData, IOfflineData, IPostOfflineData } from './types';
 
 const hosts = {
   /* 生产环境域名 */
-  "portal.guorou.net": {
-    "offline": "http://sale.guorou.net",
-    "school_api": "https://sell.guorou.net",
-    "sell_api": "https://sell.guorou.net",
+  "sell.guorou.net": {
+    "offline": "https://sale.guorou.net",
+    "school_api": "https://sellapi.guorou.net",
+    "sell_api": "https://sellapi.guorou.net",
     "order_detail": "https://sell.guorou.net/m/order?order_id=",
+    "dv_api": "https://portal.guorou.net/davinciapi/api/1",
   },
   "pre": {
     /* 预发 */
@@ -22,6 +23,7 @@ const hosts = {
     "school_api": "http://schoolapi.vpctest.uae.shensz.cn",
     "sell_api": "http://sellapi.test.guorou.net",
     "order_detail": "http://sell.test.guorou.net/m/order?order_id=",
+    "dv_api": "http://portalhome.uae.shensz.local/davinciapi/api/1",
   },
   /* 开发环境域名 */
   "dev": {
@@ -29,11 +31,13 @@ const hosts = {
     "school_api": "http://sell.dev.guorou.net",
     "sell_api": "http://sell.dev.guorou.net",
     "order_detail": "http://sell.dev.guorou.net/m/order?order_id=",
+    "dv_api": "http://portalhome.uae.shensz.local/davinciapi/api/1",
   },
   "mock": {
     "offline": "http://mock.guorou.local/mock/242",
     "school_api": "http://mock.guorou.local/mock/234",
     "sell_api": "http://mock.guorou.local/mock/11",
+    "dv_api": "http://portalhome.uae.shensz.local/davinciapi/api/1",
   }
 };
 
@@ -167,6 +171,14 @@ export async function createOrder(skuId: number, addressId: string): Promise<{
   } else {
     throw new Error(res.data.msg || '创建订单失败，请重试');
   }
+}
+
+export async function postDataToDv(data: Object) {
+  await request({
+    method: 'POST',
+    url: `${currentApiHost.dv_api}/core/log`,
+    data,
+  });
 }
 
 export default {

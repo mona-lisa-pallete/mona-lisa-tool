@@ -5,8 +5,8 @@ import React, { useCallback, useState } from "react";
 import * as core from '@gr-davinci/core';
 import LoginFormWrapper from './DvLoginWrapper';
 import FormComponent from './form';
-import { getOfflineData, checkUserQualification, createOrder, bindUserSchool, postToOffline, createAddress, currentApiHost } from "./api";
-import { source, activity, sellType, gradesMap } from './const';
+import { getOfflineData, checkUserQualification, createOrder, bindUserSchool, postToOffline, createAddress, currentApiHost, postDataToDv } from "./api";
+import { source, activity, sellType, gradesMap, source_hash } from './const';
 import { OfflineData, IFormData, IErrorTip } from './types';
 import "./index.less";
 import { useEffect } from "react";
@@ -202,7 +202,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         return;
       }
       const orderId = orderRes.data.order.order_id;
-      await Promise.all([
+      Promise.all([
         /* 将学生跟学校绑定, 仅机构类型为学校时需要 */
         /* 1. 学校， 2. 企业， 3. 机构 */
         offlineData.institution_type === 1 ? bindUserSchool(userInfo.userId, offlineData.school_id) : Promise.resolve(),
@@ -220,8 +220,8 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
           clazz: formData.clazz || '', /* 班级 */
           schoolId: offlineData.school_id,
         }),
-        /* TODO: 将数据提交到达芬奇 */
-      ]);
+        postDataToDv(formData)
+      ]).catch(() => {});
       /* 创建订单成功，跳转到订单页面 */
       console.log('订单创建成功,订单id', orderId);
       trackerAdmissions.track_course_submit_success();
@@ -240,7 +240,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     {qualificationTip && <DvTipModal
       foot={<View onClick={() => {
         trackerAdmissions.track_popup_originalclass_click();
-        const href=`https://sell.guorou.net/m/multiple-subject?sell_type=autumn_2021_FromZJ_JcQf7K&activity=2021_qiu_xx&source=${source}`;
+        const href=`https://sell.guorou.net/m/multiple-subject?sell_type=autumn_2021_FromZJ_JcQf7K&activity=2021_qiu_xx&source=${source}&source_hash=${source_hash}`;
         setTimeout(() => {
           window.location.href = href;
         }, 100);
