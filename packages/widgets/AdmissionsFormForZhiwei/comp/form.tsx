@@ -9,6 +9,7 @@ import { getDetailData } from './api';
 import { getGradeById, filterProducts, isNumber } from './utils';
 import DvAddress from './DvAddress/index'
 import * as trackerAdmissions from './utils/admissionsTracker'
+import useFocus from "./DvLoginWrapper/hooks/useFocus";
 
 interface FormProps {
   formData: IFormData;
@@ -25,6 +26,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
   /* 本地保存一份课程选择，只有点了确认才同步到界面上 */
   const [localClazzData, setLocalClazzData] = useState({ grade: null, subject: null, time: null, skuId: null });
   const { formData, setFormData, offlineData, errorTip, setErrorTip } = props;
+  const [nextInput, setNxtInputFocus] = useFocus();
   const {
     show_name,
     institution_name,
@@ -125,6 +127,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
     if (!isNumber(localClazzData.subject) || !isNumber(localClazzData.time)) return;
     setFormData({ ...localClazzData, product: getSelected() });
     setShowModal(false);
+    (setNxtInputFocus as Function)();
   }, [localClazzData]);
 
   const getSelected = useCallback(() => {
@@ -193,6 +196,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
       <View className={`label ${offlineData.clazz_necessary ? '' : 'no-neseccery'}`}>班级</View>
       <View className={`input ${errorTip.clazz ? 'error-tip' : ''}`} onClick={() => errorTip.clazz && clearErrorTip('clazz')}>
         <Input
+          ref={nextInput}
           onFocus={() => { trackerAdmissions.track_clazz_input_focus(); }}
           type="text" placeholder="请输入在校班级" value={formData.clazz} maxlength={15} onInput={(e) => {
             setFormData({clazz: e.detail.value});
@@ -205,6 +209,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
       <View className="parent-contact">
         <Input
           className={`contact-name ${errorTip?.contactName ? 'error-tip' : ''}`}
+          ref={offlineData.show_clazz ? null : nextInput}
           onClick={() => errorTip?.contactName && clearErrorTip('contactName')}
           type="text"
           placeholder="请输入家长姓名"

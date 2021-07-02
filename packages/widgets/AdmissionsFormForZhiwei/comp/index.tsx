@@ -87,6 +87,13 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       Taro.hideLoading();
     };
     getData();
+
+    // 给body一个div, 让body顶起来
+    if (!props.edit) {
+      const div = document.createElement('div');
+      div.style.height = '4rem';
+      document.body.appendChild(div);
+    }
   }, []);
 
   const onLogin = useCallback(async (_userInfo: UserInfoType) => {}, []);
