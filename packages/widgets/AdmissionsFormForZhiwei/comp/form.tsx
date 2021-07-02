@@ -4,7 +4,7 @@ import Taro from '@tarojs/taro';
 import Modal from './DvModal/modal';
 import { useCallback } from "react";
 import { OfflineData, Products, ProductItem, subjectItem, IFormData, IErrorTip } from './types';
-import { GRADES } from './const';
+import { GRADES, GRADE_NAMES } from './const';
 import { getDetailData } from './api';
 import { getGradeById, filterProducts, isNumber } from './utils';
 import DvAddress from './DvAddress/index'
@@ -133,7 +133,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
         const gradeInfo = getGradeById(localClazzData.grade);
         const subjectInfo = products[localClazzData.subject];
         const timeInfo = subjectInfo.product_list[localClazzData.time];
-        return `${gradeInfo.gradeName} ${subjectInfo.subject_name} ${timeInfo?.time_text}`;
+        return `${GRADE_NAMES[timeInfo.grade_val]} ${subjectInfo.subject_name} ${timeInfo?.time_text}`;
       }
     } catch (err) {
       console.error('拼接具体课程失败', err);

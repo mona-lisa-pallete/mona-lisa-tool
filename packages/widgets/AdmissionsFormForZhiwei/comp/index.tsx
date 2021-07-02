@@ -93,7 +93,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
 
   const getLoginTip = useCallback(() => {
     if (offlineData.show_name) {
-      return `${offlineData.institution_name}邀请您登录，获得果肉公益课`;
+      return <>{offlineData.institution_name}<br/>邀请您登录，获得果肉公益课</>;
     } else {
       return '亲爱的家长，为了给您提供更好的服务，请先登录您的手机号';
     }

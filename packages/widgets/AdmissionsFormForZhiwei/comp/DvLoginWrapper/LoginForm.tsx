@@ -289,6 +289,7 @@ const LoginForm = (props: CompProps) => {
         <Input
           className="phone_input"
           placeholder="请输入手机号"
+          type="number"
           value={phone}
           maxlength={11}
           onInput={(e) => onPhoneNumberInputChange(e)}
@@ -311,8 +312,9 @@ const LoginForm = (props: CompProps) => {
           <Input
             className="phone_input"
             placeholder="请输入验证码"
+            type="number"
             value={verifyCode}
-            maxlength={11}
+            maxlength={5}
             ref={VerifyCodeInputRef}
             onInput={(e) => onVerifyCodeInputChange(e)}
           />

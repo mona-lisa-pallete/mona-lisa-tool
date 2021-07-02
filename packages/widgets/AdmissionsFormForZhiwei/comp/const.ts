@@ -32,6 +32,8 @@ export const gradesMap = {
   "12A,12B": 12,
 };
 
+export const GRADE_NAMES = ["学前", "一年级", "二年级", "三年级", "四年级", "五年级", "六年级", "初一", "初二", "初三", "高一", "高二"];
+
 export const GRADES = [
   {
     subTitle: "小学阶段",
