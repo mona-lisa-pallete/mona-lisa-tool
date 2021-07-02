@@ -8,6 +8,7 @@ import React, {
   useCallback,
 } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
+import Taro from '@tarojs/taro';
 import { ServiceContext } from '../hooks/CacheService';
 import cls from 'classnames';
 import PickerTabs from './pickerTabs';
@@ -147,7 +148,10 @@ function AddressProvinceAndCity(props: Props) {
         onChange: onProvinceChange,
       },
       {
-        name: provinceId === value?.provinceId ? value?.cityName : '请选择市',
+        name:
+          provinceId === value?.provinceId && value?.cityName
+            ? value?.cityName
+            : '请选择市',
         list: cityList,
         activeCode: value?.cityId,
         onChange: onCityChange,
@@ -277,7 +281,13 @@ function AddressProvinceAndCity(props: Props) {
             className="close-btn"
             onClick={e => {
               e.stopPropagation();
+              setCityList([]);
+              setProvinceId(0);
+              setProvinceName('');
               setShowPicker(false);
+              if (!value?.cityId) {
+                setTabIndex(0);
+              }
             }}
           />
           <View className="picker__title">请选择所在地区</View>
@@ -285,6 +295,13 @@ function AddressProvinceAndCity(props: Props) {
             keys={tabsKeys}
             activeKey={tabIndex}
             onChange={next => {
+              if (!provinceId && next === 1) {
+                Taro.showToast({
+                  title: '请先选择省份',
+                  icon: 'none',
+                });
+                return;
+              }
               setTabIndex(next);
             }}
           />
