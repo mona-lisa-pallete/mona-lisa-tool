@@ -12,7 +12,7 @@
   box-sizing: border-box;
 
   .picker_container {
-    height: 60vh;
+    height: 80vh;
     background: #fff;
 
     position: absolute;
@@ -92,6 +92,18 @@
   line-height: 100px;
   padding-left: 40px;
   border-bottom: 1px solid #e5e5e5;
+  flex: 0;
+  flex-basis: 100px;
+}
+
+.picker__container {
+  max-height: auto;
+  overflow-y: scroll;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex: 1;
 }
 
 .hide {

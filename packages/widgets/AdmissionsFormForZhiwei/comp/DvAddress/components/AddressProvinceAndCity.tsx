@@ -81,7 +81,7 @@ function AddressProvinceAndCity(props: Props) {
     async (nextProvince: { code: number; name: string }) => {
       trackerAdmissions.track_click_address_province();
       if (nextProvince.code === provinceId) return;
-      
+
       setProvinceId(nextProvince.code);
       setProvinceName(nextProvince.name);
       setCityId(0);
@@ -288,16 +288,7 @@ function AddressProvinceAndCity(props: Props) {
               setTabIndex(next);
             }}
           />
-          <View
-            style={{
-              height: '100%',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              display: 'flex',
-            }}
-            className="inner-scroll"
-          >
+          <View className="inner-scroll picker__container">
             {tabsKeys.map((item, i) => {
               const active = i === tabIndex;
               return (
