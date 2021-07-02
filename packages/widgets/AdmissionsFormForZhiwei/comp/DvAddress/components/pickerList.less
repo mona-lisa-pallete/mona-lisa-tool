@@ -14,7 +14,8 @@
     color: #333;
     background-color: #fff;
     & + .dv_address_picker_list-item {
-      border-top: 1px solid #e5e5e5;
+      // postcss-pxtransform disable
+      border-top: 1PX solid #e5e5e5;
     }
     box-sizing: border-box;
 
@@ -34,6 +35,15 @@
       top: 50%;
       transform: translateY(-50%);
       margin-right: 40px;
+      background-image: url("https://static.guorou.net/grow/grow_mp/line_currency_tick.png");
+      background-repeat: no-repeat;
+      background-size: 100%;
+      width: 28px;
+      height: 28px;
+
+      &--show {
+        opacity: 1;
+      }
     }
   }
 }

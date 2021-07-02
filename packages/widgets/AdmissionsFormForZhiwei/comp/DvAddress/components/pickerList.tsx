@@ -57,7 +57,9 @@ function List<T extends region>(props: Props<T>) {
             <View className={cls('dv_address_picker_list-item__text')}>
               {dataItem.name}
             </View>
-            <View className={cls('dv_address_picker_list-item__icon')}></View>
+            <View className={cls('dv_address_picker_list-item__icon', {
+              ["dv_address_picker_list-item__icon--show"]: active
+            })} />
           </View>
         );
       })}
