@@ -258,10 +258,11 @@ const LoginForm = (props: CompProps) => {
         setAppData({
           userInfo,
         });
+        core.setUserData(userInfo);
         admissionsTracker.track_login_success();
         if (onLoginSuccess) {
           onLoginSuccess(userInfo);
-          core.setUserInfoFromStorage(userInfo)
+          core.setUserInfoFromStorage(userInfo);
         }
       } else {
         failLogin();
