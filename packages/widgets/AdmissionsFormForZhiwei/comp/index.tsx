@@ -103,9 +103,9 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     let hasError = false;
     let _errorTip: IErrorTip = {};
     let toastText = '';
-    if (!formData.contactAddress || !(formData.contactAddress.length>=5)) {
+    if (!formData.contactAddress || formData.contactAddress.length <= 5) {
       hasError = true;
-      toastText = _errorTip.contactAddress = '地址内容输入不足';
+      toastText = _errorTip.contactAddress = '请确认详细地址不低于 5 个字';
       trackerAdmissions.track_address_input_fail();
     }
 
