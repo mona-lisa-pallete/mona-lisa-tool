@@ -8,6 +8,7 @@ import useFocus from './hooks/useFocus';
 import './LoginForm.less';
 import { currentApiHost } from '../api';
 import { source, activity } from '../const';
+import * as  admissionsTracker from '../utils/admissionsTracker';
 
 type CompProps = {
   onLoginFail?: Function;
@@ -100,6 +101,7 @@ export function checkPhone(
     return noPhoneText || '手机号不得为空';
   }
   if (!/^1\d{10}$/.test(noSpacesPhone)) {
+    admissionsTracker.track_phonenumber_fail(phone);
     return formatWrongText || '手机号格式有误';
   }
   return null;
@@ -167,9 +169,12 @@ const LoginForm = (props: CompProps) => {
     const value = event.target.value.trim();
     setPhone(value);
     if (value.length === 11) {
+      admissionsTracker.track_phonenumber_success()
       if (onInputPhone) {
         onInputPhone();
       }
+      admissionsTracker.track_verification_code_send();
+
       // 自动发送验证码
       getVerificationCode(value);
     }
@@ -253,15 +258,18 @@ const LoginForm = (props: CompProps) => {
         setAppData({
           userInfo,
         });
+        admissionsTracker.track_login_success();
         if (onLoginSuccess) {
           onLoginSuccess(userInfo);
           core.setUserInfoFromStorage(userInfo)
         }
       } else {
         failLogin();
+        admissionsTracker.track_verification_code_fail(phone, verifyCodeStr)
       }
     } catch (error) {
       console.error(error);
+      admissionsTracker.track_verification_code_fail(phone, verifyCodeStr)
       failLogin();
     }
   };
@@ -284,6 +292,7 @@ const LoginForm = (props: CompProps) => {
           value={phone}
           maxlength={11}
           onInput={(e) => onPhoneNumberInputChange(e)}
+          onFocus={admissionsTracker.track_phonenumber_focus}
         />
 
         <View className="input_right">
@@ -320,6 +329,7 @@ const LoginForm = (props: CompProps) => {
           className="verification_btn"
           onClick={() => {
             if (!btnDisabled) {
+              admissionsTracker.track_verification_code_resend();
               getVerificationCode(phone);
             }
           }}

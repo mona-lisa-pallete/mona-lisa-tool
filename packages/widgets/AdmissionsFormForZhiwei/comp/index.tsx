@@ -103,9 +103,9 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     let hasError = false;
     let _errorTip: IErrorTip = {};
     let toastText = '';
-    if (!formData.contactAddress) {
+    if (!formData.contactAddress || !(formData.contactAddress.length>=5)) {
       hasError = true;
-      toastText = _errorTip.contactAddress = '请填写地址';
+      toastText = _errorTip.contactAddress = '地址内容输入不足';
       trackerAdmissions.track_address_input_fail();
     }
 
@@ -147,8 +147,13 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
       /* 名字必填 */
       hasError = true;
       toastText = _errorTip.name = '请填写学生姓名';
+      trackerAdmissions.track_username_input_fail();
     }
-    toastText && Taro.showToast({ title: toastText, icon: 'none' });
+    if(toastText) {
+      trackerAdmissions.track_course_submit_fail();
+      Taro.showToast({ title: toastText, icon: 'none' });
+    }
+
     setErrorTip(_errorTip);
     return !hasError;
   }, [formData, offlineData]);

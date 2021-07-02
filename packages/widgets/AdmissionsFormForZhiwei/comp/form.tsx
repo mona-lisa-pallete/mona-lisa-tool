@@ -172,24 +172,30 @@ const FormComponent: React.FC<FormProps> = (props) => {
     <View className="school-name"><span className="text-over">{show_name && institution_name ? `${institution_name}专属公益课` : '填写报读信息'}</span></View>
     <View className="form-item">
       <View className="label">学生姓名</View>
-      <View className={`input ${errorTip?.name ? 'error-tip' : ''}`} onClick={() => errorTip?.name && clearErrorTip('name')}>
-        <Input type="text" placeholder="请输入孩子的姓名" maxlength={15} value={formData.name} onInput={(e) => {
-          setFormData({name: e.detail.value});
-        }}/>
+      <View className={`input ${errorTip.name ? 'error-tip' : ''}`} onClick={() => errorTip.name && clearErrorTip('name')}>
+        <Input 
+          onFocus={() => { trackerAdmissions.track_username_input_focus(); }}
+          type="text" placeholder="请输入孩子的姓名" maxlength={15} value={formData.name} onInput={(e) => {
+            setFormData({name: e.detail.value});
+          }}
+      />
       </View>
     </View>
     <View className="form-item">
       <View className="label">选课</View>
-      <View className={`select select-over ${errorTip?.selectTime ? 'error-tip' : ''}`} onClick={showModalHandle}>
-        <View className="text-over">{formData.product || <span className="default-value placeholder">请选择报名课程</span>}</View>
+      <View className={`select select-over ${errorTip.selectTime ? 'error-tip' : ''}`} onClick={showModalHandle}>
+        <View onClick={() => { trackerAdmissions.track_pickcourses(); }} className="text-over">{formData.product || <span className="default-value">请选择报名课程</span>}</View>
       </View>
     </View>
     {offlineData.show_clazz && <View className="form-item">
       <View className={`label ${offlineData.clazz_necessary ? '' : 'no-neseccery'}`}>班级</View>
-      <View className={`input ${errorTip?.clazz ? 'error-tip' : ''}`} onClick={() => errorTip?.clazz && clearErrorTip('clazz')}>
-        <Input type="text" placeholder="请输入在校班级" value={formData.clazz} maxlength={15} onInput={(e) => {
-          setFormData({clazz: e.detail.value});
-        }}/>
+      <View className={`input ${errorTip.clazz ? 'error-tip' : ''}`} onClick={() => errorTip.clazz && clearErrorTip('clazz')}>
+        <Input 
+          onFocus={() => { trackerAdmissions.track_clazz_input_focus(); }}
+          type="text" placeholder="请输入在校班级" value={formData.clazz} maxlength={15} onInput={(e) => {
+            setFormData({clazz: e.detail.value});
+          }}
+        />
       </View>
     </View>}
     <View className="form-item">
@@ -202,7 +208,6 @@ const FormComponent: React.FC<FormProps> = (props) => {
           placeholder="请输入家长姓名"
           maxlength={15}
           value={formData.contactName}
-          onFocus={() => trackerAdmissions.track_username_input_focus()}
           onInput={(e) => {
             setFormData({contactName: e.detail.value});
           }}/>

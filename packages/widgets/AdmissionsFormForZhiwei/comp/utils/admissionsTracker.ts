@@ -106,3 +106,6 @@ export function track_course_submit_fail() {
 export function track_click_courses_time() {
   admissionsTrackClick("click_courses_time");
 }
+export function track_clazz_input_focus() {
+  admissionsTrackClick("clazz_input_focus");
+}
