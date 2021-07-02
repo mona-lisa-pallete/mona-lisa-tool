@@ -10,12 +10,12 @@ import { ICreateAddressData, IOfflineData, IPostOfflineData } from './types';
 
 const hosts = {
   /* 生产环境域名 */
-  // "portal.guorou.net": {
-  //   "offline": "http://sale.guorou.net",
-  //   "school_api": "http://schoolapi.vpcalh.uae.shensz.cn",
-  //   "sell_api": "https://sell.guorou.net",
-  //   "order_detail": "https://sell.guorou.net/m/order?order_id=",
-  // },
+  "portal.guorou.net": {
+    "offline": "http://sale.guorou.net",
+    "school_api": "https://sell.guorou.net",
+    "sell_api": "https://sell.guorou.net",
+    "order_detail": "https://sell.guorou.net/m/order?order_id=",
+  },
   "pre": {
     /* 预发 */
     "offline": "http://sale.test.guorou.net",
@@ -26,7 +26,7 @@ const hosts = {
   /* 开发环境域名 */
   "dev": {
     "offline": "http://saleapi.uae.shensz.local", // 线下
-    "school_api": "http://schoolapi.uae.shensz.local",
+    "school_api": "http://sell.dev.guorou.net",
     "sell_api": "http://sell.dev.guorou.net",
     "order_detail": "http://sell.dev.guorou.net/m/order?order_id=",
   },
