@@ -50,7 +50,12 @@ export const filterProducts: (
 
       return {
         ...item,
-        product_list: newProductList,
+        product_list: newProductList.sort((preItem, nxtItem) => {
+          const preSellInfo = preItem.sell_info;
+          const preLimited = preSellInfo.sell_limit > preSellInfo.sold_num;
+          // 排序，没库存的在最底下，然后按期数，由前往后
+          return preLimited ? -1 : (preItem.time_seq > nxtItem.time_seq ? -1 : 1);
+        }),
         subjectLimited: productOSS,
       };
     })
