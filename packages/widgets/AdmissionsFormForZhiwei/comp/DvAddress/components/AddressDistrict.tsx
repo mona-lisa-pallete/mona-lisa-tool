@@ -122,15 +122,7 @@ function AddressDistrict(props: Props, ref: any) {
             }}
             activeKey={tabIndex}
           />
-          <View
-            style={{
-              height: '100%',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              display: 'flex',
-            }}
-          >
+          <View className="inner-scroll picker__container">
             {tabKeys.map((item, i) => {
               return (
                 <PickerList
