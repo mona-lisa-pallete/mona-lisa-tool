@@ -176,7 +176,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
   return (<View className="admissions-form">
     <View className="school-name"><span className="text-over">{show_name && institution_name ? `${institution_name}专属公益课` : '填写报读信息'}</span></View>
     <View className="form-item">
-      <View className="label">学生姓名</View>
+      <View className="label" id="name">学生姓名</View>
       <View className={`input ${errorTip.name ? 'error-tip' : ''}`} onClick={() => errorTip.name && clearErrorTip('name')}>
         <Input
           onFocus={() => { trackerAdmissions.track_username_input_focus(); }}
@@ -187,13 +187,13 @@ const FormComponent: React.FC<FormProps> = (props) => {
       </View>
     </View>
     <View className="form-item">
-      <View className="label">选课</View>
+      <View className="label" id="time">选课</View>
       <View className={`select select-over ${errorTip.selectTime ? 'error-tip' : ''}`} onClick={showModalHandle}>
         <View onClick={() => { trackerAdmissions.track_pickcourses(); }} className="text-over">{formData.product || <span className="placeholder">请选择报名课程</span>}</View>
       </View>
     </View>
     {offlineData.show_clazz && <View className="form-item">
-      <View className={`label ${offlineData.clazz_necessary ? '' : 'no-neseccery'}`}>班级</View>
+      <View className={`label ${offlineData.clazz_necessary ? '' : 'no-neseccery'}`} id="clazz">班级</View>
       <View className={`input ${errorTip.clazz ? 'error-tip' : ''}`} onClick={() => errorTip.clazz && clearErrorTip('clazz')}>
         <Input
           ref={nextInput}
@@ -205,7 +205,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
       </View>
     </View>}
     <View className="form-item">
-      <View className="label">家长联系方式(用于接收“课程材料礼盒”)</View>
+      <View className="label" id="contact">家长联系方式(用于接收“课程材料礼盒”)</View>
       <View className="parent-contact">
         <Input
           className={`contact-name ${errorTip?.contactName ? 'error-tip' : ''}`}
@@ -230,7 +230,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
           }}/>
       </View>
     </View>
-    <View className="form-item">
+    <View className="form-item" id="address">
       <View className="label">收货地址（开课前将收到课程礼盒）</View>
       <View className="">
         <DvAddress value={formData} onChange={setFormData} errorTip={errorTip} setErrorTip={setErrorTip} />

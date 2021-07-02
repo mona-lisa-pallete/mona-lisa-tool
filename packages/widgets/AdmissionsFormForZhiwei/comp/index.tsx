@@ -110,52 +110,64 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     let hasError = false;
     let _errorTip: IErrorTip = {};
     let toastText = '';
+    let scrollId = '';
     if (!formData.contactAddress || formData.contactAddress.length <= 5) {
       hasError = true;
+      scrollId = 'address';
       toastText = _errorTip.contactAddress = '请确认详细地址不低于 5 个字';
       trackerAdmissions.track_address_input_fail();
     }
 
     if (!formData.regionName) {
       hasError = true;
+      scrollId = 'address';
       toastText = _errorTip.district = '请选择区县';
       trackerAdmissions.track_toast_city_error();
 
     }
     if (!formData.cityName) {
       hasError = true;
+      scrollId = 'address';
       toastText = _errorTip.province = '请选择省市';
       trackerAdmissions.track_toast_province_error();
     }
     const errorPhoneTip = checkPhone(formData.contactPhone, '请填写联系方式');
     if (errorPhoneTip) {
+      scrollId = 'contact';
       hasError = true;
       toastText = _errorTip.contactPhone = errorPhoneTip;
     }
     if (!formData.contactName) {
       /* 联系人必填 */
+      scrollId = 'contact';
       hasError = true;
       toastText = _errorTip.contactName = '请填写联系人';
     }
     if (offlineData.show_clazz && offlineData.clazz_necessary && !formData.clazz) {
       /* 班级必填 */
+      scrollId = 'clazz';
       hasError = true;
       toastText = _errorTip.clazz = '请填写班级';
       trackerAdmissions.track_clazz_select_fail();
     }
     if (!formData.skuId) {
       /* 选课必填 */
+      scrollId = 'time';
       hasError = true;
       toastText = _errorTip.selectTime = '请选择课程';
       trackerAdmissions.track_toast_pickcourses_error();
     }
     if (!formData.name) {
       /* 名字必填 */
+      scrollId = 'name';
       hasError = true;
       toastText = _errorTip.name = '请填写学生姓名';
       trackerAdmissions.track_username_input_fail();
     }
     if(toastText) {
+      const targetId = document.querySelector(`#${scrollId}`);
+      // @ts-ignore
+      targetId?.scrollIntoViewIfNeeded && targetId.scrollIntoViewIfNeeded()
       Taro.showToast({ title: toastText, icon: 'none' });
     }
 
