@@ -232,7 +232,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
           clazz: formData.clazz || '', /* 班级 */
           schoolId: offlineData.school_id,
         }),
-        postDataToDv(formData)
+        postDataToDv({url: window.location.href, formData, offlineData })
       ]).catch(() => {});
       /* 创建订单成功，跳转到订单页面 */
       console.log('订单创建成功,订单id', orderId);
