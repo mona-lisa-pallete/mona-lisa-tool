@@ -235,7 +235,7 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
     {qualificationTip && <DvTipModal
       foot={<View onClick={() => {
         trackerAdmissions.track_popup_originalclass_click();
-        const href=`https://sell.guorou.net/m/multiple-subject?sell_type=${sellType}&activity=${activity}&source=${source}`;
+        const href=`https://sell.guorou.net/m/multiple-subject?sell_type=autumn_2021_FromZJ_JcQf7K&activity=2021_qiu_xx&source=${source}`;
         setTimeout(() => {
           window.location.href = href;
         }, 100);
