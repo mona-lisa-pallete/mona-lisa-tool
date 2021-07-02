@@ -79,8 +79,9 @@ function AddressProvinceAndCity(props: Props) {
   // 更改省份
   const onProvinceChange = useCallback(
     async (nextProvince: { code: number; name: string }) => {
+      trackerAdmissions.track_click_address_province();
       if (nextProvince.code === provinceId) return;
-
+      
       setProvinceId(nextProvince.code);
       setProvinceName(nextProvince.name);
       setCityId(0);
@@ -102,6 +103,7 @@ function AddressProvinceAndCity(props: Props) {
     async (nextCity: { code: number; name: string }) => {
       // setLoading(true);
       let region = {};
+      trackerAdmissions.track_click_address_city();
       if (nextCity.code !== cityId) {
         setCityId(nextCity.code);
         region = {
@@ -270,7 +272,6 @@ function AddressProvinceAndCity(props: Props) {
             keys={tabsKeys}
             activeKey={tabIndex}
             onChange={next => {
-              trackerAdmissions.track_click_address_province();
               setTabIndex(next);
             }}
           />

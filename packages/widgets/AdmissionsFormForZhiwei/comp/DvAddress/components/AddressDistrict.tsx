@@ -67,7 +67,8 @@ function AddressDistrict(props: Props, ref: any) {
     {
       name: value?.regionName || '请选择区县',
       list: districtList,
-      onChange: (nextCity) => {
+      onChange: (nextCity) => { 
+        trackerAdmissions.track_click_address_region();
         propsOnChange({
           regionId: nextCity.code,
           regionName: nextCity.name,
@@ -117,7 +118,6 @@ function AddressDistrict(props: Props, ref: any) {
           <PickerTabs
             keys={tabKeys}
             onChange={(nextTabIndex) => {
-              trackerAdmissions.track_click_address_city();
               setTabIndex(nextTabIndex);
             }}
             activeKey={tabIndex}

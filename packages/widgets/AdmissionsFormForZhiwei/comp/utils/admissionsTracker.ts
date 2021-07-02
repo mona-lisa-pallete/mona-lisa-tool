@@ -83,6 +83,9 @@ export function track_toast_province_error() {
 export function track_click_address_city() {
   admissionsTrackClick("click_address_city");
 }
+export function track_click_address_region() {
+  admissionsTrackClick("click_address_region");
+}
 export function track_address_input_focus() {
   admissionsTrackClick("address_input_focus");
 }
