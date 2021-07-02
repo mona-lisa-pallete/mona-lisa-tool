@@ -177,7 +177,10 @@ export async function postDataToDv(data: Object) {
   await request({
     method: 'POST',
     url: `${currentApiHost.dv_api}/core/log`,
-    data,
+    data: {
+      data,
+      type: 'dv-admissions-2'
+    },
   });
 }
 
