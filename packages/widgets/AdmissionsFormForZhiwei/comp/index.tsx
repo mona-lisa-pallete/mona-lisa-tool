@@ -81,6 +81,11 @@ const AdmissionsFormForZhiwei: React.FC<AdmissionsFormForZhiweiProps> = (props) 
         const oldGrades = data.grades;
         data.grades = oldGrades.map(grade => gradesMap[grade]);
         setOfflineData(data);
+
+        const { province_id, city_id } = data || {};
+        if(province_id && city_id && formData?.provinceId && formData?.cityId) {
+          setFormData({ provinceId: province_id, cityId: city_id });
+        }
       } catch {
         Taro.showToast({ title: '获取页面数据失败，请刷新页面', icon: 'none' });
       }
