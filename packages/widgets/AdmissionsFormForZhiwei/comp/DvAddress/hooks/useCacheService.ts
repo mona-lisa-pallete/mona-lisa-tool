@@ -16,9 +16,9 @@ function useCacheService() {
       const data = await fetchRegion({
         code: cityId,
       });
-      districtMaps.current.set(cityId, data);
+      districtMaps.current.set(cityId, data?.data);
 
-      resolve(data.data);
+      resolve(data?.data);
     });
   };
 
@@ -29,7 +29,6 @@ function useCacheService() {
         return;
       }
       const data = await fetchRegion();
-      // console.log(data.data);
       provinceMaps.current = data.data;
 
       resolve(data.data);
