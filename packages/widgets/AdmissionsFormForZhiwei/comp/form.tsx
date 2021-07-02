@@ -223,7 +223,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
           onClick={() => errorTip?.contactPhone && clearErrorTip('contactPhone')}
           type="number"
           placeholder="请输入手机号"
-          maxlength={15}
+          maxlength={11}
           value={formData.contactPhone}
           onInput={(e) => {
             setFormData({contactPhone: e.detail.value});
