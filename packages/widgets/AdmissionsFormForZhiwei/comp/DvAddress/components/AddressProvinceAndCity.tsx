@@ -7,10 +7,14 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
+import { unstable_batchedUpdates } from 'react-dom';
+import Taro from '@tarojs/taro';
 import { ServiceContext } from '../hooks/CacheService';
 import cls from 'classnames';
 import PickerTabs from './pickerTabs';
 import PickerList from './pickerList';
+import { IErrorTip } from '../../types';
+import * as trackerAdmissions from '../../utils/admissionsTracker';
 
 import './AddressProvinceAndCity.less';
 
@@ -20,7 +24,6 @@ type selectedData = {
    */
   provinceId: number;
   cityId: number;
-  connectAddress?: string;
   provinceName: string;
   cityName: string;
   regionName?: string;
@@ -33,14 +36,6 @@ type selectedData = {
 };
 
 type Props = {
-  /**
-   * 初始化省code id
-   */
-  // initialProvinceId: number;
-  /**
-   * 初始化城市code id
-   */
-  // initialCityId: number;
   /**
    * 与外部通信
    */
@@ -57,36 +52,35 @@ type Props = {
    * 因为小程序内 textarea 是原生组件，placeholder 会遮盖 modal
    */
   showAddressDetail?: boolean;
-  /**
-   * 暴露方法
-   */
-  actionRef?: any;
+  // 打开县区选择
+  showDistrictModal: () => void;
+  errorTip: IErrorTip;
+  setErrorTip: (e: IErrorTip) => void;
 };
 
 function AddressProvinceAndCity(props: Props) {
-  const { onChange, value, actionRef } = props;
+  const { onChange, value, showDistrictModal, errorTip, setErrorTip } = props;
+  // const { state, setAppData } = core.getAppContext();
+  // const errorTip = (state.errorTip as IErrorTip) || {};
+  // const { onChange, value, actionRef, showDistrictModal } = props;
   const { fetchCity, fetchProvince } = useContext(ServiceContext);
   const [showPicker, setShowPicker] = useState(false);
 
   const [provinceList, setProvinceList] = useState([]);
   const [cityList, setCityList] = useState([]);
 
-  const [provinceId, setProvinceId] = useState(0);
+  const [provinceId, setProvinceId] = useState(null);
   const [cityId, setCityId] = useState(0);
 
   const [tabIndex, setTabIndex] = useState(0);
   const [provinceName, setProvinceName] = useState('');
 
-  useImperativeHandle(actionRef, () => {
-    return {
-      a: () => console.log('xixi'),
-      validate: () => {},
-    };
-  });
+  // fixme: 依赖关系太冗杂了
 
   // 更改省份
   const onProvinceChange = useCallback(
     async (nextProvince: { code: number; name: string }) => {
+      trackerAdmissions.track_click_address_province();
       if (nextProvince.code === provinceId) return;
 
       setProvinceId(nextProvince.code);
@@ -95,15 +89,28 @@ function AddressProvinceAndCity(props: Props) {
       setCityList([]);
       setTabIndex(1);
     },
-    [setProvinceId, setProvinceName, setCityId, setCityList, setTabIndex],
+    [
+      setProvinceId,
+      setProvinceName,
+      setCityId,
+      setCityList,
+      setTabIndex,
+      provinceId,
+    ],
   );
 
   // 更改城市
   const onCityChange = useCallback(
     async (nextCity: { code: number; name: string }) => {
       // setLoading(true);
+      let region = {};
+      trackerAdmissions.track_click_address_city();
       if (nextCity.code !== cityId) {
         setCityId(nextCity.code);
+        region = {
+          regionId: 0,
+          regionName: '',
+        };
       }
 
       // 更新外部值
@@ -113,11 +120,22 @@ function AddressProvinceAndCity(props: Props) {
         cityName: nextCity.name,
         provinceId,
         provinceName,
+        ...region,
       });
 
       setShowPicker(false);
+      showDistrictModal();
     },
-    [onChange, setShowPicker, setCityId, provinceName, provinceId],
+    [
+      onChange,
+      setShowPicker,
+      setCityId,
+      provinceName,
+      provinceId,
+      cityId,
+      showDistrictModal,
+      value,
+    ],
   );
 
   // 渲染控制
@@ -126,11 +144,14 @@ function AddressProvinceAndCity(props: Props) {
       {
         name: provinceName || value?.provinceName || '请选择省份',
         list: provinceList,
-        activeCode: value?.provinceId,
+        activeCode: provinceId,
         onChange: onProvinceChange,
       },
       {
-        name: value?.cityName || '请选择市',
+        name:
+          provinceId === value?.provinceId && value?.cityName
+            ? value?.cityName
+            : '请选择市',
         list: cityList,
         activeCode: value?.cityId,
         onChange: onCityChange,
@@ -139,9 +160,10 @@ function AddressProvinceAndCity(props: Props) {
   }, [
     cityList,
     provinceList,
-    value,
+    value?.provinceName,
     value?.provinceId,
     value?.cityId,
+    value?.cityName,
     onCityChange,
     onProvinceChange,
     provinceId,
@@ -150,7 +172,7 @@ function AddressProvinceAndCity(props: Props) {
 
   useEffect(() => {
     async function fetch() {
-      if (provinceId) {
+      if (typeof provinceId === 'number') {
         const citys = await fetchCity(provinceId);
         setCityList(citys);
       }
@@ -162,12 +184,12 @@ function AddressProvinceAndCity(props: Props) {
   useEffect(() => {
     async function fetchName() {
       let params = {};
-      if (!value?.provinceName && value?.provinceId) {
+      if (!value?.provinceName && typeof value?.provinceId === 'number') {
         const provinceListData = await fetchProvince();
         setProvinceList(provinceListData);
 
         const initialProvinceName =
-          provinceListData.find((o) => {
+          provinceListData.find(o => {
             return o.code === value?.provinceId;
           })?.name || '';
 
@@ -175,12 +197,12 @@ function AddressProvinceAndCity(props: Props) {
           params['provinceName'] = initialProvinceName;
         }
       }
-      if (!value?.cityName && value?.cityId) {
+      if (!value?.cityName && typeof value?.cityId === 'number') {
         const cityListData = await fetchCity(value?.provinceId);
 
         setCityList(cityListData);
         const initialCityName =
-          cityListData.find((o) => {
+          cityListData.find(o => {
             return o.code === value?.cityId;
           })?.name || '';
 
@@ -190,7 +212,6 @@ function AddressProvinceAndCity(props: Props) {
       }
       // onChange(params);
       if (Object.keys(params).length > 0) {
-
         onChange(params);
       }
     }
@@ -202,6 +223,10 @@ function AddressProvinceAndCity(props: Props) {
     async function fetch() {
       const provinceListData = await fetchProvince();
       setProvinceList(provinceListData);
+      if (typeof value?.provinceId === 'number') {
+        const citys = await fetchCity(value?.provinceId);
+        setCityList(citys);
+      }
     }
     fetch();
   }, []);
@@ -210,14 +235,39 @@ function AddressProvinceAndCity(props: Props) {
     return `${value?.provinceName || ''}${value?.cityName || ''}`;
   }, [value?.provinceName, value?.cityName]);
 
+  const onInputClick = () => {
+    unstable_batchedUpdates(() => {
+      // 初始化tab
+      setProvinceId(value?.provinceId);
+      setProvinceName(value?.provinceName);
+      setShowPicker(true);
+    });
+    errorTip.province && setErrorTip({ ...errorTip, province: null });
+  };
+
+  const showProvinceName = useMemo(
+    () => ellipsisText(value?.provinceName, 3, '...'),
+    [value?.provinceName],
+  );
+  const showCityName = useMemo(() => ellipsisText(value?.cityName, 3, '...'), [
+    value?.cityName,
+  ]);
   return (
     <>
       <View
-        className="address_input"
-        onClick={() => setShowPicker((prev) => !prev)}
+        className={`address_input ${errorTip?.province ? 'error-tip' : ''}`}
+        onClick={onInputClick}
       >
         <View className="address_input__text">
-          {connectAddressCopy || '请选择省市'}
+          {value?.provinceName && (
+            <View className="address_input__province">{showProvinceName}</View>
+          )}
+          {value?.cityName && (
+            <View className="address_input__city">{showCityName}</View>
+          )}
+          {!value?.provinceName && !value.cityName && (
+            <span className="placeholder">请选择省市</span>
+          )}
         </View>
         <View className="address_input__icon" />
       </View>
@@ -228,32 +278,34 @@ function AddressProvinceAndCity(props: Props) {
       >
         <View className="picker_container">
           <View
-            className="icon"
-            onClick={(e) => {
+            className="close-btn"
+            onClick={e => {
               e.stopPropagation();
+              setCityList([]);
+              setProvinceId(0);
+              setProvinceName('');
               setShowPicker(false);
+              if (!value?.cityId) {
+                setTabIndex(0);
+              }
             }}
-          >
-            x
-          </View>
+          />
           <View className="picker__title">请选择所在地区</View>
           <PickerTabs
             keys={tabsKeys}
             activeKey={tabIndex}
-            onChange={(next) => {
+            onChange={next => {
+              if (!provinceId && next === 1) {
+                Taro.showToast({
+                  title: '请先选择省份',
+                  icon: 'none',
+                });
+                return;
+              }
               setTabIndex(next);
             }}
           />
-          <View
-            style={{
-              height: '100%',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              display: 'flex',
-            }}
-            className="inner-scroll"
-          >
+          <View className="inner-scroll picker__container">
             {tabsKeys.map((item, i) => {
               const active = i === tabIndex;
               return (
@@ -272,6 +324,13 @@ function AddressProvinceAndCity(props: Props) {
       </View>
     </>
   );
+}
+
+function ellipsisText(text: string, max: number, sym: string) {
+  if (typeof text === 'undefined') {
+    return '';
+  }
+  return text.length <= max ? text || '' : text.slice(0, max) + sym || '';
 }
 
 export default AddressProvinceAndCity;

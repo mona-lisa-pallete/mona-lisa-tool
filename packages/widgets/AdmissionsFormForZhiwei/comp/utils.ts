@@ -34,7 +34,7 @@ export const filterProducts: (
         if (timeSeqsCanbeChoice.includes(item.product_list[i].time_seq)) {
           newProductList.push(item.product_list[i]);
           const sellInfo = item.product_list[i].sell_info;
-          if (!sellInfo.sold_num || sellInfo.sell_limit > sellInfo.sold_num) {
+          if (sellInfo.sell_limit > sellInfo.sold_num) {
             productOSS = false; // 有库存
           }
         }
@@ -58,3 +58,6 @@ export const filterProducts: (
 };
 
 export const isNumber = (val: any) => typeof val === "number";
+
+export const preventDefault = (e) => e.preventDefault();
+export const stopPropagation = (e) => e.stopPropagation();

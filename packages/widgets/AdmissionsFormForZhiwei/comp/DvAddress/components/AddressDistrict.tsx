@@ -5,7 +5,8 @@ import PickerTabs from './pickerTabs';
 import Taro from '@tarojs/taro';
 import cls from 'classnames';
 import PickerList from './pickerList';
-
+import { IErrorTip } from '../../types';
+import * as trackerAdmissions from '../../utils/admissionsTracker'
 
 
 import './AddressProvinceAndCity.less';
@@ -17,41 +18,45 @@ interface Props {
   cityId?: number;
   regionName?: string;
   onChange: (value: any) => void;
-  actionRef?: any;
-
+  errorTip: IErrorTip;
+  setErrorTip: (e: IErrorTip) => void;
   value: any;
 }
 
-function AddressDistrict(props: Props) {
+function AddressDistrict(props: Props, ref: any) {
   const {
-    // regionId,
-    // regionName,
     value,
     cityId,
     onChange: propsOnChange,
-    actionRef,
+    errorTip,
+    setErrorTip
   } = props;
   const { fetchDistrict } = useContext(ServiceContext);
   const [districtList, setDistrictList] = useState([]);
   const [tabIndex, setTabIndex] = useState(0);
   const [show, setShow] = useState(false);
 
-  useImperativeHandle(actionRef, () => {
+  useImperativeHandle(ref, () => {
     return {
       validate: () => {},
+      showDistrict: () => {
+        setShow(true);
+      }
     };
-  });
+  }, [setShow]);
 
   useEffect(() => {
     async function fetch() {
       if (cityId) {
-        // console.log(cityId);
         setDistrictList([]);
-        propsOnChange({
-          regionId: 0,
-          regionName: '',
-        });
         const districtList = await fetchDistrict(cityId);
+        const index = districtList.findIndex(item => item.code === value?.regionId && item.name === value?.regionName);
+        if (index === -1) {
+          propsOnChange({
+            regionId: 0,
+            regionName: '',
+          });
+        }
         setDistrictList(districtList);
       }
     }
@@ -63,15 +68,18 @@ function AddressDistrict(props: Props) {
       name: value?.regionName || '请选择区县',
       list: districtList,
       onChange: (nextCity) => {
+        trackerAdmissions.track_click_address_region();
         propsOnChange({
           regionId: nextCity.code,
           regionName: nextCity.name,
         });
+        setShow(false);
       },
     },
   ];
 
   const onClick = (e) => {
+    errorTip?.district && setErrorTip({...errorTip, district: null});
     if (!cityId) {
       Taro.showToast({
         title: '请确保先选择省市',
@@ -83,10 +91,10 @@ function AddressDistrict(props: Props) {
   };
   return (
     <View>
-      <View className="district_input" onClick={onClick}>
+      <View className={`district_input ${errorTip?.province ? 'error-tip' : ''}`} onClick={onClick}>
         <View
           className={cls('district_input__text', {
-            'district_input__text--placeholder': !value?.regionName,
+            'placeholder': !value?.regionName,
           })}
         >
           {value?.regionName || '区/县'}
@@ -100,14 +108,12 @@ function AddressDistrict(props: Props) {
       >
         <View className="picker_container">
           <View
-            className="icon"
+            className="close-btn"
             onClick={(e) => {
               e.stopPropagation();
               setShow(false);
             }}
-          >
-            x
-          </View>
+          ></View>
           <View className="picker__title">请选择所在区县</View>
           <PickerTabs
             keys={tabKeys}
@@ -143,4 +149,4 @@ function AddressDistrict(props: Props) {
     </View>
   );
 }
-export default AddressDistrict;
+export default React.forwardRef(AddressDistrict);

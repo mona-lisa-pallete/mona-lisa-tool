@@ -10,12 +10,12 @@ import { ICreateAddressData, IOfflineData, IPostOfflineData } from './types';
 
 const hosts = {
   /* 生产环境域名 */
-  // "portal.guorou.net": {
-  //   "offline": "http://sale.guorou.net",
-  //   "school_api": "http://schoolapi.vpcalh.uae.shensz.cn",
-  //   "sell_api": "https://sell.guorou.net",
-  //   "order_detail": "https://sell.guorou.net/m/order?order_id=",
-  // },
+  "portal.guorou.net": {
+    "offline": "http://sale.guorou.net",
+    "school_api": "https://sell.guorou.net",
+    "sell_api": "https://sell.guorou.net",
+    "order_detail": "https://sell.guorou.net/m/order?order_id=",
+  },
   "pre": {
     /* 预发 */
     "offline": "http://sale.test.guorou.net",
@@ -26,7 +26,7 @@ const hosts = {
   /* 开发环境域名 */
   "dev": {
     "offline": "http://saleapi.uae.shensz.local", // 线下
-    "school_api": "http://schoolapi.uae.shensz.local",
+    "school_api": "http://sell.dev.guorou.net",
     "sell_api": "http://sell.dev.guorou.net",
     "order_detail": "http://sell.dev.guorou.net/m/order?order_id=",
   },
@@ -39,10 +39,6 @@ const hosts = {
 
 export const currentApiHost = hosts[window.location.host] || hosts.pre;
 
-// export const GRADE = [ '一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '初一', '初二', '初三', '高一', '高二',];
-
-
-
 /** 获取线下设置配置 */
 export async function getOfflineData(): Promise<IOfflineData> {
   const res = await request({
@@ -52,7 +48,6 @@ export async function getOfflineData(): Promise<IOfflineData> {
       source_hash,
     }
   });
-  // console.log('请求回来的数据', res);
   if (res.data?.data && res.data.code === 0) {
     return res.data.data as IOfflineData;
   } else {
@@ -70,7 +65,6 @@ export async function postToOffline(data: IPostOfflineData): Promise<any> {
     url: `${currentApiHost.offline}/sale/api/2/toker/form_submit`,
     data,
   });
-  // console.log('post回来的数据', res, data);
   return res;
 }
 
@@ -78,16 +72,10 @@ export async function postToOffline(data: IPostOfflineData): Promise<any> {
 export async function bindUserSchool(studentId: string, schoolId: string): Promise<any> {
   const res = await request({
     method: 'POST',
-    url: `${currentApiHost.school_api}/schoolapi/schoolapi/user/v1/update-user-school`,
+    url: `${currentApiHost.sell_api}/sellapi/1/school_api/update_user_school`,
+    credentials: 'include',
     data: {
-      inputer: {
-        inputForm: 1,
-        inputId: studentId
-      },
-      schoolId: {
-        schoolId
-      },
-      studentId
+      school_id: schoolId
     }
   });
   if (res.data?.code === 0) {
@@ -119,15 +107,17 @@ export async function getDetailData(grade: number): Promise<any> {
 export async function checkUserQualification() {
   const res = await request({
     method: 'POST',
-    url: `${currentApiHost.sell_api}/sellapi/1/mall/check_user_qualification`,
+    url: `${currentApiHost.sell_api}/sellapi/1/mall/check_days_not_paid`,
     credentials: 'include',
     data: {
       sell_type: sellType,
       source,
+      days: 180
     }
   });
-  if (res.data.data.check_status !== 1) {
-    throw new Error(res.data.data.check_arr?.description || res.data.data.check_description);
+  console.log('res.data.data=', res.data.data);
+  if (res.data.data !== true) {
+    throw new Error(res.data);
   }
   return true;
 }
@@ -146,8 +136,6 @@ export async function createAddress(data: ICreateAddressData) {
       is_default: 0,
     }
   });
-  // console.log('创建地址', res, res.data?.data?.order_address_id);
-  // TODO: 对接地址
   return res.data?.data?.order_address_id as string;
 }
 
@@ -167,6 +155,7 @@ export async function createOrder(skuId: number, addressId: string): Promise<{
       order_address_id: addressId,
       /* 来源 */
       source,
+      sell_type: sellType,
       activity,
       /* 来源哈希(2021-06-18添加 ) */
       source_hash: source_hash,

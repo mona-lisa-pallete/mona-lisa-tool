@@ -13,7 +13,7 @@ type CompProps = {
   onLoginSuccess?: Function;
   onInputPhone?: Function;
   onGetVerify?: Function;
-  loginTip: string;
+  loginTip: string | JSX.Element;
 };
 const LoginFormWrapper = (props: CompProps) => {
   const { onLoginFail, onLoginSuccess, onInputPhone, onGetVerify } = props;

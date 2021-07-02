@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, View, Image, Input } from "@tarojs/components";
 import Taro from '@tarojs/taro';
-import Modal from './modal';
+import Modal from './DvModal/modal';
 import { useCallback } from "react";
 import { OfflineData, Products, ProductItem, subjectItem, IFormData, IErrorTip } from './types';
-import { GRADES } from './const';
+import { GRADES, GRADE_NAMES } from './const';
 import { getDetailData } from './api';
 import { getGradeById, filterProducts, isNumber } from './utils';
 import DvAddress from './DvAddress/index'
+import * as trackerAdmissions from './utils/admissionsTracker'
+import useFocus from "./DvLoginWrapper/hooks/useFocus";
 
 interface FormProps {
   formData: IFormData;
@@ -24,14 +26,16 @@ const FormComponent: React.FC<FormProps> = (props) => {
   /* 本地保存一份课程选择，只有点了确认才同步到界面上 */
   const [localClazzData, setLocalClazzData] = useState({ grade: null, subject: null, time: null, skuId: null });
   const { formData, setFormData, offlineData, errorTip, setErrorTip } = props;
+  const [nextInput, setNxtInputFocus] = useFocus();
   const {
-    show_institution_name,
+    show_name,
     institution_name,
     grades
   } = offlineData;
   const isSelected = useCallback((defaultClass: string, selected: boolean) => selected ? `selected ${defaultClass}` : defaultClass, []);
   const setGrade = useCallback((gradeId: number) => {
     if (gradeId !== localClazzData.grade) {
+      trackerAdmissions.track_grade_select();
       setLocalClazzData({
         grade: gradeId,
         time: null,
@@ -77,6 +81,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
 
   const setSubject = useCallback((subjectIndex: number, subjectItem: subjectItem) => {
     if (subjectIndex !== localClazzData.subject) {
+      trackerAdmissions.track_clazz_select();
       if (!subjectItem.subjectLimited) {
         setLocalClazzData({ ...localClazzData, subject: subjectIndex, time: null, skuId: null });
       } else {
@@ -86,6 +91,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
   }, [localClazzData]);
 
   const onNext = useCallback(async () => {
+    if (selectStep === 2) return;
     if (localClazzData.grade) {
       if (localClazzData.subject === null) {
         try {
@@ -111,7 +117,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
         setSelectStep(2);
       }
     }
-  }, [localClazzData]);
+  }, [localClazzData, selectStep]);
 
   const onBefore = useCallback(() => {
     setSelectStep(1);
@@ -121,6 +127,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
     if (!isNumber(localClazzData.subject) || !isNumber(localClazzData.time)) return;
     setFormData({ ...localClazzData, product: getSelected() });
     setShowModal(false);
+    (setNxtInputFocus as Function)();
   }, [localClazzData]);
 
   const getSelected = useCallback(() => {
@@ -129,7 +136,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
         const gradeInfo = getGradeById(localClazzData.grade);
         const subjectInfo = products[localClazzData.subject];
         const timeInfo = subjectInfo.product_list[localClazzData.time];
-        return `${gradeInfo.gradeName} ${subjectInfo.subject_name} ${timeInfo?.time_text}`;
+        return `${GRADE_NAMES[timeInfo.grade_val]} ${subjectInfo.subject_name} ${timeInfo?.time_text}`;
       }
     } catch (err) {
       console.error('拼接具体课程失败', err);
@@ -144,12 +151,13 @@ const FormComponent: React.FC<FormProps> = (props) => {
   }, []);
   // 清除错误信息
   const clearErrorTip = useCallback((key: string) => {
-    errorTip[key] = null;
-    setErrorTip({ ...errorTip });
+    if (errorTip) {
+      setErrorTip({ ...errorTip, [key]: null });
+    }
   }, [errorTip, setErrorTip]);
 
   const showModalHandle = useCallback(async () => {
-    if (errorTip.selectTime) clearErrorTip('selectTime');
+    if (errorTip?.selectTime) clearErrorTip('selectTime');
     // 如果数据选择的年级不一致，则需要重新获取课程数据
     if (isNumber(formData.grade) && isNumber(localClazzData.grade) && formData.grade !== localClazzData.grade) {
       try {
@@ -160,40 +168,49 @@ const FormComponent: React.FC<FormProps> = (props) => {
         Taro.showToast({ title: '获取课程数据失败', icon: 'none' });
       }
     }
+    setSelectStep(1);
     setLocalClazzData({ time: formData.time, grade: formData.grade, subject: formData.subject, skuId: formData.skuId });
     setShowModal(true);
   }, [formData, localClazzData, offlineData, clearErrorTip]);
 
   return (<View className="admissions-form">
-    <View className="school-name">{show_institution_name && institution_name ? `${institution_name}专属公益课` : '填写报读信息'}</View>
+    <View className="school-name"><span className="text-over">{show_name && institution_name ? `${institution_name}专属公益课` : '填写报读信息'}</span></View>
     <View className="form-item">
       <View className="label">学生姓名</View>
       <View className={`input ${errorTip.name ? 'error-tip' : ''}`} onClick={() => errorTip.name && clearErrorTip('name')}>
-        <Input type="text" placeholder="请输入孩子的姓名" maxlength={15} value={formData.name} onInput={(e) => {
-          setFormData({name: e.detail.value});
-        }}/>
+        <Input
+          onFocus={() => { trackerAdmissions.track_username_input_focus(); }}
+          type="text" placeholder="请输入孩子的姓名" maxlength={15} value={formData.name} onInput={(e) => {
+            setFormData({name: e.detail.value});
+          }}
+      />
       </View>
     </View>
     <View className="form-item">
       <View className="label">选课</View>
       <View className={`select select-over ${errorTip.selectTime ? 'error-tip' : ''}`} onClick={showModalHandle}>
-        {formData.product || <span className="default-value">请选择报名课程</span>}
+        <View onClick={() => { trackerAdmissions.track_pickcourses(); }} className="text-over">{formData.product || <span className="placeholder">请选择报名课程</span>}</View>
       </View>
     </View>
     {offlineData.show_clazz && <View className="form-item">
       <View className={`label ${offlineData.clazz_necessary ? '' : 'no-neseccery'}`}>班级</View>
       <View className={`input ${errorTip.clazz ? 'error-tip' : ''}`} onClick={() => errorTip.clazz && clearErrorTip('clazz')}>
-        <Input type="text" placeholder="请输入在校班级" value={formData.clazz} maxlength={15} onInput={(e) => {
-          setFormData({clazz: e.detail.value});
-        }}/>
+        <Input
+          ref={nextInput}
+          onFocus={() => { trackerAdmissions.track_clazz_input_focus(); }}
+          type="text" placeholder="请输入在校班级" value={formData.clazz} maxlength={15} onInput={(e) => {
+            setFormData({clazz: e.detail.value});
+          }}
+        />
       </View>
     </View>}
     <View className="form-item">
       <View className="label">家长联系方式(用于接收“课程材料礼盒”)</View>
       <View className="parent-contact">
         <Input
-          className={`contact-name ${errorTip.contactName ? 'error-tip' : ''}`}
-          onClick={() => errorTip.contactName && clearErrorTip('contactName')}
+          className={`contact-name ${errorTip?.contactName ? 'error-tip' : ''}`}
+          ref={offlineData.show_clazz ? null : nextInput}
+          onClick={() => errorTip?.contactName && clearErrorTip('contactName')}
           type="text"
           placeholder="请输入家长姓名"
           maxlength={15}
@@ -202,8 +219,8 @@ const FormComponent: React.FC<FormProps> = (props) => {
             setFormData({contactName: e.detail.value});
           }}/>
         <Input
-          className={`contact-name ${errorTip.contactPhone ? 'error-tip' : ''}`}
-          onClick={() => errorTip.contactPhone && clearErrorTip('contactPhone')}
+          className={`contact-name ${errorTip?.contactPhone ? 'error-tip' : ''}`}
+          onClick={() => errorTip?.contactPhone && clearErrorTip('contactPhone')}
           type="number"
           placeholder="请输入手机号"
           maxlength={15}
@@ -214,9 +231,9 @@ const FormComponent: React.FC<FormProps> = (props) => {
       </View>
     </View>
     <View className="form-item">
-      <View className="label">选择所在地址</View>
-      <View className="select">
-        <DvAddress value={formData} onChange={setFormData} />
+      <View className="label">收货地址（开课前将收到课程礼盒）</View>
+      <View className="">
+        <DvAddress value={formData} onChange={setFormData} errorTip={errorTip} setErrorTip={setErrorTip} />
       </View>
     </View>
     {/* 弹窗 */}
@@ -226,8 +243,8 @@ const FormComponent: React.FC<FormProps> = (props) => {
         <View className="select-title">选择报名课程</View>
         <View className="step-progress">
           <View className="step-name">
-            <View className={selectStep === 2 ? 'step' : 'step-active'}>在读年级</View>
-            <View className={selectStep === 2 ? 'step-active' : 'step'}>科目&上课</View>
+            <View className={selectStep === 2 ? 'step' : 'step-active'} onClick={onBefore}>在读年级</View>
+            <View className={selectStep === 2 ? 'step-active' : 'step'} onClick={onNext}>科目&上课</View>
           </View>
           <View className={`step-bar ${selectStep === 2 ? ' step-end' : ''}`}></View>
         </View>
@@ -243,7 +260,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
     >
       {selectStep === 1 ?
         (<View className="grade-edit">
-          {GRADES.map((item) => (item.canShow(grades) && <React.Fragment key={item.subTitle}>
+          {GRADES.map((item) => (item.canShow(grades) && <View className="grade-wrap" key={item.subTitle}>
             <View className="grade-subtitle">{item.subTitle}</View>
             <View className="grade-container">
               {item.subItem.map((gradeItem) => (grades.includes(gradeItem.id) ? (
@@ -256,7 +273,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
                 </View>
               ) : null))}
             </View>
-          </React.Fragment>))}
+          </View>))}
         </View>) : (<View>
           <View className="subject-edit">
             <View className="subject-subtitle">科目</View>
@@ -282,6 +299,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
                     key={item.id}
                     onClick={() => {
                       if (!ossLimited) {
+                        trackerAdmissions.track_click_courses_time()
                         setLocalClazzData({
                           ...localClazzData,
                           time: index,

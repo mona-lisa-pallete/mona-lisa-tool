@@ -1,75 +1,73 @@
 .env-dev {
-  .modal,
-  .modal-container,
+  .dv-modal,
+  .dv-modal-container,
   .login-fail-tip,
   .login-container,
-  .submit-btn {
+  .fixed-bottom-btn {
     position: absolute !important;
   }
 }
 
 .admissions-form-for-zhiwei {
+  color: #333;
   font-size: 36px;
   min-height: 800px;
   padding: 40px;
-
-  .submit-btn {
-    position: fixed;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    line-height: 80px;
-    color: white;
-    background: red;
+  background: rgb(250, 251, 251);
+  textarea::placeholder,
+  input::placeholder,
+  .placeholder {
+    color: #999999;
+    font-size: 28px;
+  }
+  input,
+  textarea {
+    caret-color: red;
   }
 
-  .modal {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 100;
-  }
-
-  .modal-container {
+  .fixed-bottom-btn {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     background: white;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding-bottom: 68px;
   }
-
-  .modal-head {
-    position: relative;
-  }
-
-  .modal-body {
-    max-height: 40vh;
-    padding-left: 40px;
-    overflow-y: auto;
-  }
-
-  .close-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+  .submit-btn {
+    width: 670px;
+    line-height: 88px;
+    color: white;
+    font-size: 32px;
+    background: linear-gradient(135deg, #fd5330 0%, #f9390d 100%);
+    border-radius: 44px;
+    border: none;
   }
 
   .admissions-form {
-    border-radius: 20px;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px 2px rgba(236, 236, 236, 0.1);
+    overflow: hidden;
 
     .grade-subtitle {
-      // margin-top: 32px;
       font-size: 32px;
+    }
+
+    .grade-wrap {
+      margin-bottom: 40px;
+      &:last-child {
+        margin-bottom: 20px;
+      }
     }
 
     .grade-container {
       display: flex;
       flex-wrap: wrap;
-      margin-bottom: 32px;
     }
 
     .grade-item {
@@ -81,9 +79,9 @@
       flex-direction: column;
       padding: 12px 0;
       margin: 32px 32px 0 0;
-      border: 1px solid #e5e5e5;
+      border: 1PX solid #e5e5e5;
       box-sizing: border-box;
-      border-radius: 8px;
+      border-radius: 10px;
       &:nth-child(3n) {
         margin-right: 0px;
       }
@@ -92,7 +90,6 @@
     .grade-from {
       line-height: 40px;
       font-size: 28px;
-      color: #333333;
     }
 
     .grade-to {
@@ -102,10 +99,11 @@
     }
 
     .selected {
-      border: 1px solid #f93c11;
+      border: 1PX solid #f93c11;
       color: #f73500;
       position: relative;
       background: #fdf2f0;
+      overflow: hidden;
       .grade-from,
       .grade-to {
         color: #f73500;
@@ -117,9 +115,10 @@
       &::after {
         content: " ";
         position: absolute;
-        bottom: -1px;
-        right: -1px;
-        background-image: url(./imgs/selected-icon.png);
+        bottom: -1PX;
+        right: -1PX;
+        background-image: url(./imgs/selected-icon.png),
+          linear-gradient(-45deg, #f93c11 50%, transparent 50%);
         background-size: cover;
         width: 40px;
         height: 40px;
@@ -127,24 +126,26 @@
     }
 
     .form-item {
-      margin: 20px 0;
+      margin: 40px 0;
     }
 
     .label {
       position: relative;
-      padding-left: 20px;
+      padding-left: 34px;
+      font-size: 32px;
+      line-height: 40px;
     }
 
     .label::after {
       content: " ";
       position: absolute;
       left: 0;
-      width: 10px;
-      height: 30px;
+      width: 16px;
+      height: 52px;
       top: 50%;
       transform: translateY(-50%);
       border-radius: 0 4px 4px 0;
-      background: red;
+      background: #f73500;
     }
 
     // .no-neseccery::after {
@@ -152,19 +153,35 @@
     // }
 
     .error-tip {
-      border: 1px solid red;
-      color: red;
-      input::placeholder {
-        color: red;
-      }
+      border: 1PX solid #f73500;
+      // color: red;
+      // input::placeholder {
+      //   color: red;
+      // }
     }
 
     .input,
     .select {
-      background: #eeee;
-      padding: 4px 4px;
-      border-radius: 4px;
-      margin-top: 16px;
+      background: #f4f5f6;
+      padding: 0 20px;
+      border-radius: 8px;
+      margin-top: 24px;
+      margin-left: 32px;
+      height: 88px;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      width: 606px;
+      box-sizing: border-box;
+      * {
+        width: 100%;
+      }
+    }
+
+    .text-over {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     input {
@@ -182,54 +199,42 @@
       text-align: center;
       color: white;
       background: #f73500;
-      padding: 8px 0;
-      position: relative;
       line-height: 90px;
-      border-radius: 20px 20px 0 0;
+      box-sizing: border-box;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &::after,
+      &::before {
+        flex-shrink: 0;
+        content: " ";
+        width: 37px;
+        height: 29px;
+        background-image: url(./imgs/title-icon.png);
+        background-size: cover;
+        display: inline-block;
+      }
+
+      &::after {
+        transform: rotateY(180deg);
+      }
+
+      span {
+        font-size: 36px;
+        margin: 0 8px;
+      }
     }
-  }
-
-  .login-fail-tip,
-  .login-container {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-
-  .login-fail-tip {
-    z-index: 1001;
-  }
-
-  .login-fail-container {
-    padding: 40px;
-    width: 630px;
-    background: white;
-    border-radius: 12px;
-    position: relative;
-  }
-
-  .login-fail-title {
-    font-size: 48px;
-    text-align: center;
   }
 
   .login-fail-content {
-    padding: 40px 0 10px;
+    padding: 22px 0 40px;
     text-align: center;
+    font-size: 28px;
+    color: #666666;
     a {
       color: #333333;
     }
-  }
-
-  .login-fail-recommend {
-    text-align: center;
   }
 
   .login-fail-btn {
@@ -240,14 +245,7 @@
     text-decoration: none;
     border-radius: 44px;
     text-align: center;
-    margin-top: 40px;
-  }
-
-  .modal-foot {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px 40px;
+    margin-bottom: 26px;
   }
 
   .modal-bfe-btn,
@@ -261,14 +259,14 @@
   }
 
   .modal-confirm-btn {
-    width: 45%;
-    margin-left: 10%;
+    width: 320px;
   }
 
   .modal-bfe-btn {
-    background: #ccc;
-    color: black;
-    width: 45%;
+    color: #333;
+    background: #f8f8f8;
+    width: 320px;
+    margin-right: 30px;
   }
 
   .modal-nxt-btn {
@@ -276,19 +274,28 @@
   }
 
   .disable-btn {
-    opacity: 0.6;
+    // opacity: 0.6;
+    background: rgb(255, 196, 181);
   }
 
   .parent-contact {
     display: flex;
-    margin-top: 16px;
+    margin-top: 24px;
+    padding-left: 32px;
 
     .contact-name {
-      line-height: 88px;
+      height: 88px;
       width: 288px;
-      padding: 0 24px;
+      padding: 0 20px;
       background: #f4f5f6;
-      border-radius: 4px;
+      border-radius: 8px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      font-size: 32px;
+      * {
+        width: 100%;
+      }
       &:first-child {
         margin-right: 30px;
       }
@@ -307,8 +314,8 @@
   .subject-item {
     width: 200px;
     line-height: 100px;
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
+    border: 1PX solid #e5e5e5;
+    border-radius: 10px;
     margin: 0 32px 32px 0;
     text-align: center;
     box-sizing: border-box;
@@ -324,29 +331,25 @@
     line-height: 40px;
     padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    border: 1PX solid #ccc;
+    border-radius: 10px;
     font-size: 28px;
   }
 
   .select-over {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    padding-right: 60px !important;
+    padding-right: 45px !important;
     position: relative;
 
     &::after {
       content: " ";
       position: absolute;
-      right: 10px;
+      background-image: url(./imgs/line_direction-skip@2x.png);
+      background-size: cover;
+      right: 20px;
       top: 50%;
-      transform: translateY(-50%) rotate(45deg);
-      width: 20px;
-      height: 20px;
-      border: 4px solid #ccc;
-      border-top-color: transparent;
-      border-left-color: transparent;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
     }
   }
 
@@ -400,10 +403,6 @@
     font-size: 28px;
     line-height: 48px;
     padding: 32px 0 24px;
-
-    .step {
-      color: #333333;
-    }
   }
 
   .step-progress {
@@ -449,13 +448,20 @@
 
   .select-title {
     border-bottom: 1px solid #e5e5e5;
-    padding: 34px 40px;
+    padding: 30px 40px;
     color: #444444;
     font-size: 36px;
+    line-height: 36px;
   }
 
   .subject-subtitle,
   .time-subtitle {
     margin-bottom: 32px;
+  }
+
+  .login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
