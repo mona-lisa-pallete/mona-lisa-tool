@@ -241,6 +241,13 @@ function AddressProvinceAndCity(props: Props) {
     errorTip.province && setErrorTip({ ...errorTip, province: null });
   };
 
+  const showProvinceName = useMemo(
+    () => ellipsisText(value?.provinceName, 3, '...'),
+    [value?.provinceName],
+  );
+  const showCityName = useMemo(() => ellipsisText(value?.cityName, 3, '...'), [
+    value?.cityName,
+  ]);
   return (
     <>
       <View
@@ -248,7 +255,13 @@ function AddressProvinceAndCity(props: Props) {
         onClick={onInputClick}
       >
         <View className="address_input__text">
-          {connectAddressCopy || (
+          {value?.provinceName && (
+            <View className="address_input__province">{showProvinceName}</View>
+          )}
+          {value?.cityName && (
+            <View className="address_input__city">{showCityName}</View>
+          )}
+          {!value?.provinceName && !value.cityName && (
             <span style={{ color: '#999999' }}>请选择省市</span>
           )}
         </View>
@@ -303,6 +316,13 @@ function AddressProvinceAndCity(props: Props) {
       </View>
     </>
   );
+}
+
+function ellipsisText(text: string, max: number, sym: string) {
+  if (typeof text === 'undefined') {
+    return '';
+  }
+  return text.length <= max ? text || '' : text.slice(0, max) + sym || '';
 }
 
 export default AddressProvinceAndCity;
