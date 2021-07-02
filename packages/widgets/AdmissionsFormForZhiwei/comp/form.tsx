@@ -224,7 +224,7 @@ const FormComponent: React.FC<FormProps> = (props) => {
       </View>
     </View>
     <View className="form-item">
-      <View className="label">选择所在地址</View>
+      <View className="label">收货地址（开课前将收到课程礼盒）</View>
       <View className="">
         <DvAddress value={formData} onChange={setFormData} errorTip={errorTip} setErrorTip={setErrorTip} />
       </View>
