@@ -1,4 +1,4 @@
-import * as core from '@gr-davinci/core';
+import * as core from '@monalisa-lowcode/core';
 
 export function navigateTo(args) {
   const {

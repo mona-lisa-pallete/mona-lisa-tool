@@ -2,7 +2,7 @@ import { Button, View } from "@tarojs/components";
 import Taro from '@tarojs/taro';
 import React, { useCallback, useState } from "react";
 // @ts-ignore
-import * as core from '@gr-davinci/core';
+import * as core from '@monalisa-lowcode/core';
 import LoginFormWrapper from './DvLoginWrapper';
 import FormComponent from './form';
 import { getOfflineData, checkUserQualification, createOrder, bindUserSchool, postToOffline, createAddress, currentApiHost, postDataToDv } from "./api";

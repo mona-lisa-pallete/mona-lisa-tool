@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as core from '@gr-davinci/core';
+import * as core from '@monalisa-lowcode/core';
 import { Button, Input, View } from '@tarojs/components';
 import { showToast, request } from '@tarojs/taro';
 import React, { useState } from 'react';

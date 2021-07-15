@@ -109,7 +109,7 @@ module.exports = () => {
       "react-dom": "reactVendor.ReactDOM",
       antd: "antd",
       axios: "axios",
-      "@gr-davinci/core": "davinciCore",
+      "@monalisa-lowcode/core": "davinciCore",
       "@tarojs/components": "taroVendor.components",
       "@tarojs/taro": "taroVendor.taro",
       "@tarojs/runtime": "taroVendor.runtime",

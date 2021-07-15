@@ -2278,6 +2278,15 @@
     workbox-webpack-plugin "5.1.4"
     yup "0.32.8"
 
+"@monalisa-lowcode/core@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.npmjs.org/@monalisa-lowcode/core/-/core-0.0.22.tgz#e024ee7a76cf42ece30b9be64c976c7e6e01023a"
+  integrity sha512-M6GbAsvKjN4AP6OJat3w5HP49sePtcifIdZdTWHa95BA+HyB+6D8gYN6R7pfVK0u9Dvo04uxCvloO3cgEc1Rog==
+  dependencies:
+    query-string "^7.0.0"
+    react "17.0.2"
+    react-dom "17.0.2"
+
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
   resolved "https://registry.npm.taobao.org/@nodelib/fs.scandir/download/@nodelib/fs.scandir-2.1.4.tgz?cache=0&sync_timestamp=1609074618762&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40nodelib%2Ffs.scandir%2Fdownload%2F%40nodelib%2Ffs.scandir-2.1.4.tgz#d4b3549a5db5de2683e0c1071ab4f140904bbf69"
@@ -14662,6 +14671,16 @@ query-string@^6.13.8:
     split-on-first "^1.0.0"
     strict-uri-encode "^2.0.0"
 
+query-string@^7.0.0:
+  version "7.0.1"
+  resolved "https://repo.huaweicloud.com/repository/npm/query-string/-/query-string-7.0.1.tgz#45bd149cf586aaa582dffc7ec7a8ad97dd02f75d"
+  integrity sha512-uIw3iRvHnk9to1blJCG3BTc+Ro56CBowJXKmNNAm3RulvPBzWLRqKSiiDk+IplJhsydwtuNMHi8UGQFcCLVfkA==
+  dependencies:
+    decode-uri-component "^0.2.0"
+    filter-obj "^1.1.0"
+    split-on-first "^1.0.0"
+    strict-uri-encode "^2.0.0"
+
 querystring-es3@^0.2.0:
   version "0.2.1"
   resolved "https://registry.nlark.com/querystring-es3/download/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
@@ -15199,6 +15218,15 @@ react-dev-utils@^11.0.1:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
+react-dom@17.0.2:
+  version "17.0.2"
+  resolved "https://registry.nlark.com/react-dom/download/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
+  integrity sha1-7P+2hF462Nv83EmPDQqTlzZQLCM=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    scheduler "^0.20.2"
+
 react-dom@^16.14.0:
   version "16.14.0"
   resolved "https://registry.nlark.com/react-dom/download/react-dom-16.14.0.tgz?cache=0&sync_timestamp=1621527398225&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact-dom%2Fdownload%2Freact-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
@@ -15243,6 +15271,14 @@ react-refresh@^0.8.3:
   version "0.8.3"
   resolved "https://registry.nlark.com/react-refresh/download/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha1-ch1GV2ctQAxePHXQY8SoX7LV1o8=
+
+react@17.0.2:
+  version "17.0.2"
+  resolved "https://registry.nlark.com/react/download/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
+  integrity sha1-0LXMUW0p6z7uOD91tihkz7aAADc=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
 
 react@^16.14.0:
   version "16.14.0"
@@ -16178,6 +16214,14 @@ scheduler@^0.19.1:
   version "0.19.1"
   resolved "https://registry.nlark.com/scheduler/download/scheduler-0.19.1.tgz?cache=0&sync_timestamp=1621527405879&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fscheduler%2Fdownload%2Fscheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
   integrity sha1-Tz4u0sGn1laB9MhU+oxaHMtA8ZY=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+
+scheduler@^0.20.2:
+  version "0.20.2"
+  resolved "https://registry.nlark.com/scheduler/download/scheduler-0.20.2.tgz#4baee39436e34aa93b4874bddcbf0fe8b8b50e91"
+  integrity sha1-S67jlDbjSqk7SHS93L8P6Li1DpE=
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"

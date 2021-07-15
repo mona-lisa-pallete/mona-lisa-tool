@@ -1,4 +1,4 @@
-import { trackLog } from "@gr-davinci/core";
+import { trackLog } from "@monalisa-lowcode/core";
 
 export function admissionsTrackClick(name: string, other: any = {}) {
   trackLog({

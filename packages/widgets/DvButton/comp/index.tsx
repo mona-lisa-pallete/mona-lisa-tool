@@ -1,7 +1,7 @@
 import { Image, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";
-import { dvPxTransform, trackLog, dvConnect } from "@gr-davinci/core";
+import { dvPxTransform, trackLog, dvConnect } from "@monalisa-lowcode/core";
 
 const DvButton = ({ onClick, children, url, edit, style, id }) => {
   if (edit && !url) {

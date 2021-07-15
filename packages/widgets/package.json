@@ -1,5 +1,5 @@
 {
-  "name": "@gr-davinci/components",
+  "name": "@monalisa-lowcode/components",
   "version": "0.0.15",
   "description": "",
   "main": "index.js",
@@ -29,7 +29,6 @@
     "@tarojs/runtime": "^3.2.8",
     "@tarojs/taro": "^3.2.8",
     "@types/webpack-dev-server": "^3.11.4",
-    "@gr-davinci/core": "^0.0.17",
     "antd": "^4.15.6",
     "axios": "^0.21.1",
     "cors": "^2.8.5",

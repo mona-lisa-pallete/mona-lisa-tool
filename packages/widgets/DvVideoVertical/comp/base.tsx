@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Video } from "@tarojs/components";
 import "./index.less";
-import { IS_H5, trackLog } from "@gr-davinci/core";
+import { IS_H5, trackLog } from "@monalisa-lowcode/core";
 
 // const mock = {
 //   src: "https://static.guorou.net/grow/grow_mp/video.mp4",

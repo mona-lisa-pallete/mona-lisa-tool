@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DvProvider } from '@gr-davinci/core';
+import { DvProvider } from '@monalisa-lowcode/core';
 import "./App.css";
 import AppInfoComp from "./components/Version";
 import { DevContainer } from "./DevContainer";

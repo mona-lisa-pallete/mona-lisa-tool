@@ -3,7 +3,7 @@ import {
   trackLog,
   dvConnect,
   getPageData,
-} from "@gr-davinci/core";
+} from "@monalisa-lowcode/core";
 import { Image, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";

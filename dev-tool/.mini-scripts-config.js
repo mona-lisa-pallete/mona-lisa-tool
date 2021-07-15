@@ -25,7 +25,7 @@ module.exports = {
       "@tarojs/components": "taroVendor.components",
       "@tarojs/taro": "taroVendor.taro",
       "@tarojs/runtime": "taroVendor.runtime",
-      "@gr-davinci/core": "davinciCore",
+      "@monalisa-lowcode/core": "davinciCore",
     },
     module: {
       // rules: [{

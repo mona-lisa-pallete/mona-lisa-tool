@@ -1,4 +1,4 @@
-import { dvPxTransform } from "@gr-davinci/core";
+import { dvPxTransform } from "@monalisa-lowcode/core";
 import { Image, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";

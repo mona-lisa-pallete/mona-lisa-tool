@@ -1,4 +1,4 @@
-import { dvPxTransform, trackLog, dvConnect } from "@gr-davinci/core";
+import { dvPxTransform, trackLog, dvConnect } from "@monalisa-lowcode/core";
 import { Text, View } from "@tarojs/components";
 import React from "react";
 import "./index.less";

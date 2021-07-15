@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Image } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { trackLog } from "@gr-davinci/core";
+import { trackLog } from "@monalisa-lowcode/core";
 
 const IS_MINI = process.env.TARO_ENV === "weapp";
 
