@@ -8,7 +8,8 @@
     "zip:src": "sh ./scripts/zip-comp.sh ./src",
     "clean:build": "rm -rf ./.bundles",
     "start": "yarn clean:build && yarn && PORT=22111 node ./compiler/start.js",
-    "start:dev-tool": "cd ./dev-tool && yarn && yarn start"
+    "start:dev-tool": "cd ./dev-tool && yarn && yarn start",
+    "dev": "concurrently \"yarn start\" \"yarn start:dev-tool\""
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,7 @@
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
     "chokidar": "^3.5.1",
+    "concurrently": "^6.2.0",
     "glob": "7.1.6",
     "lerna": "^4.0.0",
     "postcss-pxtorem": "^5.1.1",
