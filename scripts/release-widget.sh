@@ -18,18 +18,21 @@ target_zip="$work_dir/$COMP.zip"
 
 method=POST
 
+path=/davinciapi/api/1/platform/component
 
 if [ $ENV == "dev" ]; then
-  api=http://portalhome.uae.shensz.local/davinciapi/api/1/platform/component
+  host=http://portalhome.uae.shensz.local
 elif [ $ENV == "local" ]; then
-  api=http://localhost:5400/davinciapi/api/1/platform/component
+  host=http://localhost:5400
 elif [ $ENV == "prod" ]; then
-  api=https://portal.guorou.net/davinciapi/api/1/platform/component
+  host=https://portal.guorou.net
 else
-  api=http://portalhome.uae.shensz.local/davinciapi/api/1/platform/component
+  host=http://portalhome.uae.shensz.local
 fi
 
 request_info=发布新组件
+
+api=$host/$path
 
 if [ ! -f $target_zip ]; then
   echo "不已存在组件: $target_zip \n"
@@ -38,7 +41,7 @@ fi
 
 if [ $ID != "" ]; then
   method=PUT
-  api=$api/$ID
+  api=$host/$path/$ID
   request_info=更新组件
 fi
 
@@ -49,7 +52,7 @@ echo "API: $api \n"
 echo "上传的文件: $target_zip \n"
 
 curl --location --request $method $api \
---header 'Cookie: portal_access_token=b0773763-5995-46aa-b1f6-44b3a9460b87; portal_access_token.sig=HhCwfG5jDpDUocmApxFioQLt7UzA8u6rAlUuoUwnww8' \
---form "data=@\"$target_zip\""
+  --header 'Cookie: portal_access_token=b0773763-5995-46aa-b1f6-44b3a9460b87; portal_access_token.sig=HhCwfG5jDpDUocmApxFioQLt7UzA8u6rAlUuoUwnww8' \
+  --form "data=@\"$target_zip\""
 
 # --header 'Cookie: portal_access_token=zjy; portal_access_token.sig=wuDNxbW5HBcinqFXGxPdFSxpyyMclvIXFj1M9wAoeUU' \

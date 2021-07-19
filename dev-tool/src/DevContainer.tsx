@@ -16,10 +16,10 @@ const useSelectedDevData = (selectedDevData: string): null | any[] => {
           src: `http://localhost:22111/${metadata.elementRef}.js`,
           id: metadata.elementRef,
         }),
-        LoadScript({
+        metadata.propFormConfig.customFormRef ? LoadScript({
           src: `http://localhost:22111/${metadata.propFormConfig.customFormRef}.js`,
           id: metadata.propFormConfig.customFormRef,
-        }),
+        }) : null,
       ])
         .then()
         .finally(() => {
@@ -43,30 +43,24 @@ const LoadWidget = (widgetRef: any) => {
  */
 const PlatformContext = {
   ui: {
-    UploadTool: ({ onSelected }) => (
+    UploadTool: ({ onChange }) => (
       <div>
         输入 url 地址调试
         <Input
           onChange={(e) => {
             const value = e.target.value;
-            onSelected({
-              src: value,
-              url: value,
-            });
+            onChange(value);
           }}
         />
       </div>
     ),
-    Upload: ({ onSelected }) => (
+    Upload: ({ onChange }) => (
       <div>
         输入 url 地址调试
         <Input
           onChange={(e) => {
             const value = e.target.value;
-            onSelected({
-              src: value,
-              url: value,
-            });
+            onChange(value);
           }}
         />
       </div>
